@@ -1,0 +1,49 @@
+/* ===== Anmelde- und Registrierungsseiten ===== */
+* { box-sizing: border-box; }
+body { margin: 0; font-family: 'Lato', 'Segoe UI', sans-serif; background: #f5f6fa; color: #222; }
+.auth-wrap { display: flex; min-height: 100vh; }
+.auth-visual { flex: 1 1 45%; position: relative; background-size: cover; background-position: center; color: #fff; display: flex; flex-direction: column; justify-content: space-between; padding: 40px; }
+.auth-visual::before { content: ""; position: absolute; inset: 0; background: linear-gradient(160deg, rgba(13,27,42,.55), rgba(13,27,42,.85)); }
+.auth-visual > * { position: relative; }
+.auth-brand { color: #fff; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 26px; text-decoration: none; display: flex; align-items: center; gap: 10px; }
+.auth-brand img { height: 38px; }
+.auth-brand:hover { color: #fff; text-decoration: none; }
+.auth-quote h2 { color: #fff; font-family: 'Montserrat', sans-serif; font-size: 38px; font-weight: 700; line-height: 1.2; }
+.auth-quote p { color: rgba(255,255,255,.85); font-size: 18px; max-width: 460px; }
+.auth-panel { flex: 1 1 55%; display: flex; align-items: center; justify-content: center; padding: 40px 20px; }
+.auth-card { width: 100%; max-width: 560px; background: #fff; border-radius: 18px; padding: 40px; box-shadow: 0 20px 60px rgba(0,0,0,.08); }
+.auth-title { font-family: 'Montserrat', sans-serif; font-size: 30px; font-weight: 700; margin: 0 0 6px; color: #111; }
+.auth-sub { color: #666; margin-bottom: 24px; }
+.auth-sub a, .auth-foot a { color: #FF1654; font-weight: 700; }
+.auth-row { display: flex; gap: 16px; }
+.auth-row .auth-field { flex: 1; }
+.auth-field { margin-bottom: 16px; }
+.auth-field label { display: block; font-weight: 700; font-size: 14px; margin-bottom: 6px; color: #333; }
+.auth-field input, .auth-field select { width: 100%; height: 48px; border: 1px solid #dfe2ea; border-radius: 10px; padding: 0 14px; font-size: 16px; background: #fafbfd; transition: border-color .2s, box-shadow .2s; }
+.auth-field input[type=file] { padding: 10px; height: auto; font-size: 14px; }
+.auth-field input:focus, .auth-field select:focus { outline: none; border-color: #FF1654; box-shadow: 0 0 0 3px rgba(255,22,84,.12); background: #fff; }
+.field-error { color: #dc3545; font-size: 13px; display: block; margin-top: 4px; }
+.auth-error { color: #a4232f; background: #fdecee; border-radius: 10px; padding: 0; font-size: 14px; }
+.auth-error ul { margin: 0; padding: 12px 16px 12px 32px; }
+.auth-error.validation-summary-valid { display: none; }
+.auth-check { display: flex; align-items: center; gap: 8px; font-size: 15px; margin-bottom: 18px; color: #555; }
+.auth-submit { width: 100%; height: 52px; border: 0; border-radius: 10px; background: #FF1654; color: #fff; font-weight: 700; font-size: 17px; cursor: pointer; transition: background .2s, transform .1s; }
+.auth-submit:hover { background: #e3104a; }
+.auth-submit:active { transform: scale(.99); }
+.auth-foot { text-align: center; margin: 22px 0 0; }
+.auth-note { font-size: 13px; color: #888; }
+.demo-box { background: linear-gradient(135deg, #0d1b2a, #274060); color: #fff; border-radius: 14px; padding: 18px; }
+.demo-box-title { font-weight: 700; margin-bottom: 12px; }
+.demo-box-buttons { display: flex; gap: 10px; }
+.btn-demo { flex: 1; text-align: center; padding: 12px; border-radius: 10px; font-weight: 700; color: #fff; text-decoration: none; transition: transform .15s; }
+.btn-demo:hover { color: #fff; text-decoration: none; transform: translateY(-2px); }
+.btn-demo.admin { background: #FF1654; }
+.btn-demo.member { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.35); }
+.auth-divider { text-align: center; margin: 22px 0; position: relative; color: #999; font-size: 14px; }
+.auth-divider::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; border-top: 1px solid #e5e7ee; }
+.auth-divider span { background: #fff; padding: 0 12px; position: relative; }
+@media (max-width: 900px) {
+  .auth-visual { display: none; }
+  .auth-card { padding: 28px 22px; }
+  .auth-row { flex-direction: column; gap: 0; }
+}

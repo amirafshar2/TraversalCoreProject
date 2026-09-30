@@ -1,0 +1,13 @@
+@{
+    int code = ViewBag.Code ?? 404;
+    ViewData["Title"] = code == 404 ? "Seite nicht gefunden" : "Fehler";
+}
+<section class="error-page">
+    <div class="container">
+        <h1>@code</h1>
+        <h3 class="mb-3">@(code == 404 ? "Diese Seite gibt es leider nicht." : "Da ist etwas schiefgelaufen.")</h3>
+        <p class="mb-4">Vielleicht finden Sie Ihr nächstes Reiseziel stattdessen hier:</p>
+        <a href="/" class="btn btn-style btn-primary m-1">Zur Startseite</a>
+        <a href="/Destiniton" class="btn btn-style btn-secondary m-1">Alle Reiseziele</a>
+    </div>
+</section>

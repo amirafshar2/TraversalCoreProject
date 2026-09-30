@@ -1,10 +1,4 @@
-﻿
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EntityLayer.Concrate
 {
@@ -33,8 +27,7 @@ namespace EntityLayer.Concrate
         public string Image3 { get; set; }
         public List<Comment> Comments { get; set; }
         public List<Reservition> reservitions { get; set; }
+        /// <summary>Id des Benutzers (Tourleiter/Admin), der das Reiseziel angelegt hat.</summary>
         public int Turlider { get; set; }
-        
-
     }
 }

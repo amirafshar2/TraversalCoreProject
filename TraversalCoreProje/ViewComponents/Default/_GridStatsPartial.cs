@@ -1,37 +1,24 @@
-﻿using BusinessLayer.Abstract;
-using BusinessLayer.Concrate;
-using DataAccessLayer.EntityFrameWork;
-using EntityLayer.Concrate;
+using BusinessLayer.Abstract;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TraversalCoreProje.ViewComponents.Default
 {
+    /// <summary>Top-Angebote (Feature) auf der Startseite: ein großes und bis zu vier kleine.</summary>
     public class _GridStatsPartial : ViewComponent
     {
-        #region DI
-        private readonly IFeatureServic _Featuremanager;
-        public _GridStatsPartial(IFeatureServic featuremanager)
-        {
-            _Featuremanager = featuremanager;
-        }
-        #endregion
+        private readonly IFeatureServic _featureManager;
 
-        #region Invoke
+        public _GridStatsPartial(IFeatureServic featureManager)
+        {
+            _featureManager = featureManager;
+        }
+
         public IViewComponentResult Invoke()
         {
-            
-            var q = _Featuremanager.GetAll().Where(q=>q.Status == true);
-            var w = q.FirstOrDefault();
-            if (w != null)
-            {
-                ViewBag.fid = w.FeatureId;
-                ViewBag.FDescription = w.Description;
-                ViewBag.FTitle = w.Title;
-                ViewBag.FImage= w.Image;             
-            }
-            var f = q.Where(f => f.FeatureId != w.FeatureId).ToList();           
-            return View(f);
+            var active = _featureManager.GetAll().Where(f => f.Status).ToList();
+            var first = active.FirstOrDefault();
+            ViewBag.First = first;
+            return View(active.Skip(1).Take(4).ToList());
         }
-        #endregion
     }
 }

@@ -1,0 +1,74 @@
+@model IPagedList<Reservition>
+@{
+    ViewData["Title"] = "Reservierungen";
+    ViewData["Subtitle"] = "Anfragen prüfen, bestätigen oder stornieren.";
+    string status = ViewBag.Status;
+    string Pill(string s) => (status ?? "") == s ? "active" : "";
+}
+
+<ul class="nav nav-pills filter-pills mb-3">
+    <li class="nav-item"><a class="nav-link @Pill("")" asp-action="Index">Alle <span class="badge badge-light">@ViewBag.CountAll</span></a></li>
+    <li class="nav-item"><a class="nav-link @Pill("pending")" asp-action="Index" asp-route-status="pending">Ausstehend <span class="badge badge-warning">@ViewBag.CountPending</span></a></li>
+    <li class="nav-item"><a class="nav-link @Pill("approved")" asp-action="Index" asp-route-status="approved">Bestätigt <span class="badge badge-success">@ViewBag.CountApproved</span></a></li>
+    <li class="nav-item"><a class="nav-link @Pill("canceled")" asp-action="Index" asp-route-status="canceled">Storniert <span class="badge badge-danger">@ViewBag.CountCanceled</span></a></li>
+</ul>
+
+<div class="card">
+    <div class="card-header">
+        <form method="get" class="form-inline w-100">
+            <input type="hidden" name="status" value="@status" />
+            <div class="input-group" style="max-width:360px">
+                <input type="text" name="q" value="@ViewBag.Search" class="form-control" placeholder="Kunde oder Reiseziel …" />
+                <div class="input-group-append"><button class="btn btn-primary"><i class="fas fa-search"></i></button></div>
+            </div>
+        </form>
+    </div>
+    <div class="card-body p-0">
+        @if (Model.Count == 0)
+        {
+            <div class="empty-state"><i class="fas fa-calendar-times"></i>Keine Reservierungen gefunden.</div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead><tr><th>#</th><th>Kunde</th><th>Reiseziel</th><th>Zeitraum</th><th>Pers.</th><th>Summe</th><th>Status</th><th class="text-right">Aktionen</th></tr></thead>
+                    <tbody>
+                        @foreach (var r in Model)
+                        {
+                            <tr>
+                                <td class="muted-small">#@r.id</td>
+                                <td class="text-nowrap">
+                                    <img src="@r.User?.Image" class="avatar-sm mr-2" alt="" />
+                                    <span class="font-weight-bold">@r.Username</span>
+                                    <div class="muted-small ml-5 mt-n2">gebucht am @ViewHelpers.Date(r.ReservDate)</div>
+                                </td>
+                                <td class="text-nowrap"><img src="@r.Destiniton?.Image" class="table-thumb mr-2" alt="" /> @r.Destiniton?.City</td>
+                                <td class="text-nowrap">@ViewHelpers.Date(r.ReservStart) – @ViewHelpers.Date(r.ReservEnd)<div class="muted-small">@ViewHelpers.Nights(r) Nächte</div></td>
+                                <td>@r.HowmanyPapel</td>
+                                <td class="text-nowrap font-weight-bold">@ViewHelpers.Euro(r.HowmanyPapel * (r.Destiniton?.Price ?? 0))</td>
+                                <td>@ViewHelpers.StatusBadge(r.status)</td>
+                                <td class="text-right actions">
+                                    <a asp-action="Details" asp-route-id="@r.id" class="btn btn-sm btn-light" title="Details"><i class="fas fa-eye"></i></a>
+                                    @if (r.status != ReservationStatus.Approved)
+                                    {
+                                        <form asp-action="Approve" asp-route-id="@r.id" asp-route-returnUrl="@(Context.Request.Path + Context.Request.QueryString)" method="post">
+                                            <button class="btn btn-sm btn-success" title="Bestätigen"><i class="fas fa-check"></i></button>
+                                        </form>
+                                    }
+                                    @if (r.status != ReservationStatus.Canceled)
+                                    {
+                                        <form asp-action="Cancel" asp-route-id="@r.id" asp-route-returnUrl="@(Context.Request.Path + Context.Request.QueryString)" method="post" data-confirm="Reservierung #@r.id stornieren?">
+                                            <button class="btn btn-sm btn-outline-danger" title="Stornieren"><i class="fas fa-ban"></i></button>
+                                        </form>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page, status, q = ViewBag.Search }), ViewHelpers.Pager)

@@ -1,0 +1,38 @@
+@model List<ContactMessage>
+<li class="dropdown dropdown-list-toggle">
+    <a href="#" data-toggle="dropdown" class="nav-link nav-link-lg message-toggle" title="Nachrichten">
+        <i data-feather="mail"></i>
+        @if ((int)ViewBag.Unread > 0)
+        {
+            <span class="badge headerBadge1">@ViewBag.Unread</span>
+        }
+    </a>
+    <div class="dropdown-menu dropdown-list dropdown-menu-right pullDown">
+        <div class="dropdown-header">
+            Kontaktanfragen
+            <div class="float-right"><a href="@Url.Action("Index", "Message", new { area = "Admin" })">Alle anzeigen</a></div>
+        </div>
+        <div class="dropdown-list-content dropdown-list-message">
+            @if (!Model.Any())
+            {
+                <div class="text-center text-muted p-4">Keine Nachrichten vorhanden.</div>
+            }
+            @foreach (var m in Model)
+            {
+                <a href="@Url.Action("Details", "Message", new { area = "Admin", id = m.ContactMessageID })" class="dropdown-item @(m.IsRead ? "" : "dropdown-item-unread")">
+                    <span class="dropdown-item-avatar text-white">
+                        <span class="avatar-initials">@ViewHelpers.Initials(m.Name)</span>
+                    </span>
+                    <span class="dropdown-item-desc">
+                        <span class="message-user">@m.Name</span>
+                        <span class="time messege-text">@ViewHelpers.Truncate(m.Subject, 40)</span>
+                        <span class="time">@ViewHelpers.Date(m.MessageDate)</span>
+                    </span>
+                </a>
+            }
+        </div>
+        <div class="dropdown-footer text-center">
+            <a href="@Url.Action("Index", "Message", new { area = "Admin" })">Zum Posteingang <i class="fas fa-chevron-right"></i></a>
+        </div>
+    </div>
+</li>

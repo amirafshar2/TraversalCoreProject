@@ -1,14 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace EntityLayer.Concrate
 {
     public class Roll : IdentityRole<int>
     {
-
+        public Roll() { }
+        public Roll(string name) : base(name) { }
+        public string Description { get; set; }
     }
 }

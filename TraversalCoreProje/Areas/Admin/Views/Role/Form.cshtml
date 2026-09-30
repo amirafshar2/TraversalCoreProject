@@ -1,0 +1,32 @@
+@model RoleViewModel
+@{
+    var isEdit = Model.Id > 0;
+    ViewData["Title"] = isEdit ? $"Rolle bearbeiten: {Model.Name}" : "Neue Rolle";
+}
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card">
+            <form asp-action="@(isEdit ? "Edit" : "Create")" method="post">
+                <input type="hidden" asp-for="Id" />
+                <div class="card-body">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Name">Rollenname</label>
+                        <input asp-for="Name" class="form-control" readonly="@Model.IsSystemRole" />
+                        <span asp-validation-for="Name" class="text-danger small"></span>
+                        @if (Model.IsSystemRole) { <small class="text-muted">Systemrollen können nicht umbenannt werden.</small> }
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Description">Beschreibung</label>
+                        <textarea asp-for="Description" class="form-control" style="height:90px"></textarea>
+                    </div>
+                </div>
+                <div class="card-footer text-right">
+                    <a asp-action="Index" class="btn btn-light">Abbrechen</a>
+                    <button class="btn btn-primary"><i class="fas fa-save mr-1"></i> Speichern</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

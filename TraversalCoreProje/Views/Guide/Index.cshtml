@@ -1,0 +1,27 @@
+@model List<Guide>
+@{
+    ViewData["Title"] = "Reiseführer";
+}
+<partial name="_PageHero" model="@(("Unsere Reiseführer", "Erfahrene Guides, die ihre Regionen lieben – und Ihnen zeigen, was in keinem Reiseführer steht.", "/Traversal-Liberty/assets/images/banner4.jpg"))" />
+<section class="py-5">
+    <div class="container py-lg-4">
+        <div class="row">
+            @foreach (var g in Model)
+            {
+                <div class="col-lg-3 col-md-6 mb-5">
+                    <div class="guide-card">
+                        <img src="@g.Image" alt="@g.Name" loading="lazy" />
+                        <h4>@g.Name</h4>
+                        <p>@g.Description</p>
+                        <a href="@g.InstagramUrl" rel="noopener" class="mx-2" aria-label="Instagram"><span class="fa fa-instagram fa-lg"></span></a>
+                        <a href="@g.TwitterUrl" rel="noopener" class="mx-2" aria-label="Twitter"><span class="fa fa-twitter fa-lg"></span></a>
+                    </div>
+                </div>
+            }
+        </div>
+        @if (!Model.Any())
+        {
+            <div class="empty-hint">Aktuell sind keine Reiseführer eingetragen.</div>
+        }
+    </div>
+</section>

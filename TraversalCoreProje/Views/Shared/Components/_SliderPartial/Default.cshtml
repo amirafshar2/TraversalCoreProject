@@ -1,31 +1,32 @@
-﻿<section class="w3l-main-slider" id="home">
+@model List<Destiniton>
+<section class="w3l-main-slider" id="home">
     <div class="banner-content">
         <div id="demo-1"
-             data-zs-src='["/Traversal-Liberty/assets/images/banner1.jpg", "/Traversal-Liberty/assets/images/banner2.jpg","/Traversal-Liberty/assets/images/banner3.jpg", "/Traversal-Liberty/assets/images/banner4.jpg"]'
+             data-zs-src='["/Traversal-Liberty/assets/images/banner1.jpg", "/Traversal-Liberty/assets/images/banner2.jpg", "/Traversal-Liberty/assets/images/banner3.jpg", "/Traversal-Liberty/assets/images/banner4.jpg"]'
              data-zs-overlay="dots">
             <div class="demo-inner-content">
                 <div class="container">
                     <div class="banner-infhny">
-                        <h3>Sie müssen nicht weit gehen, um das Wesentliche zu finden.</h3>
+                        <h3>Sie müssen nicht weit reisen, um das Besondere zu finden.</h3>
                         <h6 class="mb-3">Entdecken Sie Ihr nächstes Abenteuer</h6>
                         <div class="flex-wrap search-wthree-field mt-md-5 mt-4">
-                            <form action="#" method="post" class="booking-form">
+                            <form action="/Destiniton" method="get" class="booking-form">
                                 <div class="row book-form">
                                     <div class="form-input col-md-4 mt-md-0 mt-3">
-
-                                        <select name="selectpicker" class="selectpicker">
-                                            <option value="">Reizeziel</option>
-                                            <option value="africa">Afrika</option>
-                                            <option value="america">Amerika</option>
-                                            <option value="asia">Asien</option>
-                                            <option value="eastern-europe">Osteuropa</option>
-                                            <option value="europe">Europa</option>
-                                            <option value="south-america">Südamerika</option>
+                                        <select name="q" class="selectpicker">
+                                            <option value="">Alle Reiseziele</option>
+                                            @foreach (var d in Model)
+                                            {
+                                                <option value="@d.City">@d.City</option>
+                                            }
                                         </select>
-
                                     </div>
                                     <div class="form-input col-md-4 mt-md-0 mt-3">
-                                        <input type="date" name="" placeholder="Datum" required="">
+                                        <select name="sort" class="selectpicker">
+                                            <option value="">Neueste zuerst</option>
+                                            <option value="price-asc">Preis aufsteigend</option>
+                                            <option value="price-desc">Preis absteigend</option>
+                                        </select>
                                     </div>
                                     <div class="bottom-btn col-md-4 mt-md-0 mt-3">
                                         <button class="btn btn-style btn-secondary">

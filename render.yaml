@@ -1,0 +1,17 @@
+# Render Blueprint – kostenloser Web Service (Docker, Region Frankfurt)
+services:
+  - type: web
+    name: traversal-demo
+    runtime: docker
+    plan: free
+    region: frankfurt
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /
+    envVars:
+      - key: Demo__ResetIntervalHours
+        value: "6"
+      - key: Demo__PortfolioUrl
+        value: https://amirrezaafshar.de
+      # Optional: KI-Assistent aktivieren (nicht ins Repository schreiben!)
+      - key: Gemini__ApiKey
+        sync: false

@@ -1,196 +1,205 @@
-﻿using BusinessLayer.Abstract;
-using BusinessLayer.Concrate;
-using DataAccessLayer.EntityFrameWork;
+using BusinessLayer.Abstract;
 using EntityLayer.Concrate;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TraversalCoreProje.Areas.Member.Models;
 using X.PagedList;
 using X.PagedList.Extensions;
+
 namespace TraversalCoreProje.Areas.Member.Controllers
 {
+    /// <summary>Reservierungen des angemeldeten Kunden. Jede Aktion prüft, ob die Reservierung dem Kunden gehört.</summary>
     [Area("Member")]
     public class ReservationController : Controller
     {
-        #region DI
+        private const int PageSize = 5;
+
         private readonly UserManager<User> _usermanager;
         private readonly IReservationService _bll;
         private readonly IDestinitionServic _destinitonbll;
-        public ReservationController(UserManager<User> usermanager, IReservationService bll, IDestinitionServic destinitonbll)
+        private readonly IGuideService _guide;
+
+        public ReservationController(UserManager<User> usermanager, IReservationService bll,
+            IDestinitionServic destinitonbll, IGuideService guide)
         {
             _usermanager = usermanager;
             _bll = bll;
             _destinitonbll = destinitonbll;
+            _guide = guide;
         }
-        #endregion
 
-        #region Create
-        [HttpGet]//burasi creatin read kismi 
-        public async Task<IActionResult> Index(int id)
+        #region Neue Reservierung
+        [HttpGet]
+        public IActionResult Index(int id)
         {
-
-            var userr = await _usermanager.GetUserAsync(HttpContext.User);
-            if (userr != null)
-            {
-                ViewBag.userid = userr.Id;
-
-            }
             var dest = _destinitonbll.GetById(id);
-            if (dest != null)
+            if (dest == null || !dest.Status)
             {
-                ViewBag.dencity = dest.City;
-                ViewBag.desid = dest.DestinationID;
-                //ViewBag.guidid = dest.GuideId;
+                TempData["error"] = "Bitte wählen Sie zuerst ein Reiseziel aus.";
+                return RedirectToAction(nameof(NewReservation));
             }
-            return View();
+            ViewBag.Guides = _guide.GetActive();
+            var start = DateTime.Today.AddDays(14);
+            return View(new ReservationModel
+            {
+                Destintionid = dest.DestinationID,
+                City = dest.City,
+                DayNight = dest.DayNight,
+                Price = dest.Price,
+                Image = dest.Image,
+                ReservStart = start,
+                ReservEnd = start.AddDays(5)
+            });
         }
+
+        /// <summary>Reiseziel für eine neue Reservierung auswählen.</summary>
+        public IActionResult NewReservation()
+        {
+            return View(_destinitonbll.GetActive());
+        }
+
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddReservation(ReservationModel p)
         {
-            var userr = await _usermanager.GetUserAsync(HttpContext.User);
-            if (userr != null)
+            var user = await _usermanager.GetUserAsync(User);
+            var dest = _destinitonbll.GetById(p.Destintionid);
+            if (user == null || dest == null) return RedirectToAction(nameof(NewReservation));
+
+            if (p.ReservStart.HasValue && p.ReservStart.Value.Date < DateTime.Today)
+                ModelState.AddModelError(nameof(p.ReservStart), "Das Anreisedatum darf nicht in der Vergangenheit liegen.");
+            if (p.ReservStart.HasValue && p.ReservEnd.HasValue && p.ReservEnd <= p.ReservStart)
+                ModelState.AddModelError(nameof(p.ReservEnd), "Das Abreisedatum muss nach dem Anreisedatum liegen.");
+            if (p.HowmanyPapel > dest.Capacity)
+                ModelState.AddModelError(nameof(p.HowmanyPapel), $"Für dieses Reiseziel sind maximal {dest.Capacity} Personen möglich.");
+
+            if (!ModelState.IsValid)
             {
-                if (p != null)
-                {
-
-                    Reservition r = new Reservition()
-                    {
-                        Destintionid = p.Destintionid,
-                        Guidid = p.Guidid,
-                        HowmanyPapel = Convert.ToInt32(p.HowmanyPapel),
-                        ReservDate = DateTime.Now,
-                        ReservEnd = Convert.ToDateTime(p.ReservEnd),
-                        ReservStart = Convert.ToDateTime(p.ReservStart),
-                        status = p.status,
-                        Userid = userr.Id,
-                        Username = userr.Name,
-                    };
-
-                    _bll.Insert(r);
-                }
-
-                return View("reservitions");
-            }
-            else
-            {
-                return View("reservitions");
+                p.City = dest.City; p.DayNight = dest.DayNight; p.Price = dest.Price; p.Image = dest.Image;
+                ViewBag.Guides = _guide.GetActive();
+                return View("Index", p);
             }
 
+            _bll.Insert(new Reservition
+            {
+                Destintionid = dest.DestinationID,
+                Guidid = p.Guidid,
+                HowmanyPapel = p.HowmanyPapel,
+                ReservDate = DateTime.Now,
+                ReservStart = p.ReservStart!.Value,
+                ReservEnd = p.ReservEnd!.Value,
+                status = ReservationStatus.Pending,
+                Userid = user.Id,
+                Username = $"{user.Name} {user.Surname}",
+                Note = p.Note
+            });
+            TempData["success"] = $"Ihre Reservierung für {dest.City} wurde gesendet und wartet auf Bestätigung.";
+            return RedirectToAction(nameof(GetReservations));
         }
         #endregion
 
-        #region Read
+        #region Listen
+        public Task<IActionResult> GetReservations(int page = 1) => List(ReservationStatus.Pending, page);
+        public Task<IActionResult> AcceptedReservations(int page = 1) => List(ReservationStatus.Approved, page);
+        public Task<IActionResult> CanceledReservations(int page = 1) => List(ReservationStatus.Canceled, page);
 
-        #region waiting Reservations
-        [HttpGet]
-        public async Task<IActionResult> GetReservations(int page = 1)
+        private async Task<IActionResult> List(string status, int page)
         {
-            int pageSize = 5
-                ;
-            List<Reservition> reservitions = new List<Reservition>();
-            var userr = await _usermanager.GetUserAsync(HttpContext.User);
-            if (userr != null)
-            {
-                ViewBag.userid = userr.Id;
-                reservitions = _bll.GetlistByuserid(userr.Id).OrderBy(y => y.ReservDate).ToList();
-                var pagedreservitions = reservitions.ToPagedList(page, pageSize);
-                return View(pagedreservitions);
-            }
-            return View("/User/Login/");
+            var user = await _usermanager.GetUserAsync(User);
+            if (user == null) return RedirectToAction("Login", "User", new { area = "" });
+
+            var mine = _bll.GetListWhitDestination().Where(r => r.Userid == user.Id).ToList();
+            ViewBag.CountPending = mine.Count(r => r.status == ReservationStatus.Pending);
+            ViewBag.CountApproved = mine.Count(r => r.status == ReservationStatus.Approved);
+            ViewBag.CountCanceled = mine.Count(r => r.status == ReservationStatus.Canceled);
+            ViewBag.Status = status;
+            ViewBag.Title = status == ReservationStatus.Pending ? "Ausstehende Reservierungen"
+                          : status == ReservationStatus.Approved ? "Bestätigte Reservierungen" : "Stornierte Reservierungen";
+
+            var list = mine.Where(r => r.status == status).OrderByDescending(r => r.ReservDate).ToPagedList(page, PageSize);
+            return View("List", list);
         }
         #endregion
-        #region accepted Reservations
+
+        #region Bearbeiten
         [HttpGet]
-        public async Task<IActionResult> AcceptedReservations(int page = 1)
+        public async Task<IActionResult> Update(int id)
         {
-            int pageSize = 5
-                ;
-            List<Reservition> reservitions = new List<Reservition>();
-            var userr = await _usermanager.GetUserAsync(HttpContext.User);
-            if (userr != null)
+            var r = await GetOwnAsync(id);
+            if (r == null) return NotFound();
+            if (r.status == ReservationStatus.Canceled)
             {
-                ViewBag.userid = userr.Id;
-                reservitions = _bll.GetlistByuseridaccept(userr.Id).OrderBy(y => y.ReservDate).ToList();
-                var pagedreservitions = reservitions.ToPagedList(page, pageSize);
-                return View(pagedreservitions);
+                TempData["error"] = "Stornierte Reservierungen können nicht bearbeitet werden.";
+                return RedirectToAction(nameof(CanceledReservations));
             }
-            return View("/User/Login/");
-        }
-        #endregion
-        #region canceled Reservations
-        [HttpGet]
-        public async Task<IActionResult> CanceledReservations(int page = 1)
-        {
-            int pageSize = 5
-                ;
-            List<Reservition> reservitions = new List<Reservition>();
-            var userr = await _usermanager.GetUserAsync(HttpContext.User);
-            if (userr != null)
+            ViewBag.Guides = _guide.GetActive();
+            return View(new ReservationModel
             {
-                ViewBag.userid = userr.Id;
-                reservitions = _bll.GetlistByuseridcanceld(userr.Id).OrderBy(y => y.ReservDate).ToList();
-                var pagedreservitions = reservitions.ToPagedList(page, pageSize);
-                return View(pagedreservitions);
-            }
-            return View("/User/Login/");
+                id = r.id,
+                Destintionid = r.Destintionid,
+                HowmanyPapel = r.HowmanyPapel,
+                ReservStart = r.ReservStart,
+                ReservEnd = r.ReservEnd,
+                Guidid = r.Guidid,
+                Note = r.Note,
+                City = r.Destiniton?.City,
+                DayNight = r.Destiniton?.DayNight,
+                Price = r.Destiniton?.Price ?? 0,
+                Image = r.Destiniton?.Image
+            });
         }
-        #endregion
 
-
-
-        #endregion
-
-        #region Update
-        [HttpGet]
-        public IActionResult Update(int id)
-        {
-            var r = _bll.GetById(id);
-            if (r != null)
-            {
-                ViewBag.resid = r.id;
-                ReservationModel model = new ReservationModel()
-                {
-
-                    HowmanyPapel = r.HowmanyPapel.ToString(),
-                    ReservDate = r.ReservDate.ToString("dd-MM-yyyy"),
-                    ReservStart = r.ReservStart.ToString("dd-MM-yyyy"),
-                    ReservEnd = r.ReservEnd.ToString("dd-MM-yyyy"),
-                    Userid = r.Userid,
-                };
-                return View(model);
-            }
-            return View();
-        }
         [HttpPost]
-        public IActionResult Update(ReservationModel p)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Update(ReservationModel p)
         {
-            var rec = _bll.GetById(p.Userid);// burasi userid ye gore degil reservatıon id ye gore calisiyor vıew dan onu gonderıyorum
-            if (rec != null)
+            var rec = await GetOwnAsync(p.id);
+            if (rec == null) return NotFound();
+
+            if (p.ReservStart.HasValue && p.ReservEnd.HasValue && p.ReservEnd <= p.ReservStart)
+                ModelState.AddModelError(nameof(p.ReservEnd), "Das Abreisedatum muss nach dem Anreisedatum liegen.");
+            if (!ModelState.IsValid)
             {
-                rec.status = "Ihre Genehmigung ist ausstehend.";
-                rec.HowmanyPapel = Convert.ToInt32(p.HowmanyPapel);
-                rec.ReservStart = Convert.ToDateTime(p.ReservStart);
-                rec.ReservEnd = Convert.ToDateTime(p.ReservEnd);
-                _bll.Update(rec);
-                return RedirectToAction("GetReservations");
+                p.City = rec.Destiniton?.City; p.DayNight = rec.Destiniton?.DayNight;
+                p.Price = rec.Destiniton?.Price ?? 0; p.Image = rec.Destiniton?.Image;
+                ViewBag.Guides = _guide.GetActive();
+                return View(p);
             }
-            return View(p);
+
+            var entity = _bll.GetById(rec.id);
+            entity.status = ReservationStatus.Pending;   // Änderungen müssen erneut bestätigt werden
+            entity.HowmanyPapel = p.HowmanyPapel;
+            entity.ReservStart = p.ReservStart!.Value;
+            entity.ReservEnd = p.ReservEnd!.Value;
+            entity.Guidid = p.Guidid;
+            entity.Note = p.Note;
+            _bll.Update(entity);
+            TempData["success"] = "Ihre Reservierung wurde geändert und wartet erneut auf Bestätigung.";
+            return RedirectToAction(nameof(GetReservations));
         }
         #endregion
 
-        #region delete
-        public IActionResult Delate(int id)
+        #region Stornieren
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delate(int id)
         {
-            var r = _bll.GetById(id);
+            var r = await GetOwnAsync(id);
             if (r != null)
             {
-                r.status = "Storniert";
-                _bll.Update(r);
-                return RedirectToAction("GetReservations");
+                _bll.ChangeStatus(r.id, ReservationStatus.Canceled);
+                TempData["success"] = "Die Reservierung wurde storniert.";
             }
-            return RedirectToAction("GetReservations");
+            return RedirectToAction(nameof(CanceledReservations));
         }
         #endregion
 
+        /// <summary>Lädt eine Reservierung nur, wenn sie dem angemeldeten Benutzer gehört.</summary>
+        private async Task<Reservition> GetOwnAsync(int id)
+        {
+            var user = await _usermanager.GetUserAsync(User);
+            var r = _bll.GetWithDetails(id);
+            return r != null && user != null && r.Userid == user.Id ? r : null;
+        }
     }
 }

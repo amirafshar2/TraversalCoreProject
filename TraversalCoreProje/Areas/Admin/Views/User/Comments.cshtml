@@ -1,156 +1,51 @@
-﻿@{
-    ViewData["Title"] = "Kommentare";
-    Layout = "~/Views/Shared/UserLayout.cshtml";
+@model IPagedList<CommentWithDestinationundUserModel>
+@{
+    ViewData["Title"] = "Benutzerprofil";
 }
-@model X.PagedList.IPagedList<TraversalCoreProje.Areas.Admin.Models.CommentWithDestinationundUserModel>
-@using X.PagedList.Mvc.Core
-@using X.PagedList
-
-<section class="section">
-    <div class="section-body">
-        <div class="col-12 col-sm-12 col-lg-12">
-            <div class="card profile-widget">
-                <div class="profile-widget-header">
-                    <img alt="Bild" src="@ViewBag.UserImage" class="rounded-circle profile-widget-picture">
-                    <div class="profile-widget-items">
-                        <div class="profile-widget-item">
-                            <div class="profile-widget-item-label">Anzahl der Kommentare</div>
-                            <div class="profile-widget-item-value">@(ViewBag.CountComment ?? 0)</div>
-                        </div>
-                        <div class="profile-widget-item">
-                            <div class="profile-widget-item-label">Anzahl der Reservierungen</div>
-                            <div class="profile-widget-item-value">@(ViewBag.ReservationCount ?? 0)</div>
-                        </div>
-                        <div class="profile-widget-item">
-                            <div class="profile-widget-item-label">Ich folge</div>
-                            <div class="profile-widget-item-value">3,7K</div>
-                        </div>
-                    </div>
+@section HeaderActions {
+    <a asp-action="Index" class="btn btn-light"><i class="fas fa-arrow-left mr-1"></i> Zur Benutzerliste</a>
+}
+<div class="row">
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-body text-center">
+                <img src="@ViewBag.UserImage" class="avatar-lg mb-3" alt="" />
+                <h5 class="mb-0">@ViewBag.UserName</h5>
+                <div class="muted-small mb-3">@ViewBag.UserMail</div>
+                <div class="row text-center">
+                    <div class="col-6"><div class="h4 mb-0">@ViewBag.CountComment</div><div class="muted-small">Kommentare</div></div>
+                    <div class="col-6"><div class="h4 mb-0">@ViewBag.ReservationCount</div><div class="muted-small">Bestätigte Reisen</div></div>
                 </div>
-                <div class="profile-widget-description pb-5">
-                    <div class="profile-widget-name">
-                        @ViewBag.UserName <div class="text-muted d-inline font-weight-normal"></div>
-                    </div>
-
-                    <br />
-                    @if (Model.Count == 0)
-                    {
-                        <h3>Der Benutzer hat noch keinen Kommentar geschrieben</h3>
-                    }
-                    else
-                    {
-                        <div class="row">
-                            <div class="col-12 col-sm-12 col-lg-6">
-                                @foreach (var item in Model.Take(3))
-                                {
-                                    if (item != null)
-                                    {
-                                        <div class="card author-box card-primary">
-                                            <div class="card-body">
-                                                <div class="author-box-left">
-                                                    <img alt="Bild" src="@item.DesImage" class="rounded-circle author-box-picture">
-                                                    <div class="clearfix"></div>
-                                                    <a href="/Destiniton/Destiniton/@item.DestinationID" class="btn btn-primary mt-3 follow-btn">Ansehen</a>
-                                                </div>
-                                                <div class="author-box-details">
-                                                    <div class="author-box-name">
-                                                        <a href="#">@item.UserName</a>
-                                                    </div>
-                                                    <div class="author-box-job">@item.DesCity</div>
-                                                    <div class="author-box-description">
-                                                        <p>@item.CommentContent</p>
-                                                    </div>
-                                                    <div class="float-right mt-sm-0 mt-3"></div>
-                                                    <a href="@Url.Action("DelateComment", "User", new { area = "Admin", idc = item.id, id = item.UserID })" class="btn">
-                                                        Löschen <i class="fas fa-chevron-right"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    }
-                                }
-
-
-
-
-                            </div>
-                            <div class="col-12 col-sm-12 col-lg-6">
-                                @foreach (var item in Model.Skip(3))
-                                {
-                                    if (item != null)
-                                    {
-                                        <div class="card author-box card-primary">
-                                            <div class="card-body">
-                                                <div class="author-box-left">
-                                                    <img alt="Bild" src="@item.DesImage" class="rounded-circle author-box-picture">
-                                                    <div class="clearfix"></div>
-                                                    <a href="/Default/Destinion/Destinion/@item.DestinationID" class="btn btn-primary mt-3 follow-btn">Ansehen</a>
-                                                </div>
-                                                <div class="author-box-details">
-                                                    <div class="author-box-name">
-                                                        <a href="#">@item.UserName @item.UserSurname</a>
-                                                    </div>
-                                                    <div class="author-box-job">@item.DesCity</div>
-                                                    <div class="author-box-description">
-                                                        <p>@item.CommentContent</p>
-                                                    </div>
-                                                    <div class="w-100 d-sm-none"></div>
-                                                    <div class="float-right mt-sm-0 mt-3">
-                                                        <a href="@Url.Action("DelateComment", "User", new { area = "Admin", idc = item.id, id = item.UserID })" class="btn">
-                                                            Löschen <i class="fas fa-chevron-right"></i>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    }
-                                }
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-12 col-sm-12 col-lg-12">
-                                <nav aria-label="Seitennavigation">
-                                    <ul class="pagination justify-content-center">
-                                        @if (Model.HasPreviousPage)
-                                        {
-                                            <li class="page-item">
-                                                <a class="page-link" href="@Url.Action("Comments", new { page = Model.PageNumber - 1 })">← Zurück</a>
-                                            </li>
-                                        }
-                                        else
-                                        {
-                                            <li class="page-item disabled">
-                                                <a class="page-link" href="#">← Zurück</a>
-                                            </li>
-                                        }
-
-                                        @for (var i = 1; i <= Model.PageCount; i++)
-                                        {
-                                            <li class="page-item @(i == Model.PageNumber ? "active" : "")">
-                                                <a class="page-link" href="@Url.Action("Comments", new { page = i })">@i</a>
-                                            </li>
-                                        }
-
-                                        @if (Model.HasNextPage)
-                                        {
-                                            <li class="page-item">
-                                                <a class="page-link" href="@Url.Action("Comments", new { page = Model.PageNumber + 1 })">Weiter →</a>
-                                            </li>
-                                        }
-                                        else
-                                        {
-                                            <li class="page-item disabled">
-                                                <a class="page-link" href="#">Weiter →</a>
-                                            </li>
-                                        }
-                                    </ul>
-                                </nav>
-                            </div>
-                        </div>
-                    }
-                </div>
+                <a asp-action="Edit" asp-route-id="@ViewBag.Userid" class="btn btn-primary btn-block mt-4"><i class="fas fa-pen mr-1"></i> Bearbeiten</a>
             </div>
         </div>
     </div>
-</section>
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header"><h4>Kommentare</h4></div>
+            <div class="card-body">
+                @if (Model.Count == 0)
+                {
+                    <div class="empty-state"><i class="fas fa-comment-slash"></i>Dieser Benutzer hat noch keine Kommentare geschrieben.</div>
+                }
+                @foreach (var c in Model)
+                {
+                    <div class="comment-item @(c.status ? "" : "inactive")">
+                        <img src="@c.DesImage" class="table-thumb" alt="" />
+                        <div class="comment-body">
+                            <div class="d-flex justify-content-between">
+                                <a href="@Url.Action("Destiniton", "Destiniton", new { area = "", id = c.DestinationID })" target="_blank" class="font-weight-bold">@c.DesCity</a>
+                                <span class="muted-small">@ViewHelpers.Date(c.CommentData)</span>
+                            </div>
+                            <p class="mb-2">@c.CommentContent</p>
+                            <form asp-controller="Comment" asp-action="Delate" asp-route-id="@c.id" asp-route-returnUrl="@Url.Action("Comments", new { id = ViewBag.Userid })" method="post" data-confirm="Kommentar löschen?">
+                                <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash mr-1"></i>Löschen</button>
+                            </form>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        @Html.PagedListPager(Model, page => Url.Action("Comments", new { id = ViewBag.Userid, page }), ViewHelpers.Pager)
+    </div>
+</div>

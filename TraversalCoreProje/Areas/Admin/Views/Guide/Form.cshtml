@@ -1,0 +1,53 @@
+@model Guide
+@{
+    var isEdit = Model.GuideID > 0;
+    ViewData["Title"] = isEdit ? $"Reiseführer bearbeiten: {Model.Name}" : "Neuer Reiseführer";
+}
+<form asp-action="@(isEdit ? "Edit" : "Create")" method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="GuideID" />
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label asp-for="Name">Name</label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger small"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Description">Beschreibung</label>
+                        <textarea asp-for="Description" class="form-control" style="height:120px"></textarea>
+                        <span asp-validation-for="Description" class="text-danger small"></span>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="TwitterUrl">X / Twitter-Link</label>
+                            <input asp-for="TwitterUrl" class="form-control" placeholder="https://…" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="InstagramUrl">Instagram-Link</label>
+                            <input asp-for="InstagramUrl" class="form-control" placeholder="https://…" />
+                        </div>
+                    </div>
+                    <label class="custom-switch m-0 p-0">
+                        <input asp-for="Status" type="checkbox" class="custom-switch-input">
+                        <span class="custom-switch-indicator"></span>
+                        <span class="custom-switch-description">Aktiv (auf der Website sichtbar)</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header"><h4>Foto</h4></div>
+                <div class="card-body">
+                    <img id="pv-guide" src="@Model.Image" class="img-fluid rounded mb-3 @(string.IsNullOrEmpty(Model.Image) ? "d-none" : "")" alt="" />
+                    <input type="file" name="imageFile" accept="image/*" class="form-control" data-preview="#pv-guide" />
+                    <span class="text-danger small">@Html.ValidationMessage("imageFile")</span>
+                </div>
+            </div>
+            <button class="btn btn-primary btn-lg btn-block"><i class="fas fa-save mr-2"></i>Speichern</button>
+            <a asp-action="Index" class="btn btn-light btn-block">Abbrechen</a>
+        </div>
+    </div>
+</form>

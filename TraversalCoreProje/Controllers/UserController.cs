@@ -1,135 +1,118 @@
-﻿using EntityLayer.Concrate;
-using Microsoft.AspNetCore.Authentication;
+using EntityLayer.Concrate;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.Options;
+using TraversalCoreProje.Infrastructure;
 using TraversalCoreProje.Models;
+using TraversalCoreProje.Models.PicMethods;
 
 namespace TraversalCoreProje.Controllers
 {
     [AllowAnonymous]
     public class UserController : Controller
     {
-        //All calling methods is hire
-        #region Calling
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        
-        public UserController(UserManager<User> userManager, SignInManager<User> signInManager)
+        private readonly DemoOptions _demo;
+        private readonly PicSave _pic = new();
+
+        public UserController(UserManager<User> userManager, SignInManager<User> signInManager, IOptions<DemoOptions> demo)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _demo = demo.Value;
         }
-        #endregion
-        //All calling methods is hire
 
-        //Loging Methods
         #region Login
         [HttpGet]
-        public IActionResult Login()
+        public IActionResult Login(string returnUrl = null)
         {
-           
-            return View();
+            ViewBag.Demo = _demo;
+            return View(new LoginModel { ReturnUrl = returnUrl });
         }
+
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginModel p)
         {
-            if (ModelState.IsValid)
+            ViewBag.Demo = _demo;
+            if (!ModelState.IsValid) return View(p);
+
+            var result = await _signInManager.PasswordSignInAsync(p.Username, p.Password, p.RememberMe, lockoutOnFailure: true);
+            if (result.Succeeded)
             {
-                var result = await _signInManager.PasswordSignInAsync(p.Username, p.Password, false, true);
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("Index", "Default");
-                }
-                else
-                {
-                    return RedirectToAction("Login", "User");
-                }
+                if (!string.IsNullOrEmpty(p.ReturnUrl) && Url.IsLocalUrl(p.ReturnUrl))
+                    return LocalRedirect(p.ReturnUrl);
+
+                var user = await _userManager.FindByNameAsync(p.Username);
+                if (await _userManager.IsInRoleAsync(user, "Admin") || await _userManager.IsInRoleAsync(user, "Moderator"))
+                    return RedirectToAction("Index", "Dashbord", new { area = "Admin" });
+                return RedirectToAction("Index", "Dashboard", new { area = "Member" });
             }
-            return RedirectToAction("Login", "User");
+
+            ModelState.AddModelError("", result.IsLockedOut
+                ? "Das Konto ist wegen zu vieler Fehlversuche vorübergehend gesperrt."
+                : "E-Mail-Adresse oder Passwort ist falsch.");
+            return View(p);
         }
         #endregion
-        //Loging Methods
 
-        //Registor Methods
-        #region Registor
+        #region Registrierung
         [HttpGet]
         public IActionResult registor()
         {
-            return View();
+            return View(new Usermodel());
         }
+
         [HttpPost]
-        public async Task<IActionResult> registor(TraversalCoreProje.Models.Usermodel p)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> registor(Usermodel p)
         {
-            User user = new User()
+            if (!PicSave.IsValidImage(p.imagefile, out var imageError))
+                ModelState.AddModelError(nameof(p.imagefile), imageError);
+            if (!ModelState.IsValid) return View(p);
+
+            var user = new User
             {
                 Name = p.Name,
                 Surname = p.Surname,
                 Email = p.Email,
                 PhoneNumber = p.Telefonno,
                 UserName = p.Email,
-                PasswordHash = p.Password,                
-                gender = p.Gender
+                gender = p.Gender,
+                CreatedAt = DateTime.Now,
+                Image = await _pic.SaveFileAsync(p.imagefile) ?? "/otika-bootstrap-admin-template/assets/img/users/user-2.png"
             };
-            if (p.imagefile!= null)
+
+            var result = await _userManager.CreateAsync(user, p.Password);
+            if (result.Succeeded)
             {
-
-                if (p.imagefile != null && p.imagefile.Length > 0)
-                {
-                    // مسیر پوشه
-                    var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads");
-
-                    // اگه پوشه وجود نداره، بسازش
-                    if (!Directory.Exists(uploadsFolder))
-                        Directory.CreateDirectory(uploadsFolder);
-
-                    // نام فایل یونیک
-                    var uniqueName = Guid.NewGuid().ToString() + Path.GetExtension(p.imagefile.FileName);
-
-                    var filePath = Path.Combine(uploadsFolder, uniqueName);
-
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await p.imagefile.CopyToAsync(stream);
-                    }
-
-                    // مسیر نسبی برای ذخیره تو دیتابیس
-                    user.Image = "/uploads/" + uniqueName;
-                }
+                await _userManager.AddToRoleAsync(user, "Member");
+                await _signInManager.SignInAsync(user, isPersistent: false);
+                TempData["success"] = "Ihr Konto wurde erstellt. Willkommen bei Traversal!";
+                return RedirectToAction("Index", "Dashboard", new { area = "Member" });
             }
-         
-            if (p.Password == p.PasswordConfirm)
-            {
-                var q = await _userManager.CreateAsync(user, p.PasswordConfirm);
-                if (q.Succeeded)
-                {
-                    return RedirectToAction("Login");
-                }
-                else
-                {
-                    foreach (var item in q.Errors)
-                    {
-                        ModelState.AddModelError("", item.Description);
-                    }
-                }
-            }
+
+            foreach (var item in result.Errors)
+                ModelState.AddModelError("", item.Description);
             return View(p);
         }
-        #endregion 
-        //Registor Methods
+        #endregion
 
-
-        //Logout Methods
-        #region Logout
+        #region Logout / Zugriff verweigert
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
-           await _signInManager.SignOutAsync();
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Default");
+        }
 
-            return RedirectToAction("Index","Default");
+        public IActionResult AccessDenied()
+        {
+            return View();
         }
         #endregion
-        //Logout Methods
     }
 }

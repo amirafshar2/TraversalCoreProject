@@ -1,10 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace EntityLayer.Concrate
 {
     public class Comment
@@ -16,6 +9,6 @@ namespace EntityLayer.Concrate
         public DateTime CommentData { get; set; }
         public int Userid { get; set; }
         public int Destinitonid { get; set; }
-
+        public Destiniton Destiniton { get; set; }
     }
 }

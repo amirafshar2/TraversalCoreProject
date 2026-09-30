@@ -1,0 +1,9 @@
+**/bin
+**/obj
+**/.vs
+.git
+TraversalBackup
+_*.tar
+_*.tgz
+**/App_Data/*.db-wal
+**/App_Data/*.db-shm

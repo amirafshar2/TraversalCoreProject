@@ -1,0 +1,30 @@
+@model DemoOptions
+@{
+    ViewData["Title"] = "Impressum & Datenschutz";
+}
+<partial name="_PageHero" model="@(("Impressum & Datenschutz", "Hinweise zu diesem Demo-Projekt.", (string)null))" />
+<section class="py-5">
+    <div class="container legal-box">
+        <h3>Hinweis zum Demo-Projekt</h3>
+        <p>„Traversal“ ist ein <strong>fiktiver Reiseveranstalter</strong>. Diese Website ist ein Portfolio- und Lernprojekt von Amir Reza Afshar
+            im Rahmen einer Umschulung zum Fachinformatiker für Anwendungsentwicklung. Es werden keine Reisen verkauft, keine Verträge geschlossen und keine E-Mails versendet.</p>
+
+        <h3>Impressum</h3>
+        <p>Die Angaben gemäß § 5 DDG finden Sie im Impressum der Portfolio-Website:<br />
+            <a href="@Model.ImpressumUrl" target="_blank" rel="noopener">@Model.ImpressumUrl</a></p>
+
+        <h3>Datenschutz</h3>
+        <p>Die vollständige Datenschutzerklärung finden Sie hier:
+            <a href="@Model.DatenschutzUrl" target="_blank" rel="noopener">@Model.DatenschutzUrl</a>. Speziell für diese Demo gilt:</p>
+        <ul>
+            <li><strong>Cookies:</strong> Es werden nur technisch notwendige Cookies gesetzt (Anmelde-Cookie und Schutz vor CSRF-Angriffen). Es gibt kein Tracking und keine Analyse-Tools.</li>
+            <li><strong>Keine externen Dienste:</strong> Schriftarten und Skripte werden lokal ausgeliefert. Es werden keine Daten an Google Fonts, CDNs oder Kartendienste übertragen.</li>
+            <li><strong>Eingaben:</strong> Daten aus Registrierung, Kontaktformular, Newsletter, Kommentaren und Reservierungen werden nur in der Demo-Datenbank gespeichert und
+                <strong>automatisch alle @Model.ResetIntervalHours Stunden gelöscht</strong>. Bitte geben Sie keine echten persönlichen Daten ein.</li>
+            <li><strong>Demo-Konten:</strong> Die Demo-Konten (Admin und Kunde) und alle Personen in den Beispieldaten sind frei erfunden.</li>
+        </ul>
+
+        <h3>Bildnachweise</h3>
+        <p>Design-Vorlagen: „Traversal“ von W3Layouts (CC BY 3.0) und „Otika“ Admin-Template. Personenfotos stammen aus den Vorlagen.</p>
+    </div>
+</section>

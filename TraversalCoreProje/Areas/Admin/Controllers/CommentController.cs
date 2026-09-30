@@ -1,65 +1,79 @@
-﻿using BusinessLayer.Abstract;
-using EntityLayer.Concrate;
-using Microsoft.AspNetCore.Identity;
+using BusinessLayer.Abstract;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TraversalCoreProje.Areas.Admin.Models;
+using X.PagedList;
 using X.PagedList.Extensions;
 
 namespace TraversalCoreProje.Areas.Admin.Controllers
 {
+    /// <summary>Kommentare prüfen, freischalten/sperren und löschen (Admin und Moderator).</summary>
     [Area("Admin")]
+    [Authorize(Roles = "Admin,Moderator")]
     public class CommentController : Controller
     {
-        #region Dependencies and Constructor
         private readonly ICommentService _Bll;
-        private readonly UserManager<User> _usermanager;
         private readonly IUserService _userService;
 
-        public CommentController(ICommentService bll, UserManager<User> usermanager, IUserService userService)
+        public CommentController(ICommentService bll, IUserService userService)
         {
             _Bll = bll;
-            _usermanager = usermanager;
             _userService = userService;
         }
 
-        #endregion
+        public IActionResult Index(string filter, int page = 1)
+        {
+            var users = _userService.GetAll().ToDictionary(u => u.Id);
+            var comments = _Bll.GetAllForAdmin().AsEnumerable();
+            if (filter == "active") comments = comments.Where(c => c.status);
+            if (filter == "inactive") comments = comments.Where(c => !c.status);
 
-        #region Index
-        public async Task<IActionResult> Index(int page = 1)
-        {
-            int pagesize = 8;
-            List<CommentWhitUserModel> Com = new List<CommentWhitUserModel>();
-            var val = _Bll.GetAll().OrderByDescending(x => x.CommentData);
-            if (val != null)
+            var list = comments.Select(item =>
             {
-                foreach (var item in val)
+                users.TryGetValue(item.Userid, out var user);
+                return new CommentWithDestinationundUserModel
                 {
-                    var user = _userService.GetById(item.Userid);
-                    CommentWhitUserModel comment = new CommentWhitUserModel() { 
-                    CommentContent=item.CommentContent,
-                    CommentData=item.CommentData,
-                    CommentUser=item.CommentUser,
-                    Destinitonid=item.Destinitonid,
-                    id=item.id,
-                    status=item.status,
-                    Userid=item.Userid,
-                    UserImage= user.Image,
-                    UserName=user.Name,
-                    UserSurname=user.Surname
-                    };
-                    Com.Add(comment);
-                }
-            }
-            var value = Com.ToPagedList(page, pagesize);
-            return View(value);
+                    id = item.id,
+                    CommentContent = item.CommentContent,
+                    CommentData = item.CommentData,
+                    CommentUser = item.CommentUser,
+                    DestinationID = item.Destinitonid,
+                    DesCity = item.Destiniton?.City,
+                    DesImage = item.Destiniton?.Image,
+                    status = item.status,
+                    UserID = item.Userid,
+                    UserImage = user?.Image,
+                    UserName = user?.Name ?? item.CommentUser,
+                    UserSurname = user?.Surname
+                };
+            }).ToList();
+
+            ViewBag.Filter = filter;
+            ViewBag.CountAll = _Bll.GetAllForAdmin().Count;
+            ViewBag.CountInactive = _Bll.GetAllForAdmin().Count(c => !c.status);
+            return View(list.ToPagedList(page, 8));
         }
-        #endregion
-        #region Delate 
-        public IActionResult Delate(int id)
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Toggle(int id, string returnUrl)
         {
-            _Bll.Delete(_Bll.GetById(id));
-            return RedirectToAction("Index");
+            _Bll.ToggleStatus(id);
+            TempData["success"] = "Der Status des Kommentars wurde geändert.";
+            return !string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl) ? Redirect(returnUrl) : RedirectToAction(nameof(Index));
         }
-        #endregion
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delate(int id, string returnUrl)
+        {
+            var c = _Bll.GetById(id);
+            if (c != null)
+            {
+                _Bll.Delete(c);
+                TempData["success"] = "Der Kommentar wurde gelöscht.";
+            }
+            return !string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl) ? Redirect(returnUrl) : RedirectToAction(nameof(Index));
+        }
     }
 }

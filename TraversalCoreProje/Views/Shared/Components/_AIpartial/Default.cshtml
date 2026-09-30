@@ -1,99 +1,24 @@
-﻿<div id="my-chat-body" style="background-color: #f8f9fa; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; display: inline; justify-content: center; align-items: center; height: 100vh; margin: 0;">
-
-    <div id="my-chat-container" style="max-width: 450px; width: 100%; height: 80vh; border-radius: 12px; background-color: #fff; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; overflow: hidden;">
-        <h4 style="padding: 15px; background-color: #fff; border-bottom: 1px solid #e9ecef; text-align: center; margin: 0; font-size: 1.2em;">Stadtinformations-Assistent</h4>
-
-        <div id="my-chat-messages" style="flex-grow: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; background-color: #f1f1f1;">
-        </div>
-
-        <div style="padding: 15px; background-color: #fff; border-top: 1px solid #e9ecef;" class="input-group">
-            <input type="text" id="my-city-input" class="form-control border-0" placeholder="Stadtname eingeben..." aria-label="Stadtname" style="border-radius: 20px; padding: 10px 15px;">
-            <button class="btn btn-primary" type="button" onclick="sendMyMessage()">Senden</button>
-        </div>
+<div class="ai-chat">
+    <div class="ai-chat-header">
+        <i class="fas fa-magic mr-2"></i> KI-Reiseassistent
+        <small class="d-block text-muted">Reisetipps zu jeder Stadt (Google Gemini)</small>
     </div>
-
+    <div class="ai-chat-messages" id="ai-messages">
+        @if ((bool)ViewBag.Enabled)
+        {
+            <div class="ai-msg ai-msg-bot">Geben Sie eine Stadt ein, z. B. <strong>Lissabon</strong>, und ich schlage Ihnen 7 Reisetipps vor.</div>
+        }
+        else
+        {
+            <div class="ai-msg ai-msg-bot">
+                Der KI-Assistent ist in dieser öffentlichen Demo <strong>deaktiviert</strong>, da kein API-Schlüssel hinterlegt ist.
+                Lokal kann er über <code>dotnet user-secrets set "Gemini:ApiKey" "…"</code> aktiviert werden.
+            </div>
+        }
+    </div>
+    <form class="ai-chat-input" id="ai-form" autocomplete="off">
+        @Html.AntiForgeryToken()
+        <input type="text" id="ai-city" class="form-control" maxlength="60" placeholder="Stadtname eingeben …" @((bool)ViewBag.Enabled ? "" : "disabled")>
+        <button class="btn btn-primary" type="submit" @((bool)ViewBag.Enabled ? "" : "disabled")><i class="fas fa-paper-plane"></i></button>
+    </form>
 </div>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-<script>
-    function sendMyMessage() {
-        const cityInput = document.getElementById('my-city-input');
-        const cityName = cityInput.value.trim();
-        const chatMessages = document.getElementById('my-chat-messages');
-
-        if (cityName === "") {
-            return;
-        }
-
-        addMyMessage(cityName, 'user');
-        cityInput.value = '';
-
-        $.ajax({
-            url: '/AI/GetCityInfo',
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({ cityName: cityName }),
-            success: function(response) {
-                if (Array.isArray(response)) {
-                    addMyResponseMessage(response);
-                } else {
-                    addMyErrorResponse("Die Antwort vom API war nicht im erwarteten Format.");
-                }
-            },
-            error: function(xhr) {
-                const errorMessage = xhr.responseText || "Fehler: Keine Antwort vom API erhalten.";
-                addMyErrorResponse(errorMessage);
-            }
-        });
-    }
-
-    function addMyMessage(text, sender) {
-        const chatMessages = document.getElementById('my-chat-messages');
-        const messageDiv = document.createElement('div');
-
-        let baseStyle = "max-width: 85%; padding: 10px 15px; border-radius: 18px; word-wrap: break-word; line-height: 1.4; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);";
-
-        if (sender === 'user') {
-            messageDiv.setAttribute('style', baseStyle + " align-self: flex-end; background-color: #0d6efd; color: white; border-bottom-right-radius: 4px;");
-        } else {
-            messageDiv.setAttribute('style', baseStyle + " align-self: flex-start; background-color: #e2e3e5; color: #212529; border-bottom-left-radius: 4px;");
-        }
-
-        messageDiv.textContent = text;
-        chatMessages.appendChild(messageDiv);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-
-    function addMyResponseMessage(infos) {
-        const chatMessages = document.getElementById('my-chat-messages');
-        infos.forEach(info => {
-            const messageDiv = document.createElement('div');
-            const titleElement = document.createElement('div');
-            const descriptionElement = document.createElement('div');
-
-            messageDiv.setAttribute('style', "max-width: 85%; padding: 10px 15px; border-radius: 18px; word-wrap: break-word; line-height: 1.4; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); align-self: flex-start; background-color: #e2e3e5; color: #212529; border-bottom-left-radius: 4px;");
-            titleElement.setAttribute('style', "font-weight: 600; font-size: 1em; margin-bottom: 4px;");
-
-            titleElement.textContent = info.title;
-            descriptionElement.textContent = info.description;
-
-            messageDiv.appendChild(titleElement);
-            messageDiv.appendChild(descriptionElement);
-            chatMessages.appendChild(messageDiv);
-        });
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-
-    function addMyErrorResponse(message) {
-        const chatMessages = document.getElementById('my-chat-messages');
-        const messageDiv = document.createElement('div');
-
-        messageDiv.setAttribute('style', "max-width: 85%; padding: 10px 15px; border-radius: 18px; word-wrap: break-word; line-height: 1.4; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); align-self: flex-start; background-color: #e2e3e5; color: red; border-bottom-left-radius: 4px;");
-
-        messageDiv.textContent = message;
-        chatMessages.appendChild(messageDiv);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-</script>

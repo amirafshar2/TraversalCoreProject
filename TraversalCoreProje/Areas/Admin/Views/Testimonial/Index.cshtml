@@ -1,0 +1,33 @@
+@model List<Testimonial>
+@{
+    ViewData["Title"] = "Kundenstimmen";
+    ViewData["Subtitle"] = "Erscheinen im Slider „Unsere Kunden sprechen“ auf der Startseite.";
+}
+@section HeaderActions {
+    <a asp-action="Create" class="btn btn-primary btn-icon icon-left"><i class="fas fa-plus"></i> Neue Kundenstimme</a>
+}
+<div class="card">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead><tr><th>Kunde</th><th>Text</th><th>Status</th><th class="text-right">Aktionen</th></tr></thead>
+                <tbody>
+                    @foreach (var t in Model)
+                    {
+                        <tr>
+                            <td class="text-nowrap"><img src="@t.ClientImage" class="avatar-sm mr-2" alt="" /><strong>@t.Client</strong><div class="muted-small ml-5 mt-n2">@t.Location</div></td>
+                            <td class="small">@ViewHelpers.Truncate(t.Comment, 140)</td>
+                            <td>@ViewHelpers.ActiveBadge(t.Status)</td>
+                            <td class="text-right actions">
+                                <a asp-action="Edit" asp-route-id="@t.TestimonialID" class="btn btn-sm btn-primary"><i class="fas fa-pen"></i></a>
+                                <form asp-action="Delete" asp-route-id="@t.TestimonialID" method="post" data-confirm="Kundenstimme löschen?">
+                                    <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

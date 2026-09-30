@@ -1,0 +1,16 @@
+@if (TempData["success"] is string success)
+{
+    <div class="alert alert-success alert-dismissible fade show alert-has-icon" role="alert">
+        <div class="alert-icon"><i class="fas fa-check-circle"></i></div>
+        <div class="alert-body">@success</div>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Schließen"><span>&times;</span></button>
+    </div>
+}
+@if (TempData["error"] is string error)
+{
+    <div class="alert alert-danger alert-dismissible fade show alert-has-icon" role="alert">
+        <div class="alert-icon"><i class="fas fa-exclamation-triangle"></i></div>
+        <div class="alert-body">@error</div>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Schließen"><span>&times;</span></button>
+    </div>
+}

@@ -1,0 +1,24 @@
+@model List<Destiniton>
+@{
+    ViewData["Title"] = "Neue Reservierung";
+    ViewData["Subtitle"] = "Schritt 1 von 2: Wählen Sie Ihr Reiseziel.";
+}
+<div class="row">
+    @foreach (var d in Model)
+    {
+        <div class="col-sm-6 col-lg-4">
+            <div class="card dest-card">
+                <img src="@d.Image" alt="@d.City" />
+                <div class="card-body">
+                    <h5 class="mb-1">@d.City</h5>
+                    <div class="muted-small mb-2"><i class="far fa-clock mr-1"></i>@d.DayNight</div>
+                    <p class="small text-muted">@ViewHelpers.Truncate(d.Description, 100)</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="price">ab @ViewHelpers.Euro(d.Price)</span>
+                        <a asp-action="Index" asp-route-id="@d.DestinationID" class="btn btn-primary">Auswählen <i class="fas fa-arrow-right ml-1"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

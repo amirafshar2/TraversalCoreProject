@@ -1,136 +1,117 @@
-﻿using EntityLayer.Concrate;
+using EntityLayer.Concrate;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using TraversalCoreProje.Areas.Member.Models;
+using TraversalCoreProje.Infrastructure;
 using TraversalCoreProje.Models.PicMethods;
+
 namespace TraversalCoreProje.Areas.Member.Controllers
 {
     [Area("Member")]
-    [Route("Member/[controller]/[action]")]
     public class ProfileController : Controller
     {
-        #region DI
-        private readonly UserManager<EntityLayer.Concrate.User> _usermanager;
-        PicSave _pic = new PicSave();
-        public ProfileController(UserManager<User> usermanager)
+        private readonly UserManager<User> _usermanager;
+        private readonly SignInManager<User> _signInManager;
+        private readonly DemoOptions _demo;
+        private readonly PicSave _pic = new();
+
+        public ProfileController(UserManager<User> usermanager, SignInManager<User> signInManager, IOptions<DemoOptions> demo)
         {
             _usermanager = usermanager;
+            _signInManager = signInManager;
+            _demo = demo.Value;
         }
-        #endregion
 
-        #region Index
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            if (User.Identity.IsAuthenticated)
-            {
-
-                var user = await _usermanager.GetUserAsync(HttpContext.User);
-
-                UserModel u = new UserModel()
-                {
-                    email = user.Email,
-                    name = user.Name,
-                    surename = user.Surname,
-                    phone = user.PhoneNumber,
-                    gender = user.gender,
-                    image = user.Image
-                };
-
-
-                return View(u);
-            }
-            return View(null);
+            var user = await _usermanager.GetUserAsync(User);
+            if (user == null) return RedirectToAction("Login", "User", new { area = "" });
+            ViewBag.IsProtected = _demo.IsProtectedAccount(user.Email);
+            ViewBag.Roles = await _usermanager.GetRolesAsync(user);
+            ViewBag.CreatedAt = user.CreatedAt;
+            return View(ToModel(user));
         }
-        #endregion
 
-        #region Update
-        [HttpGet]
-        public async Task<IActionResult> Update()
-        {
-            return View();
-        }
         [HttpPost]
-        public async Task<IActionResult> Update(UserModel user)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Update(UserModel model)
         {
+            var u = await _usermanager.GetUserAsync(User);
+            if (u == null) return RedirectToAction("Login", "User", new { area = "" });
 
-
-            var u = await _usermanager.GetUserAsync(HttpContext.User);
-            if (u != null)
+            if (!PicSave.IsValidImage(model.ImageFile, out var err))
             {
-                if (user.ImageFile != null)
-                {
-                    user.image = await _pic.SaveFileAsync(user.ImageFile);
-                }
-                u.Name = user.name;
-                u.PhoneNumber = user.phone;
-                u.Surname = user.surename;
-                u.Email = user.email;
-                u.gender = user.gender;
-                var q = await _usermanager.UpdateAsync(u);
-                if (q.Succeeded)
-                {
-                    return RedirectToAction("Index", "Profile");
-                }
-                else
-                {
-                    foreach (var error in q.Errors)
-                    {
-                        ModelState.AddModelError("", error.Description);
-                    }
-                }
+                TempData["error"] = err;
+                return RedirectToAction(nameof(Index));
             }
-            return View(user);
-        }
-        #endregion
-
-        #region PasswordChange
-        [HttpPost]
-        public async Task<IActionResult> UpdatePassword(UserModel p)
-        {
-            var u = await _usermanager.GetUserAsync(HttpContext.User);
-            if (u != null)
+            if (string.IsNullOrWhiteSpace(model.name) || string.IsNullOrWhiteSpace(model.surename))
             {
+                TempData["error"] = "Vor- und Nachname dürfen nicht leer sein.";
+                return RedirectToAction(nameof(Index));
+            }
 
-                if (p.password == p.passwordconfirm)
-                {
-                    p.name = u.Name;
-                    p.email = u.Email;
-                    p.surename = u.Surname;
-                    p.phone = u.PhoneNumber;
-                    p.gender = u.gender;
-                    p.image = u.Image;
+            u.Name = model.name.Trim();
+            u.Surname = model.surename.Trim();
+            u.PhoneNumber = model.phone;
+            u.gender = model.gender;
+            u.Image = await _pic.SaveFileAsync(model.ImageFile) ?? u.Image;
 
-                    var q = await _usermanager.ChangePasswordAsync(u, p.passwordcurrent, p.passwordconfirm);
-                    if (q.Succeeded)
-                    {
-                        return RedirectToAction("Index", "Profile");
-                    }
-                    else
-                    {
-                        foreach (var error in q.Errors)
-                        {
-                            ModelState.AddModelError("", error.Description);
-                        }
-                    }
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Passwords do not match");
-                }
+            // Die E-Mail der Demo-Konten bleibt fest, damit der Demo-Login immer funktioniert
+            if (!_demo.IsProtectedAccount(u.Email) && !string.IsNullOrWhiteSpace(model.email) &&
+                !string.Equals(u.Email, model.email, StringComparison.OrdinalIgnoreCase))
+            {
+                u.Email = model.email.Trim();
+                u.UserName = model.email.Trim();
+            }
+
+            var result = await _usermanager.UpdateAsync(u);
+            if (result.Succeeded)
+            {
+                await _signInManager.RefreshSignInAsync(u);
+                TempData["success"] = "Ihr Profil wurde gespeichert.";
             }
             else
             {
-                ModelState.AddModelError("", "User not found");
+                TempData["error"] = string.Join(" ", result.Errors.Select(e => e.Description));
             }
-
-
-
-            // اینجا باید همون View رو با مدل برگردونی تا خطاها نمایش داده بشن
-            return View("Index", p);  // فرض کردم صفحه تغییر پسوردت Index هست
+            return RedirectToAction(nameof(Index));
         }
 
-        #endregion
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdatePassword(UserModel p)
+        {
+            var u = await _usermanager.GetUserAsync(User);
+            if (u == null) return RedirectToAction("Login", "User", new { area = "" });
 
+            if (_demo.IsProtectedAccount(u.Email))
+                TempData["error"] = "Im Demo-Modus kann das Passwort dieses Kontos nicht geändert werden.";
+            else if (string.IsNullOrEmpty(p.password) || p.password != p.passwordconfirm)
+                TempData["error"] = "Die neuen Passwörter stimmen nicht überein.";
+            else
+            {
+                var result = await _usermanager.ChangePasswordAsync(u, p.passwordcurrent ?? "", p.password);
+                if (result.Succeeded)
+                {
+                    await _signInManager.RefreshSignInAsync(u);
+                    TempData["success"] = "Ihr Passwort wurde geändert.";
+                }
+                else TempData["error"] = string.Join(" ", result.Errors.Select(e => e.Description));
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+        private static UserModel ToModel(User user) => new()
+        {
+            id = user.Id,
+            email = user.Email,
+            name = user.Name,
+            surename = user.Surname,
+            phone = user.PhoneNumber,
+            gender = user.gender,
+            image = user.Image
+        };
     }
 }

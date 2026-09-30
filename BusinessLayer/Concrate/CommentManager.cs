@@ -1,65 +1,54 @@
-﻿using BusinessLayer.Abstract;
+using BusinessLayer.Abstract;
 using DataAccessLayer.Abstract;
 using EntityLayer.Concrate;
-using Microsoft.EntityFrameworkCore.Migrations.Operations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLayer.Concrate
 {
-    public class CommentManager : ICommentService
+    public class CommentManager : GenericManager<Comment>, ICommentService
     {
-        ICommentDAL _icommentdal;
+        private readonly ICommentDAL _commentDal;
 
-        public CommentManager(ICommentDAL icommentdal)
+        public CommentManager(ICommentDAL dal) : base(dal)
         {
-            _icommentdal = icommentdal;
+            _commentDal = dal;
         }
 
-        public void Delete(Comment entity)
+        /// <summary>Für die Website: nur freigeschaltete Kommentare, neueste zuerst.</summary>
+        public override List<Comment> GetAll()
         {
-            _icommentdal.Delete(entity);
-        }
-
-        public List<Comment> GetAll()
-        {
-            return _icommentdal.GetList()
-                .Where(x => x.status == true)
+            return _commentDal.GetList()
+                .Where(x => x.status)
                 .OrderByDescending(x => x.CommentData)
                 .ToList();
         }
 
-        public Comment GetById(int id)
+        public List<Comment> GetAllForAdmin()
         {
-            return _icommentdal.Get(id);
+            return _commentDal.GetListWithDestination()
+                .OrderByDescending(x => x.CommentData)
+                .ToList();
         }
 
         public List<Comment> GetCommentsByDestinionID(int id)
         {
-            List<Comment> comments = new List<Comment>();
-            var q = _icommentdal.GetCommentsByDestinationID(id);
-            comments.AddRange(q.Where(i => i.status == true));
-            return comments;
-            throw new NotImplementedException();
-
+            return _commentDal.GetCommentsByDestinationID(id)
+                .Where(i => i.status)
+                .ToList();
         }
 
         public List<Comment> GetCommentsByUserID(int id)
         {
-            return _icommentdal.GetCommentsByUserID(id);
+            return _commentDal.GetCommentsByUserID(id)
+                .OrderByDescending(x => x.CommentData)
+                .ToList();
         }
 
-        public void Insert(Comment entity)
+        public void ToggleStatus(int id)
         {
-            _icommentdal.Insert(entity);
-        }
-
-        public void Update(Comment entity)
-        {
-            _icommentdal.Updater(entity);
+            var c = _commentDal.Get(id);
+            if (c == null) return;
+            c.status = !c.status;
+            _commentDal.Updater(c);
         }
     }
 }

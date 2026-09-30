@@ -1,4 +1,32 @@
-# 🌍 Traversal – Full‑Stack Entwicklung  
+# 🌍 Traversal – Full‑Stack Entwicklung
+
+> **Live-Demo ohne Registrierung:** `/Demo/Admin` (Admin-Panel) · `/Demo/Member` (Kundenbereich)
+> Die Demo-Datenbank wird automatisch alle 6 Stunden zurückgesetzt.
+
+## 🚀 Schnellstart
+
+```bash
+git clone https://github.com/amirafshar2/TraversalCoreProject.git
+cd TraversalCoreProject/TraversalCoreProje
+dotnet run
+```
+
+- Keine Datenbank-Installation nötig: **SQLite** liegt im Projekt unter `TraversalCoreProje/App_Data/traversal.db`.
+- Beim Start werden fehlende Migrationen automatisch angewendet. Ist die Datenbank leer, werden Demo-Daten aus `App_Data/seed/seed-data.json` eingespielt.
+- Demo-Konten: `admin@traversal.demo` / `gast@traversal.demo`, Passwort `Demo123!`.
+- Einstellungen in `appsettings.json` → Abschnitt `Demo` (Demo-Modus, Reset-Intervall, Portfolio-/Impressum-Links).
+- KI-Assistent (optional): `dotnet user-secrets set "Gemini:ApiKey" "<schlüssel>"` – der Schlüssel gehört **nie** in den Code.
+
+### Deployment (Render, kostenlos)
+`Dockerfile` und `render.yaml` sind vorhanden: Repository in Render als *Blueprint* verbinden → Region Frankfurt, Plan *Free*.
+
+### Neue Migration anlegen
+```bash
+dotnet ef migrations add <Name> --project DataAccessLayer --startup-project TraversalCoreProje
+```
+
+---
+
 Traversal ist ein Reiseverwaltungs‑ und Buchungssystem, das ursprünglich nur aus einem statischen UI‑Template bestand.  
 Ich habe dieses Template vollständig in ein **funktionsfähiges, mehrschichtiges System** verwandelt – inklusive Datenbank, Backend‑Logik, Admin‑Dashboard, Reservierungssystem und dynamischen Reisezieleinträgen.
 
@@ -24,7 +52,7 @@ Ich habe die komplette technische Basis implementiert:
 - Mehrschichtige Architektur (Entity, DAL, BLL, UI)
 - Repository‑Pattern
 - Dependency Injection
-- SQL‑Server‑Datenbankmodellierung
+- Datenbankmodellierung mit EF Core Code-First (SQLite, früher SQL Server)
 - Vollständige CRUD‑Funktionen
 - Erweiterbare, saubere Code‑Struktur
 
@@ -69,6 +97,11 @@ Das Admin‑Panel existierte nicht – ich habe es vollständig selbst gebaut:
 - Löschen  
 - Zugehöriges Reiseziel anzeigen
 
+### 🧭 Reiseführer, Inhalte, Nachrichten & Newsletter
+- Reiseführer verwalten und Reservierungen zuweisen
+- Startseiten-Inhalte (Banner, Top-Angebote, Kundenstimmen), „Über uns“ und Kontaktdaten pflegen
+- Kontaktanfragen lesen, Newsletter-Abonnenten als CSV exportieren
+
 ### 👤 Benutzer‑Management
 - Benutzer hinzufügen  
 - Profilbild  
@@ -83,9 +116,12 @@ Das Admin‑Panel existierte nicht – ich habe es vollständig selbst gebaut:
 ---
 
 ## 🧩 4. Technologien, die ich verwendet habe
-- ASP.NET Core MVC  
+- ASP.NET Core MVC (.NET 8)  
 - Entity Framework Core  
-- SQL Server  
+- SQLite (EF Core Migrationen)  
+- ASP.NET Core Identity (Rollen: Admin, Moderator, Member)  
+- FluentValidation, X.PagedList  
+- Docker / Render  
 - Repository‑Pattern  
 - Dependency Injection  
 - HTML / CSS / JavaScript  

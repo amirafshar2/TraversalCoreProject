@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -14,6 +14,7 @@ namespace EntityLayer.Concrate
         public string Client { get; set; }
         public string Comment { get; set; }
         public string ClientImage { get; set; }
+        public string Location { get; set; }
         public bool Status  { get; set; }
 
     }

@@ -1,34 +1,35 @@
-﻿using DataAccessLayer.Abstract;
+using DataAccessLayer.Abstract;
 using DataAccessLayer.Concrate;
 using DataAccessLayer.Repository;
 using EntityLayer.Concrate;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccessLayer.EntityFrameWork
 {
     public class EfCommentDAL : GenericRepository<Comment>, ICommentDAL
     {
-        Context db = new Context();
+        public EfCommentDAL(Context context) : base(context) { }
+
         public List<Comment> GetCommentsByDestinationID(int id)
         {
-            var q = db.comments.Where(i => i.Destinitonid == id);
-            return q.ToList();
-
+            return _context.comments.AsNoTracking()
+                .Where(c => c.Destinitonid == id)
+                .ToList();
         }
 
         public List<Comment> GetCommentsByUserID(int id)
         {
-            var values = db.comments.Where(x => x.Userid == id);
-            if (values.Count() != 0)
-            {
-                return values.ToList();
-            }
-            return null;
+            return _context.comments.AsNoTracking()
+                .Include(c => c.Destiniton)
+                .Where(c => c.Userid == id)
+                .ToList();
+        }
+
+        public List<Comment> GetListWithDestination()
+        {
+            return _context.comments.AsNoTracking()
+                .Include(c => c.Destiniton)
+                .ToList();
         }
     }
 }

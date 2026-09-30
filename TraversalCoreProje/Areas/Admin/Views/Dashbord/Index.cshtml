@@ -1,132 +1,152 @@
-﻿ @{
-    ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/UserLayout.cshtml";
+@model DashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+    ViewData["Subtitle"] = $"Willkommen zurück! Heute ist {ViewHelpers.LongDate(DateTime.Today)}.";
 }
 
-
-
-
-<section class="section">
-    <div class="row">
-        <!-- Website-Besucher -->
-        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
-            <div class="card">
-                <div class="card-statistic-4">
-                    <div class="align-items-center justify-content-between">
-                        <div class="row">
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
-                                <div class="card-content">
-                                    <h5 class="font-15">Website-Besucher</h5>
-                                    <h2 class="mb-3 font-18">@ViewBag.VisitorCount</h2>
-                                    <p class="mb-0"><span class="col-green">10%</span> Zuwachs</p>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
-                                <div class="banner-img">
-                                    <img src="~/otika-bootstrap-admin-template/assets/img/banner/1.png" alt="">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<div class="row">
+    <div class="col-xl-3 col-md-6">
+        <div class="stat-card">
+            <div class="stat-icon bg-grad-primary"><i class="fas fa-users"></i></div>
+            <div><div class="stat-label">Kunden</div><div class="stat-value">@Model.UserCount</div><div class="stat-hint">registrierte Benutzer</div></div>
         </div>
-
-        <!-- Kunden -->
-        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
-            <div class="card">
-                <div class="card-statistic-4">
-                    <div class="align-items-center justify-content-between">
-                        <div class="row">
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
-                                <div class="card-content">
-                                    <h5 class="font-15">Kunden</h5>
-                                    <h2 class="mb-3 font-18">@ViewBag.user</h2>
-                                    <p class="mb-0"><span class="col-orange">09%</span> Rückgang</p>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
-                                <div class="banner-img">
-                                    <img src="~/otika-bootstrap-admin-template/assets/img/banner/2.png" alt="">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Neue Reiseziele -->
-        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
-            <div class="card">
-                <div class="card-statistic-4">
-                    <div class="align-items-center justify-content-between">
-                        <div class="row">
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
-                                <div class="card-content">
-                                    <h5 class="font-15">Neue Reiseziele</h5>
-                                    <h2 class="mb-3 font-18">@ViewBag.destination</h2>
-                                    <p class="mb-0"><span class="col-green">18%</span> Wachstum</p>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
-                                <div class="banner-img">
-                                    <img src="~/otika-bootstrap-admin-template/assets/img/banner/3.png" alt="">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Reservierungen -->
-        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
-            <div class="card">
-                <div class="card-statistic-4">
-                    <div class="align-items-center justify-content-between">
-                        <div class="row">
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
-                                <div class="card-content">
-                                    <h5 class="font-15">Reservierungen</h5>
-                                    <h2 class="mb-3 font-18">@ViewBag.reservation</h2>
-                                    <p class="mb-0"><span class="col-green">42%</span> Zuwachs</p>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
-                                <div class="banner-img">
-                                    <img src="~/otika-bootstrap-admin-template/assets/img/banner/4.png" alt="">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
-
-    <div id="destinationList">
-        @await Component.InvokeAsync("_DashbordDestinationList", new { page = 1 })
+    <div class="col-xl-3 col-md-6">
+        <div class="stat-card">
+            <div class="stat-icon bg-grad-info"><i class="fas fa-map-marked-alt"></i></div>
+            <div><div class="stat-label">Reiseziele</div><div class="stat-value">@Model.DestinationCount</div><div class="stat-hint">@Model.ActiveDestinationCount davon aktiv</div></div>
+        </div>
     </div>
+    <div class="col-xl-3 col-md-6">
+        <a href="@Url.Action("Index", "Reservation", new { status = "pending" })" class="text-decoration-none">
+            <div class="stat-card">
+                <div class="stat-icon bg-grad-warning"><i class="fas fa-hourglass-half"></i></div>
+                <div><div class="stat-label">Offene Anfragen</div><div class="stat-value">@Model.PendingCount</div><div class="stat-hint">warten auf Bestätigung</div></div>
+            </div>
+        </a>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="stat-card">
+            <div class="stat-icon bg-grad-success"><i class="fas fa-euro-sign"></i></div>
+            <div><div class="stat-label">Umsatz (bestätigt)</div><div class="stat-value">@ViewHelpers.Euro(Model.ExpectedRevenue)</div><div class="stat-hint">@Model.ApprovedCount bestätigte Buchungen</div></div>
+        </div>
+    </div>
+</div>
 
-    <div class="row">
-        <div class="col-md-6 col-lg-12 col-xl-6">
-            <!-- Support tickets -->
-            <div class="card">
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header"><h4>Reisen nach Startmonat</h4></div>
+            <div class="card-body"><div id="chart-months" style="min-height:280px"></div></div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header"><h4>Status der Reservierungen</h4></div>
+            <div class="card-body"><div id="chart-status" style="min-height:280px"></div></div>
+        </div>
+    </div>
+</div>
 
-                @await Component.InvokeAsync("_DashborComments")
-                <a href="javascript:void(0)" class="card-footer card-link text-center small ">
-                    View
-                    All
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h4>Neue Anfragen</h4>
+                <div class="card-header-action"><a href="@Url.Action("Index", "Reservation", new { status = "pending" })" class="btn btn-primary btn-sm">Alle anzeigen</a></div>
+            </div>
+            <div class="card-body p-0">
+                @if (!Model.LatestPending.Any())
+                {
+                    <div class="empty-state"><i class="fas fa-inbox"></i>Keine offenen Anfragen – alles erledigt!</div>
+                }
+                else
+                {
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead><tr><th>Kunde</th><th>Reiseziel</th><th>Zeitraum</th><th>Pers.</th><th class="text-right">Aktion</th></tr></thead>
+                            <tbody>
+                                @foreach (var r in Model.LatestPending)
+                                {
+                                    <tr>
+                                        <td><img src="@r.User?.Image" class="avatar-sm mr-2" alt="" /> @r.Username</td>
+                                        <td>@r.Destiniton?.City</td>
+                                        <td class="text-nowrap">@ViewHelpers.Date(r.ReservStart) – @ViewHelpers.Date(r.ReservEnd)</td>
+                                        <td>@r.HowmanyPapel</td>
+                                        <td class="text-right actions">
+                                            @if (User.IsInRole("Admin"))
+                                            {
+                                                <form asp-controller="Reservation" asp-action="Approve" asp-route-id="@r.id" asp-route-returnUrl="@Url.Action("Index")" method="post">
+                                                    <button class="btn btn-sm btn-success" title="Bestätigen"><i class="fas fa-check"></i></button>
+                                                </form>
+                                                <form asp-controller="Reservation" asp-action="Cancel" asp-route-id="@r.id" asp-route-returnUrl="@Url.Action("Index")" method="post" data-confirm="Diese Reservierung stornieren?">
+                                                    <button class="btn btn-sm btn-outline-danger" title="Stornieren"><i class="fas fa-times"></i></button>
+                                                </form>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header"><h4>Beliebteste Reiseziele</h4></div>
+            <div class="card-body">
+                @{ var max = Model.TopDestinations.Any() ? Model.TopDestinations.Max(t => t.Count) : 1; }
+                @foreach (var t in Model.TopDestinations)
+                {
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between"><span class="font-weight-bold">@t.City</span><span class="muted-small">@t.Count Buchungen</span></div>
+                        <div class="progress mt-1" style="height:8px"><div class="progress-bar bg-primary" style="width:@(t.Count * 100 / max)%"></div></div>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <a href="@Url.Action("Index", "Comment")" class="text-decoration-none">
+                    <div class="stat-card"><div class="stat-icon bg-grad-purple"><i class="fas fa-comments"></i></div><div><div class="stat-label">Kommentare</div><div class="stat-value">@Model.CommentCount</div></div></div>
                 </a>
             </div>
-            <!-- Support tickets -->
+            <div class="col-6">
+                <a href="@Url.Action("Index", "Message")" class="text-decoration-none">
+                    <div class="stat-card"><div class="stat-icon bg-grad-danger"><i class="fas fa-envelope"></i></div><div><div class="stat-label">Ungelesen</div><div class="stat-value">@Model.UnreadMessages</div></div></div>
+                </a>
+            </div>
+            <div class="col-6">
+                <a href="@Url.Action("Index", "Guide")" class="text-decoration-none">
+                    <div class="stat-card"><div class="stat-icon bg-grad-info"><i class="fas fa-compass"></i></div><div><div class="stat-label">Guides</div><div class="stat-value">@Model.GuideCount</div></div></div>
+                </a>
+            </div>
+            <div class="col-6">
+                <a href="@Url.Action("Index", "Newsletter")" class="text-decoration-none">
+                    <div class="stat-card"><div class="stat-icon bg-grad-success"><i class="fas fa-paper-plane"></i></div><div><div class="stat-label">Newsletter</div><div class="stat-value">@Model.NewsletterCount</div></div></div>
+                </a>
+            </div>
         </div>
-        @await Component.InvokeAsync("_DashbordReservation")
     </div>
-</section>
+</div>
 
-
-
-<script src="~/otika-bootstrap-admin-template/assets/bundles/apexcharts/apexcharts.min.js"></script>
+@section Scripts {
+    <script src="~/otika-bootstrap-admin-template/assets/bundles/apexcharts/apexcharts.min.js"></script>
+    <script>
+        new ApexCharts(document.querySelector('#chart-months'), {
+            chart: { type: 'bar', height: 280, toolbar: { show: false }, fontFamily: 'Nunito, sans-serif' },
+            series: [{ name: 'Reisen', data: @Json.Serialize(Model.MonthValues) }],
+            xaxis: { categories: @Json.Serialize(Model.MonthLabels) },
+            colors: ['#6777ef'], plotOptions: { bar: { borderRadius: 6, columnWidth: '45%' } },
+            dataLabels: { enabled: false }, yaxis: { labels: { formatter: v => Math.round(v) } }
+        }).render();
+        new ApexCharts(document.querySelector('#chart-status'), {
+            chart: { type: 'donut', height: 280, fontFamily: 'Nunito, sans-serif' },
+            series: [@Model.PendingCount, @Model.ApprovedCount, @Model.CanceledCount],
+            labels: ['Ausstehend', 'Bestätigt', 'Storniert'],
+            colors: ['#ffa426', '#47c363', '#fc544b'], legend: { position: 'bottom' }
+        }).render();
+    </script>
+}

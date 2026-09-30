@@ -1,0 +1,36 @@
+@model List<Newsletter>
+@{
+    ViewData["Title"] = "Newsletter";
+    ViewData["Subtitle"] = $"{Model.Count} Abonnenten";
+}
+@section HeaderActions {
+    <a asp-action="Export" class="btn btn-success btn-icon icon-left"><i class="fas fa-file-csv"></i> CSV exportieren</a>
+}
+<div class="card">
+    <div class="card-body p-0">
+        @if (!Model.Any())
+        {
+            <div class="empty-state"><i class="fas fa-paper-plane"></i>Noch keine Abonnenten.</div>
+        }
+        else
+        {
+            <table class="table table-hover mb-0">
+                <thead><tr><th>E-Mail</th><th>Angemeldet am</th><th class="text-right">Aktion</th></tr></thead>
+                <tbody>
+                    @foreach (var n in Model)
+                    {
+                        <tr>
+                            <td><i class="far fa-envelope text-muted mr-2"></i>@n.Mail</td>
+                            <td>@ViewHelpers.Date(n.SubscribeDate)</td>
+                            <td class="text-right">
+                                <form asp-action="Delete" asp-route-id="@n.NewsletterID" method="post" data-confirm="@n.Mail entfernen?">
+                                    <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>

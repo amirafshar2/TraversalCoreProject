@@ -1,0 +1,27 @@
+@model ContactMessage
+@{
+    ViewData["Title"] = Model.Subject;
+}
+@section HeaderActions {
+    <a asp-action="Index" class="btn btn-light"><i class="fas fa-arrow-left mr-1"></i> Posteingang</a>
+}
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <span class="dropdown-item-avatar mr-3" style="width:44px;height:44px;display:inline-block;color:#fff"><span class="avatar-initials">@ViewHelpers.Initials(Model.Name)</span></span>
+                <div>
+                    <h4 class="mb-0">@Model.Name</h4>
+                    <div class="muted-small">@Model.Mail · @Model.MessageDate.ToString("dd.MM.yyyy HH:mm")</div>
+                </div>
+            </div>
+            <div class="card-body"><p class="text-pre mb-0">@Model.Message</p></div>
+            <div class="card-footer text-right actions">
+                <a href="mailto:@Model.Mail?subject=AW: @Uri.EscapeDataString(Model.Subject ?? "")" class="btn btn-primary"><i class="fas fa-reply mr-1"></i> Antworten</a>
+                <form asp-action="Delete" asp-route-id="@Model.ContactMessageID" method="post" data-confirm="Nachricht löschen?">
+                    <button class="btn btn-outline-danger"><i class="fas fa-trash mr-1"></i> Löschen</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

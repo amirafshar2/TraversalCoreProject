@@ -1,7 +1,4 @@
-﻿using BusinessLayer.Abstract;
-using BusinessLayer.Concrate;
-using DataAccessLayer.Concrate;
-using DataAccessLayer.EntityFrameWork;
+using BusinessLayer.Abstract;
 using EntityLayer.Concrate;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -9,63 +6,52 @@ using TraversalCoreProje.Models;
 
 namespace TraversalCoreProje.Controllers
 {
+    /// <summary>Kommentare auf der Detailseite eines Reiseziels (nur für angemeldete Benutzer).</summary>
     public class CommentController : Controller
     {
-        #region DI
         private readonly ICommentService _comment;
         private readonly UserManager<User> _usermanager;
+
         public CommentController(ICommentService comment, UserManager<User> usermanager)
         {
             _comment = comment;
             _usermanager = usermanager;
         }
-        #endregion
 
-        #region Create Comment
-        [HttpGet]
-        public IActionResult AddComment()
-        {
-            return View();
-        }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddComment([FromBody] mComment c)
         {
-            var userr = await _usermanager.GetUserAsync(HttpContext.User);
-            if (userr != null)
+            var user = await _usermanager.GetUserAsync(HttpContext.User);
+            if (user == null)
+                return Unauthorized(new { success = false, message = "Bitte melden Sie sich an." });
+
+            var content = (c?.CommentContent ?? "").Trim();
+            if (content.Length < 3 || content.Length > 1000)
+                return BadRequest(new { success = false, message = "Der Kommentar muss zwischen 3 und 1000 Zeichen lang sein." });
+
+            var comment = new Comment
             {
+                CommentData = DateTime.Now,
+                status = true,
+                CommentContent = content,
+                CommentUser = $"{user.Name} {user.Surname}",
+                Destinitonid = c.DestinationId,
+                Userid = user.Id
+            };
+            _comment.Insert(comment);
 
-                var c1 = new EntityLayer.Concrate.Comment
-                {
-                    CommentData = DateTime.Now,
-                    status = true,
-                    CommentContent = c.CommentContent,
-                    CommentUser = userr.Name + "" + userr.Surname,
-                    Destinitonid = c.DestinationId,
-                    Userid = userr.Id
-                };
-
-
-
-                _comment.Insert(c1);
-                return Json(new
-                {
-                    success = true,
-                    comment = new
-                    {
-                        name = c1.CommentUser,
-                        content = c1.CommentContent,
-                        date = c1.CommentData.ToLongDateString()
-                    }
-                });
-            }
-            else
+            return Json(new
             {
-                return View(c);
-            }
-
-
+                success = true,
+                comment = new
+                {
+                    name = comment.CommentUser,
+                    image = user.Image,
+                    content = comment.CommentContent,
+                    date = comment.CommentData.ToString("dd.MM.yyyy HH:mm")
+                }
+            });
         }
-        #endregion
     }
-
 }

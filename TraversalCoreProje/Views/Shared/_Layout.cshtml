@@ -1,15 +1,31 @@
-﻿@{
+@inject Microsoft.Extensions.Options.IOptions<DemoOptions> DemoConfig
+@{
     Layout = null;
+    var demo = DemoConfig.Value;
 }
 <!doctype html>
-<html lang="zxx">
+<html lang="de">
 <head>
     @await Html.PartialAsync("/Views/Shared/LayoutPartial/_HeadLinkPartial.cshtml")
+    @RenderSection("Styles", required: false)
 </head>
 <body>
     @await Html.PartialAsync("/Views/Shared/LayoutPartial/_HeaderPartialview.cshtml")
-    @RenderBody()
+    <main>
+        @RenderBody()
+    </main>
     @await Html.PartialAsync("/Views/Shared/LayoutPartial/_FooterPartialview.cshtml")
+    @if (demo.Enabled && !(User.Identity?.IsAuthenticated ?? false))
+    {
+        <div class="demo-float" id="demo-float">
+            <button type="button" class="demo-float-close" onclick="document.getElementById('demo-float').remove()" aria-label="Schließen">&times;</button>
+            <div class="demo-float-title"><span class="fa fa-flask"></span> Live-Demo</div>
+            <p>Ohne Registrierung ausprobieren:</p>
+            <a href="/Demo/Admin" class="btn btn-style btn-primary btn-sm btn-block"><span class="fa fa-user-secret mr-1"></span> Als Admin</a>
+            <a href="/Demo/Member" class="btn btn-style btn-secondary btn-sm btn-block mt-2"><span class="fa fa-user mr-1"></span> Als Kunde</a>
+        </div>
+    }
     @await Html.PartialAsync("/Views/Shared/LayoutPartial/_ScriptPartial.cshtml")
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

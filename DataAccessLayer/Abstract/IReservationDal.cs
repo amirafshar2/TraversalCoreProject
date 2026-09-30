@@ -1,15 +1,12 @@
-﻿using EntityLayer.Concrate;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using EntityLayer.Concrate;
 
 namespace DataAccessLayer.Abstract
 {
-    public interface IReservationDal: IGenerikDAL<Reservition>
+    public interface IReservationDal : IGenerikDAL<Reservition>
     {
-        public List<Reservition> GetlistbyUserId(int userId);
-        public List<Reservition> Getlistwhitdesetination();
+        List<Reservition> GetlistbyUserId(int userId);
+        List<Reservition> Getlistwhitdesetination();
+        List<Reservition> GetListByStatus(string status);
+        Reservition GetWithDetails(int id);
     }
 }

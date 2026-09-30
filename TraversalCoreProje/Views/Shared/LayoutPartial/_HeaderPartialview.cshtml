@@ -1,66 +1,41 @@
-﻿  <!--header-->
-
+@{
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString();
+    string Active(params string[] c) => c.Contains(controller, StringComparer.OrdinalIgnoreCase) ? "active" : "";
+}
 <header id="site-header" class="fixed-top">
     <div class="container">
         <nav class="navbar navbar-expand-lg stroke">
             <h1>
-                <a class="navbar-brand mr-lg-5" href="index.html">
-                    Traversal
+                <a class="navbar-brand mr-lg-5" href="/">
+                    <img src="~/favicon.svg" alt="" style="height:32px;margin-right:6px;vertical-align:-6px" /> Traversal
                 </a>
             </h1>
-
-            <!-- if logo is image enable this
-            <a class="navbar-brand" href="#index.html">
-                <img src="image-path" alt="Your logo" title="Your logo" style="height:35px;" />
-            </a> -->
-            <button class="navbar-toggler  collapsed bg-gradient" type="button" data-toggle="collapse"
+            <button class="navbar-toggler collapsed bg-gradient" type="button" data-toggle="collapse"
                     data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false"
-                    aria-label="Toggle navigation">
+                    aria-label="Navigation umschalten">
                 <span class="navbar-toggler-icon fa icon-expand fa-bars"></span>
                 <span class="navbar-toggler-icon fa icon-close fa-times"></span>
-
             </button>
 
             <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/Home/Index/">Home <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="~/Traversal-Liberty/about.html">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Destiniton/Index/">Reiseziele</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="~/Traversal-Liberty/pricing.html">Pakete</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false">
-                            Blog<span class="fa fa-angle-down"></span>
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown1">
-                            <a class="dropdown-item" href="~/Traversal-Liberty/blog.html">Blog Posts</a>
-                            <a class="dropdown-item" href="~/Traversal-Liberty/blog-single.html">Blog single</a>
-                            <a class="dropdown-item" href="~/Traversal-Liberty/landing-single.html">Landing Page</a>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="contact.html">Contact</a>
-                    </li>
-
+                    <li class="nav-item @Active("Default", "Home")"><a class="nav-link" href="/">Start</a></li>
+                    <li class="nav-item @Active("Destiniton")"><a class="nav-link" href="/Destiniton">Reiseziele</a></li>
+                    <li class="nav-item @Active("Guide")"><a class="nav-link" href="/Guide">Reiseführer</a></li>
+                    <li class="nav-item @Active("About")"><a class="nav-link" href="/About">Über uns</a></li>
+                    <li class="nav-item @Active("Contact")"><a class="nav-link" href="/Contact">Kontakt</a></li>
                 </ul>
+                <div class="d-lg-none mt-3 mb-2">
+                    @await Component.InvokeAsync("_ModalLoginPartial")
+                </div>
             </div>
             <div class="d-lg-block d-none">
-                @*<a href="contact.html" class="btn btn-style btn-secondary">Get In Touch</a>*@
                 @await Component.InvokeAsync("_ModalLoginPartial")
             </div>
-            <!-- toggle switch for light and dark theme -->
             <div class="mobile-position">
                 <nav class="navigation">
                     <div class="theme-switch-wrapper">
-                        <label class="theme-switch" for="checkbox">
+                        <label class="theme-switch" for="checkbox" title="Hell/Dunkel">
                             <input type="checkbox" id="checkbox">
                             <div class="mode-container">
                                 <i class="gg-sun"></i>
@@ -70,7 +45,6 @@
                     </div>
                 </nav>
             </div>
-            <!-- //toggle switch for light and dark theme -->
         </nav>
     </div>
 </header>

@@ -1,0 +1,44 @@
+@model Testimonial
+@{
+    var isEdit = Model.TestimonialID > 0;
+    ViewData["Title"] = isEdit ? "Kundenstimme bearbeiten" : "Neue Kundenstimme";
+}
+<form asp-action="@(isEdit ? "Edit" : "Create")" method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="TestimonialID" />
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card"><div class="card-body">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label asp-for="Client">Name</label>
+                        <input asp-for="Client" class="form-control" />
+                        <span asp-validation-for="Client" class="text-danger small"></span>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label asp-for="Location">Wohnort</label>
+                        <input asp-for="Location" class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Comment">Text</label>
+                    <textarea asp-for="Comment" class="form-control" style="height:130px"></textarea>
+                    <span asp-validation-for="Comment" class="text-danger small"></span>
+                </div>
+                <label class="custom-switch m-0 p-0">
+                    <input asp-for="Status" type="checkbox" class="custom-switch-input">
+                    <span class="custom-switch-indicator"></span>
+                    <span class="custom-switch-description">Auf der Startseite anzeigen</span>
+                </label>
+            </div></div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card"><div class="card-header"><h4>Foto</h4></div><div class="card-body text-center">
+                <img id="pv-t" src="@Model.ClientImage" class="avatar-lg mb-3 @(string.IsNullOrEmpty(Model.ClientImage) ? "d-none" : "")" alt="" />
+                <input type="file" name="imageFile" accept="image/*" class="form-control" data-preview="#pv-t" />
+                <span class="text-danger small">@Html.ValidationMessage("imageFile")</span>
+            </div></div>
+            <button class="btn btn-primary btn-lg btn-block"><i class="fas fa-save mr-2"></i>Speichern</button>
+            <a asp-action="Index" class="btn btn-light btn-block">Abbrechen</a>
+        </div>
+    </div>
+</form>

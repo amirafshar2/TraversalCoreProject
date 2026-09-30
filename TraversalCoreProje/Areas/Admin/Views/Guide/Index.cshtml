@@ -1,0 +1,36 @@
+@model List<Guide>
+@{
+    ViewData["Title"] = "Reiseführer";
+    ViewData["Subtitle"] = "Das Guide-Team, das auf der Website und bei Reservierungen angezeigt wird.";
+    var tours = (Dictionary<int, int>)ViewBag.TourCounts;
+}
+@section HeaderActions {
+    <a asp-action="Create" class="btn btn-primary btn-icon icon-left"><i class="fas fa-plus"></i> Neuer Reiseführer</a>
+}
+<div class="row">
+    @foreach (var g in Model)
+    {
+        <div class="col-sm-6 col-xl-3">
+            <div class="card dest-card @(g.Status ? "" : "opacity-50")">
+                <img src="@g.Image" alt="@g.Name" style="height:220px" />
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <h5 class="mb-0">@g.Name</h5>
+                        @ViewHelpers.ActiveBadge(g.Status)
+                    </div>
+                    <p class="muted-small mb-2"><i class="fas fa-route mr-1"></i>@(tours.TryGetValue(g.GuideID, out var t) ? t : 0) Touren</p>
+                    <p class="text-muted small">@ViewHelpers.Truncate(g.Description, 120)</p>
+                    <div class="actions">
+                        <a asp-action="Edit" asp-route-id="@g.GuideID" class="btn btn-sm btn-primary"><i class="fas fa-pen"></i></a>
+                        <form asp-action="Toggle" asp-route-id="@g.GuideID" method="post">
+                            <button class="btn btn-sm btn-light" title="@(g.Status ? "Deaktivieren" : "Aktivieren")"><i class="fas @(g.Status ? "fa-eye-slash" : "fa-eye")"></i></button>
+                        </form>
+                        <form asp-action="Delete" asp-route-id="@g.GuideID" method="post" data-confirm="@g.Name löschen?">
+                            <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

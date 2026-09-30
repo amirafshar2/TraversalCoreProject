@@ -1,5 +1,6 @@
-﻿<footer>
-    <!-- footer -->
+@inject Microsoft.Extensions.Options.IOptions<DemoOptions> DemoConfig
+@{ var demo = DemoConfig.Value; }
+<footer>
     <section class="w3l-footer">
         <div class="w3l-footer-16-main py-5">
             <div class="container">
@@ -7,111 +8,73 @@
                     <div class="col-lg-6 column">
                         <div class="row">
                             <div class="col-md-4 column">
-                                <h3>Company</h3>
+                                <h3>Traversal</h3>
                                 <ul class="footer-gd-16">
-                                    <li><a href="index.html">Home</a></li>
-                                    <li><a href="about.html">About Us</a></li>
-                                    <li><a href="services.html">Services</a></li>
-                                    <li><a href="blog.html">Blog</a></li>
-                                    <li><a href="contact.html">Contact Us</a></li>
+                                    <li><a href="/">Start</a></li>
+                                    <li><a href="/About">Über uns</a></li>
+                                    <li><a href="/Guide">Reiseführer</a></li>
+                                    <li><a href="/Contact">Kontakt</a></li>
                                 </ul>
                             </div>
                             <div class="col-md-4 column mt-md-0 mt-4">
-                                <h3>Useful Links</h3>
+                                <h3>Reisen</h3>
                                 <ul class="footer-gd-16">
-                                    <li><a href="#url">Destinations</a></li>
-                                    <li><a href="#url">Our Branches</a></li>
-                                    <li><a href="#url">Latest Media</a></li>
-                                    <li><a href="about.html">About Company</a></li>
-                                    <li><a href="#url">Our Packages</a></li>
+                                    <li><a href="/Destiniton">Alle Reiseziele</a></li>
+                                    <li><a href="/Destiniton?sort=price-asc">Günstige Reisen</a></li>
+                                    <li><a href="/Member/Reservation/NewReservation">Jetzt buchen</a></li>
+                                    <li><a href="/User/registor">Registrieren</a></li>
                                 </ul>
                             </div>
                             <div class="col-md-4 column mt-md-0 mt-4">
-                                <h3>Our Services</h3>
+                                <h3>Demo</h3>
                                 <ul class="footer-gd-16">
-                                    <li><a href="#url">Privacy Policy</a></li>
-                                    <li><a href="#url">Our Terms</a></li>
-                                    <li><a href="services.html">Services</a></li>
-                                    <li><a href="landing-single.html">Landing Page</a></li>
-                                    <li><a href="#url">Our Guides</a></li>
+                                    <li><a href="/Demo">Über diese Demo</a></li>
+                                    <li><a href="/Demo/Admin">Admin-Panel</a></li>
+                                    <li><a href="/Demo/Member">Kundenbereich</a></li>
+                                    <li><a href="/Legal">Impressum &amp; Datenschutz</a></li>
                                 </ul>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-6 col-md-12 column pl-lg-5 column4 mt-lg-0 mt-5">
-                        <h3>Newsletter </h3>
+                    <div class="col-lg-6 col-md-12 column pl-lg-5 column4 mt-lg-0 mt-5" id="newsletter">
+                        <h3>Newsletter</h3>
                         <div class="end-column">
-                            <h4>Get latest updates and offers.</h4>
-                            <form action="#" class="subscribe" method="post">
-                                <input type="email" name="email" placeholder="Email Address" required="">
-                                <button type="submit">Go</button>
+                            <h4>Neue Reiseziele und Angebote direkt ins Postfach.</h4>
+                            <form asp-controller="Newsletter" asp-action="Subscribe" asp-area="" method="post" class="subscribe">
+                                <input type="hidden" name="returnUrl" value="@(Context.Request.Path + Context.Request.QueryString)" />
+                                <input type="email" name="email" placeholder="E-Mail-Adresse" required>
+                                <button type="submit" aria-label="Abonnieren"><span class="fa fa-paper-plane"></span></button>
                             </form>
-                            <p>Sign up for our latest news & articles. We won’t give you spam mails.</p>
+                            @if (TempData["newsletter"] is string nl)
+                            {
+                                <p class="newsletter-msg"><span class="fa fa-info-circle mr-1"></span>@nl</p>
+                            }
+                            else
+                            {
+                                <p>Kein Spam – Abmeldung jederzeit möglich. (Demo: es werden keine E-Mails versendet.)</p>
+                            }
                         </div>
                     </div>
                 </div>
                 <div class="d-flex below-section justify-content-between align-items-center pt-4 mt-5">
                     <div class="columns text-lg-left text-center">
                         <p>
-                            &copy; 2020 Traversal. All rights reserved.Design by <a href="https://w3layouts.com/" target="_blank">
-
+                            &copy; @DateTime.Now.Year Traversal · Demo-Projekt von
+                            <a href="@demo.PortfolioUrl" target="_blank" rel="noopener">Amir Reza Afshar</a> ·
+                            Design-Vorlage von <a href="https://w3layouts.com/" target="_blank" rel="noopener">W3Layouts</a>
                         </p>
                     </div>
                     <div class="columns-2 mt-lg-0 mt-3">
                         <ul class="social">
-                            <li>
-                                <a href="#facebook"><span class="fa fa-facebook" aria-hidden="true"></span></a>
-                            </li>
-                            <li>
-                                <a href="#linkedin"><span class="fa fa-linkedin" aria-hidden="true"></span></a>
-                            </li>
-                            <li>
-                                <a href="#twitter"><span class="fa fa-twitter" aria-hidden="true"></span></a>
-                            </li>
-                            <li>
-                                <a href="#google"><span class="fa fa-google-plus" aria-hidden="true"></span></a>
-                            </li>
-                            <li>
-                                <a href="#github"><span class="fa fa-github" aria-hidden="true"></span></a>
-                            </li>
+                            <li><a href="https://github.com/amirafshar2/TraversalCoreProject" target="_blank" rel="noopener" title="Quellcode auf GitHub"><span class="fa fa-github" aria-hidden="true"></span></a></li>
+                            <li><a href="@demo.PortfolioUrl" target="_blank" rel="noopener" title="Portfolio"><span class="fa fa-globe" aria-hidden="true"></span></a></li>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- move top -->
-        <button onclick="topFunction()" id="movetop" title="Go to top">
+        <button onclick="topFunction()" id="movetop" title="Nach oben">
             <span class="fa fa-angle-up"></span>
         </button>
-        <script>
-            // When the user scrolls down 20px from the top of the document, show the button
-            window.onscroll = function () {
-                scrollFunction()
-            };
-
-            function scrollFunction() {
-                if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-                    document.getElementById("movetop").style.display = "block";
-                } else {
-                    document.getElementById("movetop").style.display = "none";
-                }
-            }
-
-            // When the user clicks on the button, scroll to the top of the document
-            function topFunction() {
-                document.body.scrollTop = 0;
-                document.documentElement.scrollTop = 0;
-            }
-        </script>
-        <!-- //move top -->
-        <script>
-            $(function () {
-                $('.navbar-toggler').click(function () {
-                    $('body').toggleClass('noscroll');
-                })
-            });
-        </script>
     </section>
-    <!-- //footer -->
 </footer>

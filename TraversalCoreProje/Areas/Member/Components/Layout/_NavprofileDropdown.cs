@@ -1,37 +1,31 @@
-﻿using EntityLayer.Concrate;
+using EntityLayer.Concrate;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.ComponentModel;
 
 namespace TraversalCoreProje.Areas.Member.Components.Layout
 {
-    [Area("Member")]
+    /// <summary>Profil-Dropdown oben rechts im Panel.</summary>
     public class _NavprofileDropdown : ViewComponent
     {
-        #region DI
         private readonly UserManager<User> _userManager;
 
         public _NavprofileDropdown(UserManager<User> userManager)
         {
             _userManager = userManager;
         }
-        #endregion
 
-        #region InvokeAsync
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var q = await _userManager.GetUserAsync(HttpContext.User);
+            var q = await _userManager.GetUserAsync(UserClaimsPrincipal);
             if (q != null)
             {
-                ViewBag.id= q.Id;
+                ViewBag.id = q.Id;
                 ViewBag.name = q.Name;
                 ViewBag.surename = q.Surname;
-                ViewBag.image=q.Image;
-                
+                ViewBag.image = q.Image;
+                ViewBag.email = q.Email;
             }
             return View();
         }
-        #endregion
     }
 }

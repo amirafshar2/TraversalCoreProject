@@ -1,45 +1,48 @@
-﻿@using EntityLayer.Concrate
 @model List<Feature>
-
-<div class="best-rooms py-5">
-    <div class="container py-md-5">
-        <div class="ban-content-inf row">
-            <div class="maghny-gd-1 col-lg-6">
-                <div class="maghny-grid">
-                    <figure class="effect-lily border-radius  m-0">
-                        <img class="img-fluid" src="@ViewBag.FImage" alt="" />
-                        <figcaption>
-                            <div>
-                                <h4>@ViewBag.FTitle</h4>
-                                <p>Ab @ViewBag.FDescription € </p>
-                            </div>
-
-                        </figcaption>
-                    </figure>
-                </div>
+@{ var first = ViewBag.First as Feature; }
+@if (first != null)
+{
+    <div class="best-rooms py-5">
+        <div class="container py-md-5">
+            <div class="title-content text-left mb-lg-5 mb-4">
+                <h6 class="sub-title">Nur für kurze Zeit</h6>
+                <h3 class="hny-title">Top-Angebote</h3>
             </div>
-            <div class="maghny-gd-1 col-lg-6 mt-lg-0 mt-4">
-                <div class="row">
-                    @foreach (var item in Model)
-                    {
-                        <div class="maghny-gd-1 col-6 mt-4">
-                            <div class="maghny-grid">
-                                <figure class="effect-lily border-radius">
-                                    <img class="img-fluid" src="@item.Image" alt="" />
-                                    <figcaption>
-                                        <div>
-                                            <h4>@item.Title</h4>
-                                            <p>@item.Description</p>
-                                        </div>
-                                    </figcaption>
-                                </figure>
+            <div class="ban-content-inf row">
+                <div class="maghny-gd-1 col-lg-6">
+                    <div class="maghny-grid">
+                        <figure class="effect-lily border-radius m-0">
+                            <img class="img-fluid" src="@first.Image" alt="@first.Title" style="height:100%;min-height:420px;object-fit:cover" />
+                            <figcaption>
+                                <div>
+                                    <h4>@first.Title</h4>
+                                    <p>@(first.Description.Any(char.IsLetter) ? first.Description : $"ab {first.Description} €")</p>
+                                </div>
+                            </figcaption>
+                        </figure>
+                    </div>
+                </div>
+                <div class="maghny-gd-1 col-lg-6 mt-lg-0 mt-4">
+                    <div class="row">
+                        @foreach (var item in Model)
+                        {
+                            <div class="maghny-gd-1 col-6 mt-4">
+                                <div class="maghny-grid">
+                                    <figure class="effect-lily border-radius">
+                                        <img class="img-fluid" src="@item.Image" alt="@item.Title" style="height:190px;object-fit:cover" />
+                                        <figcaption>
+                                            <div>
+                                                <h4>@item.Title</h4>
+                                                <p>@item.Description</p>
+                                            </div>
+                                        </figcaption>
+                                    </figure>
+                                </div>
                             </div>
-                        </div>
-
-                    }
-
+                        }
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+}

@@ -1,0 +1,28 @@
+@model List<Feature>
+@{
+    ViewData["Title"] = "Top-Angebote";
+    ViewData["Subtitle"] = "Die Angebotskacheln auf der Startseite. Das erste aktive Angebot wird groß dargestellt.";
+}
+@section HeaderActions {
+    <a asp-action="Create" class="btn btn-primary btn-icon icon-left"><i class="fas fa-plus"></i> Neues Angebot</a>
+}
+<div class="row">
+    @foreach (var f in Model)
+    {
+        <div class="col-sm-6 col-xl-4">
+            <div class="card dest-card">
+                <img src="@f.Image" alt="" />
+                <div class="card-body">
+                    <div class="d-flex justify-content-between"><h5 class="mb-1">@f.Title</h5>@ViewHelpers.ActiveBadge(f.Status)</div>
+                    <div class="price mb-3">@f.Description</div>
+                    <div class="actions">
+                        <a asp-action="Edit" asp-route-id="@f.FeatureId" class="btn btn-sm btn-primary"><i class="fas fa-pen mr-1"></i>Bearbeiten</a>
+                        <form asp-action="Delete" asp-route-id="@f.FeatureId" method="post" data-confirm="Angebot löschen?">
+                            <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

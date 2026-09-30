@@ -1,0 +1,134 @@
+@{
+    ViewData["Title"] = "Seiteninhalte";
+    ViewData["Subtitle"] = "Texte der Seite „Über uns“, Banner der Startseite, Vorteile und Kontaktdaten.";
+    var about = (About)ViewBag.About;
+    var about2 = (About2)ViewBag.About2;
+    var subs = (List<SubAbout>)ViewBag.SubAbouts;
+    var contact = (Contact)ViewBag.Contact;
+}
+<ul class="nav nav-pills filter-pills mb-3" role="tablist">
+    <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#tab-about" role="tab">Über uns</a></li>
+    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tab-banner" role="tab">Startseiten-Banner</a></li>
+    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tab-subs" role="tab">Vorteile</a></li>
+    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tab-contact" role="tab">Kontaktdaten</a></li>
+</ul>
+<div class="tab-content">
+    <div class="tab-pane fade show active" id="tab-about" role="tabpanel">
+        <div class="card">
+            <form asp-action="SaveAbout" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="AboutID" value="@about.AboutID" />
+                <input type="hidden" name="Image1" value="@about.Image1" />
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="form-group"><label>Titel</label><input name="Title" value="@about.Title" class="form-control" /></div>
+                            <div class="form-group"><label>Beschreibung</label><textarea name="Description" class="form-control" style="height:110px">@about.Description</textarea></div>
+                            <div class="form-group"><label>Zweiter Titel</label><input name="Title2" value="@about.Title2" class="form-control" /></div>
+                            <div class="form-group"><label>Zweite Beschreibung</label><textarea name="Description2" class="form-control" style="height:110px">@about.Description2</textarea></div>
+                        </div>
+                        <div class="col-lg-4">
+                            <label>Bild</label>
+                            <img id="pv-about" src="@about.Image1" class="img-fluid rounded mb-2" alt="" />
+                            <input type="file" name="imageFile" accept="image/*" class="form-control" data-preview="#pv-about" />
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-right">
+                    <a href="/About" target="_blank" class="btn btn-light">Seite ansehen</a>
+                    <button class="btn btn-primary"><i class="fas fa-save mr-1"></i> Speichern</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="tab-pane fade" id="tab-banner" role="tabpanel">
+        <div class="card">
+            <form asp-action="SaveBanner" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="Aboute2ID" value="@about2.Aboute2ID" />
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="form-group"><label>Überschrift</label><input name="Title1" value="@about2.Title1" class="form-control" /></div>
+                            <div class="form-group"><label>Unterzeile</label><input name="Title2" value="@about2.Title2" class="form-control" /></div>
+                            <div class="form-group"><label>Text</label><textarea name="Descriotion" class="form-control" style="height:110px">@about2.Descriotion</textarea></div>
+                        </div>
+                        <div class="col-lg-4">
+                            <label>Hintergrundbild</label>
+                            <img id="pv-banner" src="@about2.Image" class="img-fluid rounded mb-2" alt="" />
+                            <input type="file" name="imageFile" accept="image/*" class="form-control" data-preview="#pv-banner" />
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-right">
+                    <a href="/" target="_blank" class="btn btn-light">Startseite ansehen</a>
+                    <button class="btn btn-primary"><i class="fas fa-save mr-1"></i> Speichern</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="tab-pane fade" id="tab-subs" role="tabpanel">
+        <div class="row">
+            @foreach (var s in subs)
+            {
+                <div class="col-lg-4">
+                    <div class="card">
+                        <form asp-action="SaveSubAbout" method="post">
+                            <input type="hidden" name="SubAboutID" value="@s.SubAboutID" />
+                            <div class="card-body">
+                                <div class="form-group"><label>Titel</label><input name="Title" value="@s.Title" class="form-control" /></div>
+                                <div class="form-group mb-0"><label>Beschreibung</label><textarea name="Description" class="form-control" style="height:90px">@s.Description</textarea></div>
+                            </div>
+                            <div class="card-footer text-right">
+                                <button class="btn btn-sm btn-primary"><i class="fas fa-save mr-1"></i>Speichern</button>
+                            </div>
+                        </form>
+                        <form asp-action="DeleteSubAbout" asp-route-id="@s.SubAboutID" method="post" data-confirm="Vorteil löschen?" class="px-4 pb-3 mt-n2">
+                            <button class="btn btn-sm btn-link text-danger p-0"><i class="fas fa-trash mr-1"></i>Löschen</button>
+                        </form>
+                    </div>
+                </div>
+            }
+            <div class="col-lg-4">
+                <div class="card border-dashed">
+                    <form asp-action="SaveSubAbout" method="post">
+                        <div class="card-body">
+                            <h6 class="text-primary"><i class="fas fa-plus mr-1"></i> Neuer Vorteil</h6>
+                            <div class="form-group"><label>Titel</label><input name="Title" class="form-control" /></div>
+                            <div class="form-group mb-0"><label>Beschreibung</label><textarea name="Description" class="form-control" style="height:90px"></textarea></div>
+                        </div>
+                        <div class="card-footer text-right"><button class="btn btn-sm btn-success"><i class="fas fa-plus mr-1"></i>Hinzufügen</button></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-pane fade" id="tab-contact" role="tabpanel">
+        <div class="card">
+            <form asp-action="SaveContact" method="post">
+                <input type="hidden" name="ContactID" value="@contact.ContactID" />
+                <div class="card-body">
+                    <div class="form-group"><label>Einleitungstext</label><textarea name="Description" class="form-control" style="height:80px">@contact.Description</textarea></div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6"><label>E-Mail</label><input name="Mail" value="@contact.Mail" class="form-control" /></div>
+                        <div class="form-group col-md-6"><label>Telefon</label><input name="Phone" value="@contact.Phone" class="form-control" /></div>
+                        <div class="form-group col-md-8"><label>Adresse</label><input name="Adress" value="@contact.Adress" class="form-control" /></div>
+                        <div class="form-group col-md-4"><label>Ort (Kurzform)</label><input name="MapLocation" value="@contact.MapLocation" class="form-control" /></div>
+                    </div>
+                </div>
+                <div class="card-footer text-right">
+                    <a href="/Contact" target="_blank" class="btn btn-light">Kontaktseite ansehen</a>
+                    <button class="btn btn-primary"><i class="fas fa-save mr-1"></i> Speichern</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        // Zuletzt geöffneten Tab merken
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) { try { sessionStorage.setItem('content-tab', $(e.target).attr('href')); } catch (_) { } });
+        try { var t = sessionStorage.getItem('content-tab'); if (t) $('a[href="' + t + '"]').tab('show'); } catch (_) { }
+    </script>
+}

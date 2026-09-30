@@ -1,0 +1,14 @@
+@model (string Title, string Subtitle, string Image)
+<section class="page-hero" style="background-image:url('@(Model.Image ?? "/Traversal-Liberty/assets/images/banner3.jpg")')">
+    <div class="container">
+        <h2>@Model.Title</h2>
+        @if (!string.IsNullOrEmpty(Model.Subtitle))
+        {
+            <p>@Model.Subtitle</p>
+        }
+        <ul class="breadcrumbs-custom-path">
+            <li><a href="/">Start</a></li>
+            <li class="active"><span class="fa fa-angle-right mx-2" aria-hidden="true"></span>@Model.Title</li>
+        </ul>
+    </div>
+</section>

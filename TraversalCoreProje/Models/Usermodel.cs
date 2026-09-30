@@ -1,25 +1,34 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace TraversalCoreProje.Models
 {
     public class Usermodel
     {
-        [Required (ErrorMessage = "Bitte schreiben Sie Ihren VorNamen")]
+        [Required(ErrorMessage = "Bitte geben Sie Ihren Vornamen ein.")]
         public string Name { get; set; }
-        [Required(ErrorMessage = "Bitte schreiben Sie Ihren NachNamen")]
+
+        [Required(ErrorMessage = "Bitte geben Sie Ihren Nachnamen ein.")]
         public string Surname { get; set; }
-        [Required(ErrorMessage = "Bitte schreiben Sie Ihre E-Mail")]
+
+        [Required(ErrorMessage = "Bitte geben Sie Ihre E-Mail-Adresse ein.")]
+        [EmailAddress(ErrorMessage = "Bitte geben Sie eine gültige E-Mail-Adresse ein.")]
         public string Email { get; set; }
-        [Required(ErrorMessage = "Bitte schreiben Sie Ihre TelefonNumer")]
+
+        [Required(ErrorMessage = "Bitte geben Sie Ihre Telefonnummer ein.")]
         public string Telefonno { get; set; }
-        [Required(ErrorMessage = "Bitte schreiben Sie Ihren Password")]
+
+        [Required(ErrorMessage = "Bitte geben Sie ein Passwort ein.")]
+        [MinLength(6, ErrorMessage = "Das Passwort muss mindestens 6 Zeichen lang sein.")]
         public string Password { get; set; }
-        [Required(ErrorMessage = "Bitte schreiben Sie Ihren PasswordConfirm")]
-        [Compare("Password",ErrorMessage =("Die Wörter reimen sich also nicht."))]
+
+        [Required(ErrorMessage = "Bitte bestätigen Sie Ihr Passwort.")]
+        [Compare("Password", ErrorMessage = "Die Passwörter stimmen nicht überein.")]
         public string PasswordConfirm { get; set; }
-        [Required(ErrorMessage = "Bitte wählen Sie ihr Geschlescht")]
+
+        [Required(ErrorMessage = "Bitte wählen Sie Ihr Geschlecht.")]
         public string Gender { get; set; }
-        [Required(ErrorMessage = "Bitte wählen Sie ihr photo")]
+
+        /// <summary>Profilbild (optional).</summary>
         public IFormFile imagefile { get; set; }
     }
 }

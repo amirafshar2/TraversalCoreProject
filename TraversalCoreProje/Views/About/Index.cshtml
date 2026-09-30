@@ -1,0 +1,67 @@
+@model AboutPageViewModel
+@{
+    ViewData["Title"] = "Über uns";
+}
+<partial name="_PageHero" model="@(("Über uns", "Wer wir sind und wie Traversal funktioniert.", Model.About?.Image1))" />
+
+<section class="w3l-content-6 py-5">
+    <div class="container py-lg-5">
+        <div class="row">
+            <div class="col-lg-6 content-6-left pr-lg-5">
+                <h6 class="sub-title">Traversal</h6>
+                <h3 class="hny-title">@Model.About?.Title</h3>
+                <p class="mt-4 text-pre">@Model.About?.Description</p>
+            </div>
+            <div class="col-lg-6 content-6-right mt-lg-0 mt-4">
+                <h4 class="mb-3" style="font-weight:700">@Model.About?.Title2</h4>
+                <p class="mb-3 text-pre">@Model.About?.Description2</p>
+                <a href="/Destiniton" class="btn btn-style btn-primary mt-4">Reiseziele entdecken</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5" style="background:rgba(0,0,0,.02)">
+    <div class="container py-lg-4">
+        <div class="title-content text-center mb-5">
+            <h6 class="sub-title">Warum Traversal?</h6>
+            <h3 class="hny-title">Das macht uns aus</h3>
+        </div>
+        <div class="row">
+            @{ var icons = new[] { "fa-users", "fa-compass", "fa-check-circle", "fa-heart", "fa-globe", "fa-star" }; var i = 0; }
+            @foreach (var s in Model.SubAbouts)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="feature-box">
+                        <span class="fa @icons[i++ % icons.Length]"></span>
+                        <h4>@s.Title</h4>
+                        <p class="mb-0">@s.Description</p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<section class="w3l-stats py-5">
+    <div class="gallery-inner container py-lg-0 py-3">
+        <div class="row stats-con pb-lg-3">
+            <div class="col-lg-4 col-6 stats_info counter_grid"><p class="counter">@Model.DestinationCount</p><h4>Reiseziele</h4></div>
+            <div class="col-lg-4 col-6 stats_info counter_grid1"><p class="counter">@Model.CustomerCount</p><h4>Kunden</h4></div>
+            <div class="col-lg-4 col-12 stats_info counter_grid2 mt-lg-0 mt-5"><p class="counter">@Model.ReservationCount</p><h4>Bestätigte Reisen</h4></div>
+        </div>
+    </div>
+</section>
+
+@await Component.InvokeAsync("_GuidesPartial")
+
+<section class="py-5">
+    <div class="container">
+        <div class="contact-card text-center">
+            <h3 class="hny-title mb-3" style="font-size:30px">Ein Blick hinter die Kulissen</h3>
+            <p class="mb-4">Traversal ist ein Portfolio-Projekt: eine mehrschichtige ASP.NET-Core-MVC-Anwendung (Entity-, DataAccess-, Business- und Präsentationsschicht) mit Entity Framework Core, SQLite, ASP.NET Core Identity und FluentValidation.</p>
+            <a href="/Demo/Admin" class="btn btn-style btn-primary m-1">Admin-Panel testen</a>
+            <a href="/Demo/Member" class="btn btn-style btn-secondary m-1">Kundenbereich testen</a>
+        </div>
+    </div>
+</section>

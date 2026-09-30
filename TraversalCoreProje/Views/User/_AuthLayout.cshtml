@@ -1,0 +1,33 @@
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] · Traversal</title>
+    <link rel="icon" type="image/svg+xml" href="~/favicon.svg">
+    <link rel="stylesheet" href="~/css/fonts.css">
+    <link rel="stylesheet" href="~/Traversal-Liberty/assets/css/style-liberty.css">
+    <link rel="stylesheet" href="~/css/auth.css" asp-append-version="true">
+</head>
+<body>
+    <main class="auth-wrap">
+        <aside class="auth-visual" style="background-image:url('@(ViewData["Image"] ?? "/img/destinations/griechenland-1.jpg")')">
+            <a href="/" class="auth-brand"><img src="~/favicon.svg" alt="" /> Traversal</a>
+            <div class="auth-quote">
+                <h2>@ViewData["Headline"]</h2>
+                <p>@ViewData["Subline"]</p>
+            </div>
+        </aside>
+        <section class="auth-panel">
+            <div class="auth-card">
+                @RenderBody()
+            </div>
+        </section>
+    </main>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

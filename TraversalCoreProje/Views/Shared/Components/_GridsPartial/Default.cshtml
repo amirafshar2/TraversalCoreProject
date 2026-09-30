@@ -1,44 +1,37 @@
-﻿@using EntityLayer.Concrate
 @model List<Destiniton>
-
-
 <section class="w3l-grids-3 py-5">
     <div class="container py-md-5">
-        <div class="title-content text-left mb-lg-5 mb-4">
-            <h6 class="sub-title">Besuchen</h6>
-            <h3 class="hny-title">Beliebtestes Reiseziel</h3>
+        <div class="title-content text-left mb-lg-5 mb-4 d-flex flex-wrap justify-content-between align-items-end">
+            <div>
+                <h6 class="sub-title">Entdecken</h6>
+                <h3 class="hny-title">Beliebte Reiseziele</h3>
+            </div>
+            <a href="/Destiniton" class="btn btn-style btn-primary mt-3">Alle Reiseziele</a>
         </div>
         <div class="row bottom-ab-grids">
-            <!--/row-grids-->
-            @foreach (var Item in Model)
+            @foreach (var item in Model)
             {
-                <div class="col-lg-6 subject-card  mt-4">
+                <div class="col-lg-6 subject-card mt-4">
                     <div class="subject-card-header p-4">
-                        <a href="@Url.Action("Destiniton","Destiniton",new { id = Item.DestinationID })" class="card_title p-lg-4d-block">
+                        <a href="@Url.Action("Destiniton", "Destiniton", new { id = item.DestinationID })" class="card_title p-lg-4d-block">
                             <div class="row align-items-center">
                                 <div class="col-sm-5 subject-img">
-                                    <img src="@Item.Image" class="img-fluid" alt="">
+                                    <img src="@item.Image" class="img-fluid" alt="@item.City" style="height:190px;width:100%;object-fit:cover" loading="lazy">
                                 </div>
                                 <div class="col-sm-7 subject-content mt-sm-0 mt-4">
-                                    <h4>@Item.City</h4>
-                                    <p>@Item.DayNight</p>
+                                    <h4>@item.City</h4>
+                                    <p>@item.DayNight</p>
                                     <div class="dst-btm">
-                                        <h6 class=""> Preis ab </h6>
-                                        <span>€@Item.Price</span>
+                                        <h6>Preis ab</h6>
+                                        <span>@ViewHelpers.Euro(item.Price)</span>
                                     </div>
-                                    <p class="sub-para">@Item.Description</p>
+                                    <p class="sub-para">@item.Description</p>
                                 </div>
                             </div>
                         </a>
-                        <br>
-
-                        <a class="btn btn-action bg-danger text-white" href="@Url.Action("Index", "Reservation", new { area = "Member", id = Item.DestinationID })">Reservieren</a>
-                       
                     </div>
                 </div>
             }
-            <!--/row-grids-->
         </div>
-
     </div>
 </section>

@@ -1,0 +1,85 @@
+@model ReservationModel
+@{
+    var guides = (List<Guide>)ViewBag.Guides ?? new List<Guide>();
+    var isEdit = Model.id > 0;
+}
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <form asp-action="@(isEdit ? "Update" : "AddReservation")" method="post" id="res-form">
+                <input type="hidden" asp-for="id" />
+                <input type="hidden" asp-for="Destintionid" />
+                <div class="card-body">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="ReservStart">Anreise</label>
+                            <input asp-for="ReservStart" type="date" class="form-control" min="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                            <span asp-validation-for="ReservStart" class="text-danger small"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="ReservEnd">Abreise</label>
+                            <input asp-for="ReservEnd" type="date" class="form-control" />
+                            <span asp-validation-for="ReservEnd" class="text-danger small"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="HowmanyPapel">Anzahl Personen</label>
+                            <select asp-for="HowmanyPapel" class="form-control" id="persons">
+                                @for (int i = 1; i <= 10; i++)
+                                {
+                                    <option value="@i">@i @(i == 1 ? "Person" : "Personen")</option>
+                                }
+                            </select>
+                            <span asp-validation-for="HowmanyPapel" class="text-danger small"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="Guidid">Wunsch-Reiseführer (optional)</label>
+                            <select asp-for="Guidid" class="form-control">
+                                <option value="">Keine Präferenz</option>
+                                @foreach (var g in guides)
+                                {
+                                    <option value="@g.GuideID">@g.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group col-12">
+                            <label asp-for="Note">Wünsche &amp; Anmerkungen</label>
+                            <textarea asp-for="Note" class="form-control" style="height:90px" maxlength="500" placeholder="z. B. Zimmer mit Meerblick, vegetarisches Essen …"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-right">
+                    <a href="@(isEdit ? Url.Action("GetReservations") : Url.Action("NewReservation"))" class="btn btn-light">Zurück</a>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane mr-1"></i> @(isEdit ? "Änderung senden" : "Reservierung anfragen")</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card dest-card">
+            <img src="@Model.Image" alt="" />
+            <div class="card-body">
+                <h5 class="mb-1">@Model.City</h5>
+                <div class="muted-small mb-3">@Model.DayNight</div>
+                <div class="d-flex justify-content-between"><span>Preis pro Person</span><strong>@ViewHelpers.Euro(Model.Price)</strong></div>
+                <div class="d-flex justify-content-between"><span>Personen</span><strong id="sum-persons">@Model.HowmanyPapel</strong></div>
+                <hr />
+                <div class="d-flex justify-content-between h5 mb-0"><span>Gesamt</span><span class="text-primary" id="sum-total">@ViewHelpers.Euro(Model.Price * Model.HowmanyPapel)</span></div>
+                <p class="muted-small mt-3 mb-0"><i class="fas fa-info-circle mr-1"></i>Die Reservierung ist unverbindlich und wird vom Team bestätigt.</p>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var price = @Model.Price.ToString(System.Globalization.CultureInfo.InvariantCulture);
+        var fmt = new Intl.NumberFormat('de-DE', { maximumFractionDigits: 0 });
+        var sel = document.getElementById('persons');
+        sel.addEventListener('change', function () {
+            document.getElementById('sum-persons').textContent = sel.value;
+            document.getElementById('sum-total').textContent = fmt.format(price * sel.value) + ' €';
+        });
+        var start = document.getElementById('ReservStart'), end = document.getElementById('ReservEnd');
+        start.addEventListener('change', function () { end.min = start.value; if (end.value && end.value <= start.value) end.value = ''; });
+    });
+</script>

@@ -1,17 +1,15 @@
-﻿
+@inject Microsoft.Extensions.Options.IOptions<DemoOptions> DemoConfig
 @{
     Layout = null;
+    var demo = DemoConfig.Value;
+    var isDemoUser = demo.Enabled && (User.Identity?.Name?.EndsWith("@traversal.demo", StringComparison.OrdinalIgnoreCase) ?? false);
 }
-
 <!DOCTYPE html>
-<html lang="en">
-
-
-<!-- index.html  21 Nov 2019 03:44:50 GMT -->
+<html lang="de">
 <head>
     @await Html.PartialAsync("~/Views/_UserLayoutPartial/_HeadlinkPartial.cshtml")
+    @RenderSection("Styles", required: false)
 </head>
-
 <body>
     <div class="loader"></div>
     <div id="app">
@@ -21,21 +19,20 @@
                 <div class="form-inline mr-auto">
                     <ul class="navbar-nav mr-3">
                         <li>
-                            <a href="#" data-toggle="sidebar" class="nav-link nav-link-lg
-									collapse-btn"> <i data-feather="align-justify"></i></a>
-                        </li>
-                        <li>
-                            <a href="#" class="nav-link nav-link-lg fullscreen-btn">
-                                <i data-feather="maximize"></i>
+                            <a href="#" data-toggle="sidebar" class="nav-link nav-link-lg collapse-btn" title="Menü ein-/ausklappen">
+                                <i data-feather="align-justify"></i>
                             </a>
                         </li>
                         <li>
-                            <form class="form-inline mr-auto">
+                            <a href="#" class="nav-link nav-link-lg fullscreen-btn" title="Vollbild">
+                                <i data-feather="maximize"></i>
+                            </a>
+                        </li>
+                        <li class="d-none d-md-block">
+                            <form class="form-inline mr-auto" method="get" action="/Destiniton/Index">
                                 <div class="search-element">
-                                    <input class="form-control" type="search" placeholder="Search" aria-label="Search" data-width="200">
-                                    <button class="btn" type="submit">
-                                        <i class="fas fa-search"></i>
-                                    </button>
+                                    <input class="form-control" type="search" name="q" placeholder="Reiseziel suchen …" aria-label="Suche" data-width="220">
+                                    <button class="btn" type="submit"><i class="fas fa-search"></i></button>
                                 </div>
                             </form>
                         </li>
@@ -44,12 +41,43 @@
                 @await Html.PartialAsync("~/Views/_UserLayoutPartial/_NavbarPartial.cshtml")
             </nav>
             <div class="main-sidebar sidebar-style-2">
-                <!-- Es gibt Logo auch in dise Partialview -->
-               @await Html.PartialAsync("~/Views/_UserLayoutPartial/_SidbarPartial.cshtml")
+                @await Html.PartialAsync("~/Views/_UserLayoutPartial/_SidbarPartial.cshtml")
             </div>
-            <!-- Main Content -->
+
             <div class="main-content">
+                @if (isDemoUser)
+                {
+                    <div class="demo-strip">
+                        <div>
+                            <i class="fas fa-flask mr-2"></i>
+                            <strong>Demo-Modus</strong> – Sie können alles ausprobieren. Die Daten werden automatisch alle @demo.ResetIntervalHours Stunden zurückgesetzt.
+                        </div>
+                        <div class="demo-strip-links">
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <a href="/Demo/Member"><i class="fas fa-user mr-1"></i>Als Kunde ansehen</a>
+                            }
+                            else
+                            {
+                                <a href="/Demo/Admin"><i class="fas fa-user-shield mr-1"></i>Als Admin ansehen</a>
+                            }
+                            <a href="@demo.PortfolioUrl" target="_blank" rel="noopener"><i class="fas fa-arrow-left mr-1"></i>Zum Portfolio</a>
+                        </div>
+                    </div>
+                }
                 <section class="section">
+                    @if (ViewData["Title"] != null)
+                    {
+                        <div class="section-header-lite">
+                            <h1>@ViewData["Title"]</h1>
+                            @if (ViewData["Subtitle"] != null)
+                            {
+                                <p class="text-muted mb-0">@ViewData["Subtitle"]</p>
+                            }
+                            @RenderSection("HeaderActions", required: false)
+                        </div>
+                    }
+                    @await Html.PartialAsync("~/Views/Shared/_Alerts.cshtml")
                     @RenderBody()
                 </section>
                 <div class="settingSidebar">
@@ -58,18 +86,15 @@
             </div>
             <footer class="main-footer">
                 <div class="footer-left">
-                    <a href="templateshub.net">Templateshub</a>
+                    &copy; @DateTime.Now.Year Traversal · Demo-Projekt von <a href="@demo.PortfolioUrl" target="_blank" rel="noopener">Amir Reza Afshar</a>
                 </div>
                 <div class="footer-right">
+                    <a href="/Legal">Impressum &amp; Datenschutz</a>
                 </div>
             </footer>
         </div>
     </div>
-    <!-- General JS Scripts -->
     @await Html.PartialAsync("~/Views/_UserLayoutPartial/_ScriptPartial.cshtml")
+    @RenderSection("Scripts", required: false)
 </body>
-@RenderSection("Scripts", required: false)
-
-
-<!-- index.html  21 Nov 2019 03:47:04 GMT -->
 </html>

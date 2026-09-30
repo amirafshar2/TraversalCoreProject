@@ -1,49 +1,40 @@
-﻿@model TraversalCoreProje.Models.LoginModel
+@model LoginModel
 @{
-    Layout = null;
+    Layout = "_AuthLayout";
+    ViewData["Title"] = "Anmelden";
+    ViewData["Headline"] = "Willkommen zurück!";
+    ViewData["Subline"] = "Melden Sie sich an, um Reisen zu reservieren, Bewertungen zu schreiben und Ihre Buchungen zu verwalten.";
+    var demo = (DemoOptions)ViewBag.Demo;
+}
+<h1 class="auth-title">Anmelden</h1>
+<p class="auth-sub">Noch kein Konto? <a href="/User/registor">Jetzt registrieren</a></p>
+
+@if (demo?.Enabled == true)
+{
+    <div class="demo-box">
+        <div class="demo-box-title"><span class="fa fa-flask"></span> Demo ohne Registrierung</div>
+        <div class="demo-box-buttons">
+            <a href="/Demo/Admin" class="btn-demo admin"><span class="fa fa-user-secret"></span> Als Admin</a>
+            <a href="/Demo/Member" class="btn-demo member"><span class="fa fa-user"></span> Als Kunde</a>
+        </div>
+    </div>
+    <div class="auth-divider"><span>oder mit E-Mail</span></div>
 }
 
-<!DOCTYPE html>
-<html lang="de" dir="ltr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrierungsseite</title>
-    <link href="~/Data/Css/Loginstyle.css" rel="stylesheet" />
-</head>
-<body>
-    <main class="main-container">
-        <div class="left-panel">
-            <a href="/Default/Index/">
-                <div class="image-wrapper">
-                    <img src="/Traversal-Starter/assets/images/g2.jpg" alt="" class="profile-image">
-                </div>
-            </a>
-            <h1 class="brand-name">Traversal</h1>
-        </div>
-
-        <div class="right-panel">
-            <h2 class="form-title">REGISTRIEREN</h2>
-            <form class="register-form" method="post">
-                <input type="email" asp-for=Username placeholder="E-Mail" class="form-input" required>
-                <span asp-validation-for="Username" style="color:red"></span>
-                <input type="password" asp-for=Password placeholder="Password" class="form-input" required>
-                <span asp-validation-for=Password style="color:red"></span>
-                <button type="submit" class="next-button">WEITER</button>
-
-                @*<div class="separator">
-                <span class="separator-text">ODER MIT</span>
-                </div>*@
-
-                @*<div class="social-buttons">
-                <button type="button" class="social-button">ANMELDEN</button>
-                <button type="button" class="social-button">ANMELDEN</button>
-                </div>*@
-
-                <p class="terms-text">Mit der Registrierung stimmen Sie den Allgemeinen Geschäftsbedingungen und Datenschutzrichtlinien von Traversal zu.</p>
-                <p class="login-text">Sie haben bereits ein Konto? <a href="/User/registor/">Anmelden</a></p>
-            </form>
-        </div>
-    </main>
-</body>
-</html>
+<form asp-action="Login" method="post" novalidate>
+    <input type="hidden" asp-for="ReturnUrl" />
+    <div asp-validation-summary="ModelOnly" class="auth-error"></div>
+    <div class="auth-field">
+        <label asp-for="Username">E-Mail-Adresse</label>
+        <input asp-for="Username" type="email" autocomplete="username" placeholder="name@beispiel.de" />
+        <span asp-validation-for="Username" class="field-error"></span>
+    </div>
+    <div class="auth-field">
+        <label asp-for="Password">Passwort</label>
+        <input asp-for="Password" type="password" autocomplete="current-password" placeholder="••••••••" />
+        <span asp-validation-for="Password" class="field-error"></span>
+    </div>
+    <label class="auth-check"><input asp-for="RememberMe" /> Angemeldet bleiben</label>
+    <button type="submit" class="auth-submit">Anmelden</button>
+</form>
+<p class="auth-foot"><a href="/"><span class="fa fa-arrow-left"></span> Zurück zur Website</a></p>

@@ -1,0 +1,80 @@
+@model Reservition
+@{
+    ViewData["Title"] = $"Reservierung #{Model.id}";
+    var guides = (List<Guide>)ViewBag.Guides;
+    var total = Model.HowmanyPapel * (Model.Destiniton?.Price ?? 0);
+}
+@section HeaderActions {
+    <a asp-action="Index" class="btn btn-light"><i class="fas fa-arrow-left mr-1"></i> Zurück</a>
+}
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="trip-hero mb-4" style="background-image:url('@Model.Destiniton?.CoverImage')">
+            <div>
+                @ViewHelpers.StatusBadge(Model.status)
+                <h3 class="mt-2 mb-1">@Model.Destiniton?.City</h3>
+                <div>@ViewHelpers.LongDate(Model.ReservStart) – @ViewHelpers.LongDate(Model.ReservEnd) · @ViewHelpers.Nights(Model) Nächte</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header"><h4>Buchungsdetails</h4></div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-6 mb-3"><div class="muted-small">Gebucht am</div><div class="font-weight-bold">@Model.ReservDate.ToString("dd.MM.yyyy HH:mm")</div></div>
+                    <div class="col-sm-6 mb-3"><div class="muted-small">Personen</div><div class="font-weight-bold">@Model.HowmanyPapel</div></div>
+                    <div class="col-sm-6 mb-3"><div class="muted-small">Preis pro Person</div><div class="font-weight-bold">@ViewHelpers.Euro(Model.Destiniton?.Price ?? 0)</div></div>
+                    <div class="col-sm-6 mb-3"><div class="muted-small">Gesamtsumme</div><div class="font-weight-bold text-primary h5 mb-0">@ViewHelpers.Euro(total)</div></div>
+                    <div class="col-12"><div class="muted-small">Wünsche / Anmerkungen des Kunden</div><div class="text-pre">@(string.IsNullOrWhiteSpace(Model.Note) ? "–" : Model.Note)</div></div>
+                </div>
+            </div>
+            <div class="card-footer bg-whitesmoke text-right actions">
+                @if (Model.status != ReservationStatus.Approved)
+                {
+                    <form asp-action="Approve" asp-route-id="@Model.id" asp-route-returnUrl="@Url.Action("Details", new { id = Model.id })" method="post">
+                        <button class="btn btn-success"><i class="fas fa-check mr-1"></i> Bestätigen</button>
+                    </form>
+                }
+                @if (Model.status != ReservationStatus.Canceled)
+                {
+                    <form asp-action="Cancel" asp-route-id="@Model.id" asp-route-returnUrl="@Url.Action("Details", new { id = Model.id })" method="post" data-confirm="Reservierung stornieren?">
+                        <button class="btn btn-warning"><i class="fas fa-ban mr-1"></i> Stornieren</button>
+                    </form>
+                }
+                <form asp-action="Delete" asp-route-id="@Model.id" method="post" data-confirm="Reservierung endgültig löschen?">
+                    <button class="btn btn-outline-danger"><i class="fas fa-trash mr-1"></i> Löschen</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header"><h4>Kunde</h4></div>
+            <div class="card-body text-center">
+                <img src="@Model.User?.Image" class="avatar-lg mb-3" alt="" />
+                <h5 class="mb-0">@Model.User?.Name @Model.User?.Surname</h5>
+                <div class="muted-small mb-3">@Model.User?.Email</div>
+                <div><i class="fas fa-phone mr-1 text-muted"></i> @Model.User?.PhoneNumber</div>
+                @if (Model.User != null)
+                {
+                    <a asp-controller="User" asp-action="Comments" asp-route-id="@Model.User.Id" class="btn btn-sm btn-light mt-3">Profil &amp; Kommentare</a>
+                }
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header"><h4>Reiseführer</h4></div>
+            <div class="card-body">
+                <form asp-action="AssignGuide" asp-route-id="@Model.id" method="post">
+                    <select name="guideId" class="form-control mb-2">
+                        <option value="">– kein Reiseführer –</option>
+                        @foreach (var g in guides)
+                        {
+                            <option value="@g.GuideID" selected="@(Model.Guidid == g.GuideID)">@g.Name</option>
+                        }
+                    </select>
+                    <button class="btn btn-primary btn-block">Zuweisen</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

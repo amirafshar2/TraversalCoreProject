@@ -1,51 +1,30 @@
-﻿using BusinessLayer.Abstract;
+using BusinessLayer.Abstract;
 using DataAccessLayer.Abstract;
 using EntityLayer.Concrate;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLayer.Concrate
 {
-    public class DestinitonsManager : IDestinitionServic
+    public class DestinitonsManager : GenericManager<Destiniton>, IDestinitionServic
     {
-        IDestinationDAL _ıDestinationDal;
+        private readonly IDestinationDAL _destinationDal;
 
-        public DestinitonsManager(IDestinationDAL ıDestinationDal)
+        public DestinitonsManager(IDestinationDAL dal) : base(dal)
         {
-            _ıDestinationDal = ıDestinationDal;
+            _destinationDal = dal;
         }
 
-        public void Delete(Destiniton entity)
-        {
-            _ıDestinationDal.Delete(entity);
-        }
+        public List<Destiniton> GetWhitTourlider() => _destinationDal.GetallWhitTourlider();
 
-        public List<Destiniton> GetAll()
-        {
-            return  _ıDestinationDal.GetList();   
-        }
+        public List<Destiniton> GetActive() => _destinationDal.GetListByFilter(d => d.Status);
 
-        public Destiniton GetById(int id)
-        {
-          return _ıDestinationDal.Get(id);
-        }
+        public Destiniton GetWithDetails(int id) => _destinationDal.GetWithDetails(id);
 
-        public List<Destiniton> GetWhitTourlider()
+        public void ToggleStatus(int id, bool status)
         {
-            return _ıDestinationDal.GetallWhitTourlider();
-        }
-
-        public void Insert(Destiniton entity)
-        {
-            _ıDestinationDal.Insert(entity);
-        }
-
-        public void Update(Destiniton entity)
-        {
-            _ıDestinationDal.Updater(entity);
+            var d = _destinationDal.Get(id);
+            if (d == null) return;
+            d.Status = status;
+            _destinationDal.Updater(d);
         }
     }
 }

@@ -1,0 +1,737 @@
+{
+  "destinations": [
+    {
+      "City": "Paris",
+      "DayNight": "6 Tage / 5 Nächte",
+      "Price": 1650,
+      "Capacity": 20,
+      "Status": true,
+      "Description": "Eiffelturm, Louvre und Montmartre – die Stadt der Lichter mit Seine-Bootsfahrt.",
+      "Image": "/img/destinations/paris-4.jpg",
+      "CoverImage": "/img/destinations/paris-1.jpg",
+      "Image2": "/img/destinations/paris-2.jpg",
+      "Image3": "/img/destinations/paris-3.jpg",
+      "Title1": "Paris – Ein unvergessliches Erlebnis wartet auf Sie!",
+      "Detail1": "Paris, die Stadt der Lichter, der Liebe und des exquisiten Geschmacks! Von der majestätischen Eiffel-Turm bis zu den versteckten Gassen des Montmartre, Paris bietet eine unvergleichliche Mischung aus Geschichte, Kultur und Romantik. Planen Sie jetzt Ihren Traumurlaub in der französischen Hauptstadt und lassen Sie sich von der einzigartigen Atmosphäre verzaubern. Erleben Sie unvergessliche Momente, entdecken Sie wunderschöne Plätze und tauchen Sie ein in die Pariser Lebensart. Hier finden Sie Inspiration und Tipps für Ihren perfekten Paris-Trip. Los geht's!",
+      "Detail2": "Die Eiffel-Turm – Ein Symbol der Stadt\n\nDer Eiffelturm ist wohl das bekannteste Wahrzeichen von Paris und ein absolutes Muss für jeden Besucher. Mit seinen 330 Metern Höhe bietet er einen atemberaubenden Panoramablick über die ganze Stadt. Reservieren Sie Ihre Tickets online im Voraus, um lange Wartezeiten zu vermeiden. Besonders romantisch ist ein Besuch am Abend, wenn der Turm in goldenes Licht getaucht ist. Nutzen Sie den Aufzug oder erklimmen Sie die Treppen für ein einzigartiges Erlebnis. Oben angekommen, genießen Sie den Ausblick und machen Sie unvergessliche Fotos. Die Aussicht ist einfach unvergleichlich und bietet ein einmaliges Erlebnis. Vergessen Sie nicht, einen Champagner zu genießen während Sie die Aussicht betrachten.",
+      "Detail3": "Der Louvre, eines der größten und bedeutendsten Kunstmuseen der Welt, beherbergt unzählige Meisterwerke, darunter die Mona Lisa von Leonardo da Vinci. Planen Sie genügend Zeit für Ihren Besuch ein, denn es gibt viel zu entdecken. Konzentrieren Sie sich auf bestimmte Bereiche oder Kunstströmungen, um den Besuch effizienter zu gestalten. Eine geführte Tour kann Ihnen helfen, die wichtigsten Highlights zu entdecken und mehr über die Geschichte der Kunstwerke zu erfahren. Die Architektur des Louvre-Palastes ist ebenfalls sehenswert und ein Erlebnis für sich. Lassen Sie sich von der Größe und der Geschichte dieses außergewöhnlichen Museums beeindrucken.",
+      "Title3": "Der Louvre – Kunst und Geschichte vereint",
+      "Detail4": "Montmartre, das Künstlerviertel im Norden von Paris, besticht durch seinen einzigartigen Charme und seine romantische Atmosphäre. Hier finden Sie unzählige kleine Boutiquen, Cafés und Galerien. Besuchen Sie die Sacré-Cœur-Basilika, die einen atemberaubenden Blick über die Stadt bietet. Verbringen Sie Zeit in den malerischen Gassen und lassen Sie sich von den Straßenkünstlern und Musikern begeistern. Erkunden Sie die versteckten Ecken und entdecken Sie die besondere Atmosphäre dieses Viertels. Ein Spaziergang durch Montmartre ist ein unvergessliches Erlebnis.",
+      "Title4": "Montmartre – Das Künstlerviertel mit Charme",
+      "Detail5": "Ein Spaziergang entlang der Seine gehört zu jedem Paris-Besuch. Die Seine schlängelt sich durch das Herz von Paris und bietet wunderschöne Ausblicke auf die Stadt. Sie können an den vielen Brücken entlang spazieren, die Sehenswürdigkeiten von der Wasserseite aus bewundern und die Atmosphäre genießen. Setzen Sie sich in eines der vielen Cafés am Ufer und genießen Sie einen Kaffee oder ein Glas Wein. Eine Bootsfahrt auf der Seine ist ebenfalls eine empfehlenswerte Aktivität. Es gibt verschiedene Anbieter, die Bootsfahrten mit verschiedenen Routen anbieten. Lassen Sie sich von der Schönheit der Stadt verzaubern.",
+      "Title5": "Ein Spaziergang entlang der Seine"
+    },
+    {
+      "City": "Bangkok",
+      "DayNight": "7 Tage / 6 Nächte",
+      "Price": 950,
+      "Capacity": 30,
+      "Status": true,
+      "Description": "Tempel, schwimmende Märkte und Streetfood in Thailands pulsierender Hauptstadt.",
+      "Image": "/img/destinations/bangkok-3.jpg",
+      "CoverImage": "/img/destinations/bangkok-1.jpg",
+      "Image2": "/img/destinations/bangkok-2.jpg",
+      "Image3": "/img/destinations/bangkok-3.jpg",
+      "Title1": "Bangkoks Zauber entdecken: Tempel, Märkte und mehr!",
+      "Detail1": "Begleiten Sie mich auf einer 7-tägigen/6-nächtlichen Reise nach Bangkok, der pulsierenden Hauptstadt Thailands! Erleben Sie die faszinierende Mischung aus prächtigen Tempeln, geschäftigen Märkten, köstlichem Street Food und luxuriösen Einkaufszentren. Diese Reise ist perfekt für Kulturinteressierte, Shopping-Fans und alle, die das authentische Thailand erleben möchten. Wir übernachten in komfortablen Hotels und haben genügend Zeit, die Stadt auf eigene Faust zu erkunden. Lassen Sie sich von der einzigartigen Atmosphäre Bangkoks verzaubern und schaffen Sie unvergessliche Erinnerungen.",
+      "Detail2": "Bangkok ist eine Stadt voller Energie, Lebendigkeit und herzlicher Menschen. Jede Ecke birgt neue Überraschungen und Entdeckungen",
+      "Detail3": "Wir erkunden einige der luxuriösen Einkaufszentren Bangkoks, wie das Siam Paragon. Hier finden Sie internationale Marken und können in elegantem Ambiente shoppen. Neben dem Shopping bieten die Malls auch Kinos, Restaurants und andere Unterhaltungsmöglichkeiten.",
+      "Title3": "Luxus-Shopping & Entertainment: Siam Paragon u.v.m.",
+      "Detail4": "Mit dem Longtail-Boot fahren wir über den Chao Phraya und durch die Khlongs, die kleinen Kanäle der Stadt. Ein Höhepunkt ist der Wat Arun, der „Tempel der Morgenröte“, dessen Porzellan-Mosaike im Abendlicht besonders schön leuchten.",
+      "Title4": "Chao Phraya & Wat Arun: Bangkok vom Wasser aus",
+      "Detail5": "Zum Abschluss besuchen wir den Großen Palast und den Tempel des Smaragd-Buddha (Wat Phra Kaew). Die prachtvollen Gebäude mit ihren goldenen Dächern und filigranen Verzierungen gehören zu den eindrucksvollsten Sehenswürdigkeiten Südostasiens. Bitte denken Sie an angemessene Kleidung – Schultern und Knie sollten bedeckt sein.",
+      "Title5": "Der Große Palast & Wat Phra Kaew: Königlicher Glanz"
+    },
+    {
+      "City": "Malediven",
+      "DayNight": "8 Tage / 7 Nächte",
+      "Price": 2500,
+      "Capacity": 20,
+      "Status": true,
+      "Description": "Weiße Sandstrände, türkisfarbene Lagunen und Wasservillen im Indischen Ozean.",
+      "Image": "/img/destinations/malediven-3.jpg",
+      "CoverImage": "/img/destinations/malediven-1.jpg",
+      "Image2": "/img/destinations/malediven-2.jpg",
+      "Image3": "/img/destinations/malediven-3.jpg",
+      "Title1": "Sonnenuntergänge im Paradies: Malediven-Erlebnisreise",
+      "Detail1": "Die Malediven, ein Archipel von über 1000 Inseln im Indischen Ozean, bieten ein unvergleichliches Urlaubserlebnis. Kristallklares türkisfarbenes Wasser, weisser Sandstrand, üppige tropische Vegetation und ein unglaublich entspanntes Ambiente erwarten Sie. Tauchen Sie ein in die Unterwasserwelt, entdecken Sie bunte Korallenriffe und schwimmen Sie mit farbenfrohen Fischen. Erleben Sie unvergessliche Sonnenuntergänge, die das Meer in ein leuchtendes Farbenspiel tauchen. Geniessen Sie luxuriöse Resorts mit allen Annehmlichkeiten und lassen Sie den Alltag weit hinter sich. Die Inseln bieten eine Vielzahl an Wassersportarten, von Schnorcheln und Tauchen bis hin zu Windsurfen und Kajakfahren. Entspannen Sie sich in einer luxuriösen Villa am Strand oder lassen Sie sich in einem Spa verwöhnen.",
+      "Detail2": "Die Malediven sind bekannt für ihre luxuriösen Resorts und privaten Villen, die höchsten Komfort und Privatsphäre bieten. Viele Resorts sind auf kleinen Inseln gelegen und bieten ihren Gästen einen exklusiven Rückzugsort. Geniessen Sie Ihren eigenen privaten Pool, direkten Zugang zum Strand und einen erstklassigen Service. Die Villen sind meist stilvoll eingerichtet und verfügen über moderne Annehmlichkeiten. Die Resorts bieten zudem eine Vielzahl an kulinarischen Erlebnissen, von internationalen Buffets bis hin zu exklusiven Gourmet-Restaurants. Ein besonderes Highlight sind die über Wasser gebauten Villen, die einen atemberaubenden Blick auf das Meer bieten. Viele Resorts bieten auch spezielle Angebote für Paare und Familien.",
+      "Detail3": "Viele Resorts auf den Malediven bieten Wasservillen direkt über der Lagune. Vom eigenen Deck aus steigen Sie direkt ins warme, kristallklare Wasser – ein Erlebnis, das man so schnell nicht vergisst.",
+      "Title3": "Wasservillen & Resorts: Luxus über der Lagune",
+      "Detail4": "Die Malediven bieten neben den traumhaften Stränden und dem kristallklaren Wasser auch eine unberührte Natur und eine einzigartige Flora und Fauna. Erkunden Sie die Inseln zu Fuss oder mit dem Fahrrad und entdecken Sie die wunderschöne Vegetation. Besuchen Sie die lokalen Märkte und entdecken Sie die vielfältigen Produkte der Inselbewohner. Viele Inseln beherbergen seltene Vogelarten und andere Tiere. Die unberührte Natur bietet die Möglichkeit zur Entspannung und Erholung abseits des touristischen Trubels. Auch Botanische Gärten und Naturreservate laden zum Besuch ein und bieten faszinierende Einblicke in die Flora und Fauna der Region.",
+      "Title4": "Unberührte Natur & einzigartige Flora und Fauna",
+      "Detail5": "Die maledivische Küche ist eine Mischung aus indischen, sri-lankischen und arabischen Einflüssen. Geniessen Sie frische Meeresfrüchte, tropische Früchte und lokale Spezialitäten. Probieren Sie zum Beispiel Mas Huni, ein traditionelles Gericht aus Thunfisch, Kokosnuss und Zwiebeln. Viele Restaurants bieten auch internationale Gerichte an. Die Resorts bieten eine grosse Auswahl an Restaurants und Bars, die für jeden Geschmack etwas bieten. Geniessen Sie ein romantisches Abendessen am Strand oder lassen Sie sich bei einem Cocktail in einer Beach Bar verwöhnen.",
+      "Title5": "Kulinarische Genüsse & lokale Spezialitäten"
+    },
+    {
+      "City": "London",
+      "DayNight": "4 Tage / 3 Nächte",
+      "Price": 800,
+      "Capacity": 20,
+      "Status": true,
+      "Description": "Big Ben, Tower Bridge und Museen mit freiem Eintritt – Geschichte trifft Weltstadt.",
+      "Image": "/img/destinations/london-1.jpg",
+      "CoverImage": "/img/destinations/london-2.jpg",
+      "Image2": "/img/destinations/london-1.jpg",
+      "Image3": "/img/destinations/london-2.jpg",
+      "Title1": "Eine Weltstadt voller Geschichte und Kultur",
+      "Detail1": "London, die pulsierende Hauptstadt Englands, ist eine Stadt der Kontraste. Von historischen Sehenswürdigkeiten bis zu modernen Wolkenkratzern, von traditionellen Pubs bis zu trendigen Restaurants – London bietet für jeden etwas. Die Stadt ist ein Schmelztiegel verschiedener Kulturen und bietet ein vielfältiges Angebot an Aktivitäten und Sehenswürdigkeiten. Die Atmosphäre ist dynamisch und aufregend. London verbindet Tradition und Moderne auf einzigartige Weise.",
+      "Detail2": "London ist eine Stadt, die nie schläft. Es gibt immer etwas Neues zu entdecken",
+      "Detail3": "Buckingham Palace, die offizielle Residenz der britischen Königsfamilie, ist ein Wahrzeichen Londons. Die imposante Architektur und die wunderschönen Gärten sind beeindruckend. Die Wechsel der königlichen Garde ist eine beliebte Touristenattraktion. Ein Besuch des Palastes ist ein Muss für alle Besucher Londons. Die Geschichte und die Tradition sind spürbar.",
+      "Title3": "Buckingham Palace: Die Residenz der königlichen Familie",
+      "Detail4": "Der Tower of London, ein mittelalterliches Schloss an der Themse, hat eine lange und faszinierende Geschichte. Er diente einst als königliche Residenz, Gefängnis und Schatzkammer. Heute befindet sich hier die Kronjuwelen. Der Besuch des Towers ist ein einzigartiges Erlebnis. Die Atmosphäre ist historisch und eindrucksvoll. Man spürt die Geschichte an jeder Ecke.",
+      "Title4": "Tower of London: Ein geschichtsträchtiges Schloss",
+      "Detail5": "Die Houses of Parliament, mit dem berühmten Uhrenturm Big Ben, sind weitere Wahrzeichen Londons. Das Gebäude ist ein Meisterwerk der gotischen Architektur. Der Blick auf das Gebäude ist beeindruckend, besonders wenn die Uhr läutet. Die Houses of Parliament sind ein Symbol der britischen Demokratie. Die Architektur ist atemberaubend.",
+      "Title5": "Houses of Parliament und Big Ben: Symbole der britischen Demokratie"
+    },
+    {
+      "City": "Julische Alpen",
+      "DayNight": "5 Tage / 4 Nächte",
+      "Price": 1150,
+      "Capacity": 16,
+      "Status": true,
+      "Description": "Wandern zwischen Bleder See, Bohinj und dem Triglav-Nationalpark in Slowenien.",
+      "Image": "/img/destinations/julische-alpen-3.jpg",
+      "CoverImage": "/img/destinations/julische-alpen-1.jpg",
+      "Image2": "/img/destinations/julische-alpen-2.jpg",
+      "Image3": "/img/destinations/julische-alpen-3.jpg",
+      "Title1": "Julische Alpen – Sloweniens grünes Herz",
+      "Detail1": "Die Julischen Alpen im Nordwesten Sloweniens sind ein Paradies für Naturliebhaber. Smaragdgrüne Flüsse, klare Bergseen und schroffe Gipfel prägen die Landschaft rund um den Triglav, den höchsten Berg des Landes. Auf dieser Reise wandern wir auf gut ausgebauten Wegen, übernachten in gemütlichen Pensionen und genießen die regionale Küche.",
+      "Detail2": "Der Bleder See\n\nMit seiner kleinen Insel und der Wallfahrtskirche in der Mitte gehört der Bleder See zu den meistfotografierten Motiven Europas. Mit einem traditionellen Pletna-Boot setzen wir zur Insel über und läuten – so sagt man – die Wunschglocke.",
+      "Title3": "Bohinj – ruhiger und ursprünglicher",
+      "Detail3": "Nur eine halbe Stunde von Bled entfernt liegt der Bohinjer See. Er ist größer, stiller und von hohen Bergen umgeben. Ein Spaziergang am Ufer oder ein Sprung ins kühle Wasser gehören hier zum Pflichtprogramm.",
+      "Title4": "Vintgar-Klamm & Savica-Wasserfall",
+      "Detail4": "Über Holzstege wandern wir durch die Vintgar-Klamm, in der die Radovna türkisblau zwischen steilen Felswänden rauscht. Am Savica-Wasserfall stürzt das Wasser 78 Meter in die Tiefe.",
+      "Title5": "Triglav-Nationalpark",
+      "Detail5": "Der einzige Nationalpark Sloweniens bietet Wanderungen für jedes Niveau. Unsere Reiseführer kennen die schönsten Aussichtspunkte und erzählen von Flora, Fauna und der Geschichte der Region."
+    },
+    {
+      "City": "Thailand – Inselparadies",
+      "DayNight": "10 Tage / 9 Nächte",
+      "Price": 1750,
+      "Capacity": 20,
+      "Status": true,
+      "Description": "Inselhopping zwischen Phuket, Krabi und Koh Phi Phi mit Longtail-Booten.",
+      "Image": "/img/destinations/thailand-1.jpg",
+      "CoverImage": "/img/destinations/thailand-2.jpg",
+      "Image2": "/img/destinations/thailand-3.jpg",
+      "Image3": "/img/destinations/thailand-1.jpg",
+      "Title1": "Thailand – Inselhopping in der Andamanensee",
+      "Detail1": "Kalksteinfelsen, die senkrecht aus dem Meer ragen, feine Sandstrände und warmes, klares Wasser: Die Andamanensee im Süden Thailands ist ein Traumziel für Strandurlauber und Entdecker. Auf dieser Reise verbinden wir Erholung mit Ausflügen zu den schönsten Inseln der Region.",
+      "Detail2": "Koh Phi Phi\n\nDie Phi-Phi-Inseln gehören zu den bekanntesten Orten Thailands. Mit dem Longtail-Boot fahren wir früh am Morgen los, um die Buchten zu erleben, bevor die meisten Tagesausflügler ankommen.",
+      "Title3": "Krabi & Railay Beach",
+      "Detail3": "Railay ist nur mit dem Boot erreichbar und bekannt für seine Kletterfelsen und Sonnenuntergänge. Wer möchte, kann an einem Kletterkurs teilnehmen oder einfach im Schatten der Palmen entspannen.",
+      "Title4": "Tempel & Kultur im Norden",
+      "Detail4": "Als Verlängerung bieten wir einen Abstecher nach Chiang Mai an. Die Stadt im Norden ist bekannt für ihre über 300 Tempel, Nachtmärkte und Kochkurse, in denen Sie die thailändische Küche kennenlernen.",
+      "Title5": "Thailändische Küche",
+      "Detail5": "Grünes Curry, Pad Thai, Mango Sticky Rice – die thailändische Küche ist ein Erlebnis für sich. In kleinen Garküchen am Straßenrand schmeckt sie oft am besten."
+    },
+    {
+      "City": "Griechenland",
+      "DayNight": "7 Tage / 6 Nächte",
+      "Price": 1350,
+      "Capacity": 50,
+      "Status": true,
+      "Description": "Santorini, Athen und die Akropolis – Inseln, Geschichte und kristallklares Wasser.",
+      "Image": "/img/destinations/griechenland-1.jpg",
+      "CoverImage": "/img/destinations/griechenland-2.jpg",
+      "Image2": "/img/destinations/griechenland-1.jpg",
+      "Image3": "/img/destinations/griechenland-2.jpg",
+      "Title1": "Ein Archipel der Schönheit",
+      "Detail1": "Griechenland ist bekannt für seine unzähligen Inseln, jede mit ihrem eigenen einzigartigen Charakter. Von den kosmopolitischen Inseln Mykonos und Santorini bis hin zu den ruhigeren Inseln wie Naxos oder Kreta, findet jeder Besucher seine perfekte Insel. Kristallklares Wasser, malerische Dörfer, traumhafte Strände und eine reiche Geschichte erwarten Sie. Das azurblaue Meer und die weißen Häuser bilden eine atemberaubende Kulisse. Die Inseln bieten eine große Auswahl an Aktivitäten, von Entspannung am Strand bis hin zu Wandern und Wassersport.",
+      "Detail2": "Griechenland ist ein Land voller Schönheit, Geschichte und Gastfreundschaft. Es ist ein Ort, an den man immer wieder zurückkehren möchte",
+      "Detail3": "Die Akropolis in Athen, mit dem Parthenon als ihrem Glanzstück, ist eines der wichtigsten historischen Denkmäler der Welt. Der Blick von der Akropolis auf die Stadt ist atemberaubend. Die marmorweißen Tempel und die imposante Architektur zeugen von der Größe der antiken griechischen Zivilisation. Ein Besuch der Akropolis ist ein Muss für jeden Griechenland-Reisenden. Die Geschichte und die Kraft des Ortes sind spürbar.",
+      "Title3": "Akropolis in Athen: Ein Symbol der Antike",
+      "Detail4": "Griechenland besticht durch seine malerischen Dörfer mit weißgetünchten Häusern, blühenden Bougainvillea und engen, verwinkelten Gassen. Diese Dörfer bieten einen authentischen Einblick in das griechische Leben. Man kann durch die Gassen schlendern, lokale Produkte kaufen und in traditionellen Tavernen essen. Die Architektur ist einzigartig und wunderschön, ein typisches Zeichen für die griechische Kultur. Die Atmosphäre ist entspannt und freundlich.",
+      "Title4": "Malerische Dörfer und traditionelle Architektur",
+      "Detail5": "Griechenland ist bekannt für seine wunderschönen Strände mit feinem Sand und kristallklarem Wasser. Von einsamen Buchten bis hin zu langen Sandstränden findet man hier alles. Das Wasser ist meist türkisblau und lädt zum Schwimmen, Sonnenbaden und Schnorcheln ein. Viele Strände bieten Wassersportmöglichkeiten an. Das Meer ist sauber und einladend. Die Strände sind ein wichtiger Bestandteil des griechischen Urlaubsgefühls.",
+      "Title5": "Sonnenverwöhnte Strände und kristallklares Wasser"
+    },
+    {
+      "City": "Singapur",
+      "DayNight": "5 Tage / 4 Nächte",
+      "Price": 1750,
+      "Capacity": 20,
+      "Status": true,
+      "Description": "Gardens by the Bay, Jewel Changi und Marina Bay – die grüne Stadt der Zukunft.",
+      "Image": "/img/destinations/singapur-3.jpg",
+      "CoverImage": "/img/destinations/singapur-1.jpg",
+      "Image2": "/img/destinations/singapur-2.jpg",
+      "Image3": "/img/destinations/singapur-3.jpg",
+      "Title1": "Singapur – Stadt der Zukunft im Grünen",
+      "Detail1": "Singapur verbindet moderne Architektur, üppige Natur und eine faszinierende Mischung aus chinesischer, malaiischer und indischer Kultur. Die Stadt ist sauber, sicher und hervorragend organisiert – ideal für eine erste Reise nach Asien.",
+      "Detail2": "Jewel Changi\n\nSchon der Flughafen ist eine Sehenswürdigkeit: Im Jewel Changi stürzt der größte Indoor-Wasserfall der Welt 40 Meter in die Tiefe, umgeben von einem tropischen Wald.",
+      "Title3": "Gardens by the Bay",
+      "Detail3": "Die „Supertrees“ und die beiden riesigen Gewächshäuser Flower Dome und Cloud Forest sind das grüne Wahrzeichen der Stadt. Am Abend verwandelt die Licht- und Musikshow den Park in eine Zauberwelt.",
+      "Title4": "Marina Bay & Skyline",
+      "Detail4": "Vom Marina Bay Sands haben Sie einen spektakulären Blick über die Skyline. Ein Spaziergang entlang der Promenade führt zum Merlion, dem Symbol Singapurs.",
+      "Title5": "Hawker Center & Kulinarik",
+      "Detail5": "In den Hawker Centern wird günstig und hervorragend gegessen – von Chicken Rice bis Laksa. Einige Stände wurden sogar mit einem Michelin-Stern ausgezeichnet."
+    },
+    {
+      "City": "Istanbul",
+      "DayNight": "6 Tage / 5 Nächte",
+      "Price": 1500,
+      "Capacity": 50,
+      "Status": true,
+      "Description": "Hagia Sophia, Großer Basar und Bosporus – die Stadt zwischen zwei Kontinenten.",
+      "Image": "/img/destinations/istanbul-3.jpg",
+      "CoverImage": "/img/destinations/istanbul-1.jpg",
+      "Image2": "/img/destinations/istanbul-2.jpg",
+      "Image3": "/img/destinations/istanbul-4.jpg",
+      "Title1": "Istanbul – Zwischen Orient und Okzident",
+      "Detail1": "Hagia Sophia – Ein Meisterwerk der Architektur\n\nDie Hagia Sophia, einst christliche Kirche, dann Moschee und heute Museum, ist ein beeindruckendes Zeugnis der byzantinischen Architektur. Ihre majestätische Kuppel, die filigranen Mosaiken und die imposante Größe lassen jeden Besucher ehrfürchtig innehalten. Die Geschichte dieses Gebäudes spannt sich über Jahrhunderte und spiegelt die wechselvolle Geschichte Istanbuls wider. Nehmt euch Zeit, die Details der Architektur zu bewundern, die Atmosphäre aufzusaugen und in die bewegte Vergangenheit einzutauchen. Vergesst nicht, die beeindruckenden Fresken und Mosaiken im Obergeschoss zu bestaunen – ein wahres Kunstwerk! Lasst euch von der Geschichte gefangen nehmen und erlebt die einzigartige Atmosphäre dieses Ortes. Die vielen Säulen, die kunstvollen Bögen und das imposante Licht lassen dieses Gebäude in unvergesslicher Erinnerung bleiben.",
+      "Detail2": "Ein Spaziergang durch den Großen Basar ist ein Erlebnis für alle Sinne. Die bunten Teppiche, die glänzenden Juwelen, der Duft von frisch gemahlenem Kaffee – alles wirkt auf Ihre Wahrnehmung. Nehmen Sie sich Zeit, die Details zu betrachten, die kleinen Kunstwerke, die Handarbeiten. Es gibt hier so viel zu sehen und zu entdecken, dass ein einziger Besuch kaum ausreicht. Vielleicht finden Sie ja sogar ein einzigartiges Souvenir, das Ihre Reise für immer in Erinnerung rufen wird. Lassen Sie sich von der Energie und dem Trubel des Basars mitreißen!",
+      "Detail3": "Verliert euch in den unzähligen Gassen des Großen Basars, einem der größten und ältesten überdachten Märkte der Welt. Hier findet ihr alles, was das Herz begehrt: Gewürze, Teppiche, Schmuck, Keramik, Lederwaren und vieles mehr. Lasst euch von dem bunten Treiben mitreißen, verhandelt mit den Händlern und entdeckt einzigartige Schätze. Der Große Basar ist mehr als nur ein Markt, er ist ein Erlebnis für alle Sinne – ein pulsierendes Zentrum des städtischen Lebens. Genießt die Atmosphäre, die Gerüche und die Geschäftigkeit. Vergesst nicht, zwischendurch eine Pause einzulegen, um den türkischen Tee zu genießen und die Eindrücke zu verarbeiten. Ein Besuch hier ist ein Muss für jeden Istanbul-Besucher!",
+      "Title3": "Der Große Basar – Ein Labyrinth aus Düften und Farben",
+      "Detail4": "Die Sultanahmet-Moschee, besser bekannt als Blaue Moschee, ist eines der bekanntesten Wahrzeichen Istanbuls. Ihre sechs Minarette, die prächtigen blauen Iznik-Kacheln und die imposante Kuppel machen sie zu einem unvergesslichen Anblick. Betretet die Moschee mit Respekt und genießt die ruhige Atmosphäre im Inneren. Lasst euch von der Schönheit der Architektur und den kunstvollen Details beeindrucken. Die Blaue Moschee ist nicht nur ein architektonisches Meisterwerk, sondern auch ein Ort der Ruhe und des Gebets.",
+      "Title4": "Die Blaue Moschee – Ein Symbol Istanbuls",
+      "Detail5": "Der Topkapi-Palast, die ehemalige Residenz der osmanischen Sultane, bietet einen faszinierenden Einblick in die Welt der Macht und des Luxus. Entdeckt die prächtigen Haremsräume, die Schatzkammer mit ihren kostbaren Juwelen und die beeindruckenden Innenhöfe. Lasst euch von der Geschichte der Sultane und ihrer Familie erzählen und taucht ein in die Welt der Intrigen und des Reichtums. Der Palast ist riesig und bietet eine Fülle von Sehenswürdigkeiten – plant ausreichend Zeit für euren Besuch ein.",
+      "Title5": "Topkapi-Palast – Die Residenz der Sultane"
+    }
+  ],
+  "guides": [
+    {
+      "Name": "Lukas Berger",
+      "Description": "Lukas begleitet seit zehn Jahren Wander- und Städtereisen in Europa. Er spricht Deutsch, Englisch und Slowenisch und kennt die Julischen Alpen wie seine Westentasche.",
+      "Image": "/Traversal-Starter/assets/images/team1.jpg",
+      "TwitterUrl": "#",
+      "InstagramUrl": "#",
+      "Status": true
+    },
+    {
+      "Name": "Sophie Wagner",
+      "Description": "Sophie ist Kunsthistorikerin und führt unsere Gruppen durch Paris, London und Istanbul. Museen erklärt sie so, dass auch Kinder begeistert zuhören.",
+      "Image": "/Traversal-Starter/assets/images/team2.jpg",
+      "TwitterUrl": "#",
+      "InstagramUrl": "#",
+      "Status": true
+    },
+    {
+      "Name": "Jonas Keller",
+      "Description": "Jonas hat mehrere Jahre in Bangkok gelebt. Er zeigt Ihnen die besten Garküchen, versteckte Tempel und die schönsten Inseln Südostasiens.",
+      "Image": "/Traversal-Starter/assets/images/team3.jpg",
+      "TwitterUrl": "#",
+      "InstagramUrl": "#",
+      "Status": true
+    },
+    {
+      "Name": "Lea Hoffmann",
+      "Description": "Lea ist Tauchlehrerin und Meeresbiologin. Auf den Malediven und in Griechenland erklärt sie Riffe, Schildkröten und Mantarochen aus nächster Nähe.",
+      "Image": "/Traversal-Starter/assets/images/team4.jpg",
+      "TwitterUrl": "#",
+      "InstagramUrl": "#",
+      "Status": true
+    }
+  ],
+  "features": [
+    {
+      "Title": "Wochenende in Paris",
+      "Description": "690",
+      "Image": "/img/destinations/paris-1.jpg",
+      "Status": true
+    },
+    {
+      "Title": "Malediven Special",
+      "Description": "ab 2.290 €",
+      "Image": "/img/destinations/malediven-2.jpg",
+      "Status": true
+    },
+    {
+      "Title": "Istanbul Kurztrip",
+      "Description": "ab 540 €",
+      "Image": "/img/destinations/istanbul-2.jpg",
+      "Status": true
+    },
+    {
+      "Title": "Wandern in Slowenien",
+      "Description": "ab 890 €",
+      "Image": "/img/destinations/julische-alpen-1.jpg",
+      "Status": true
+    },
+    {
+      "Title": "Singapur Stopover",
+      "Description": "ab 760 €",
+      "Image": "/img/destinations/singapur-1.jpg",
+      "Status": true
+    }
+  ],
+  "features2": [
+    {
+      "Title": "Beste Preise",
+      "Description": "Faire Preise ohne versteckte Kosten.",
+      "Image": "fa fa-euro",
+      "Status": true
+    },
+    {
+      "Title": "Sichere Buchung",
+      "Description": "Reservierung online im Kundenkonto.",
+      "Image": "fa fa-lock",
+      "Status": true
+    },
+    {
+      "Title": "Persönliche Betreuung",
+      "Description": "Ein Ansprechpartner für Ihre ganze Reise.",
+      "Image": "fa fa-user",
+      "Status": true
+    }
+  ],
+  "testimonials": [
+    {
+      "Client": "Markus Schneider",
+      "Location": "Stuttgart",
+      "Comment": "Die Reise nach Istanbul war perfekt organisiert. Unser Reiseführer hat uns Ecken gezeigt, die wir alleine nie gefunden hätten. Die Buchung über das Kundenkonto war super einfach.",
+      "ClientImage": "/Traversal-Starter/assets/images/c1.jpg",
+      "Status": true
+    },
+    {
+      "Client": "Anna Fischer",
+      "Location": "München",
+      "Comment": "Malediven mit Traversal – ein Traum! Vom Transfer bis zur Wasservilla hat alles gestimmt. Besonders gefallen hat mir, dass ich den Status meiner Reservierung jederzeit online sehen konnte.",
+      "ClientImage": "/Traversal-Starter/assets/images/c2.jpg",
+      "Status": true
+    },
+    {
+      "Client": "Daniel Weber",
+      "Location": "Köln",
+      "Comment": "Tolle Wanderwoche in den Julischen Alpen. Kleine Gruppe, entspannte Atmosphäre und ein Reiseführer mit viel Wissen über die Region.",
+      "ClientImage": "/Traversal-Starter/assets/images/c3.jpg",
+      "Status": true
+    },
+    {
+      "Client": "Julia Becker",
+      "Location": "Hamburg",
+      "Comment": "Paris im Frühling mit meiner Schwester – wir haben jeden Tag genossen. Die Tipps für den Louvre und Montmartre waren Gold wert!",
+      "ClientImage": "/Traversal-Starter/assets/images/c4.jpg",
+      "Status": true
+    }
+  ],
+  "about": {
+    "Title": "Über Traversal",
+    "Description": "Traversal ist ein fiktiver Reiseveranstalter und dient als Demo-Projekt. Die Anwendung zeigt, wie ein Buchungs- und Verwaltungssystem für Reisen mit ASP.NET Core MVC, Entity Framework Core und einer mehrschichtigen Architektur umgesetzt werden kann.",
+    "Image1": "/img/destinations/griechenland-1.jpg",
+    "Title2": "Unsere Mission",
+    "Description2": "Wir möchten Reisen einfach planbar machen: Reiseziele entdecken, Bewertungen lesen, online reservieren und den Status jederzeit im eigenen Kundenkonto verfolgen. Im Hintergrund verwaltet das Team Reiseziele, Reiseführer, Reservierungen und Kommentare über ein eigenes Admin-Panel.",
+    "Status": true
+  },
+  "about2": {
+    "Title1": "Reisen macht klüger – und das Leben reicher.",
+    "Title2": "Seit 2020 unterwegs",
+    "Descriotion": "Wir stellen Reisen zusammen, die wir selbst gerne machen würden: kleine Gruppen, erfahrene Reiseführer und Ziele, die man nicht so schnell vergisst. Ob Städtetrip, Inselhopping oder Wanderwoche – bei Traversal finden Sie Ihr nächstes Abenteuer.",
+    "Image": "/Traversal-Liberty/assets/images/banner2.jpg"
+  },
+  "subabouts": [
+    {
+      "Title": "Kleine Gruppen",
+      "Description": "Maximal 20 Reisende pro Tour – so bleibt Zeit für persönliche Gespräche und spontane Abstecher."
+    },
+    {
+      "Title": "Erfahrene Reiseführer",
+      "Description": "Unsere Guides leben vor Ort oder kennen die Region seit vielen Jahren."
+    },
+    {
+      "Title": "Transparente Buchung",
+      "Description": "Reservierungen, Bestätigungen und Stornierungen sehen Sie jederzeit in Ihrem Kundenkonto."
+    }
+  ],
+  "contact": {
+    "Description": "Haben Sie Fragen zu einer Reise oder möchten Sie ein individuelles Angebot? Schreiben Sie uns – wir antworten in der Regel innerhalb von 24 Stunden.",
+    "Mail": "info@traversal-demo.example",
+    "Adress": "Musterstraße 12, 70173 Stuttgart",
+    "Phone": "+49 711 123 456 0",
+    "MapLocation": "Stuttgart",
+    "Status": true
+  },
+  "roles": [
+    {
+      "Name": "Admin",
+      "Description": "Voller Zugriff auf das Admin-Panel"
+    },
+    {
+      "Name": "Moderator",
+      "Description": "Darf Kommentare prüfen und freischalten"
+    },
+    {
+      "Name": "Member",
+      "Description": "Registrierte Kunden mit Kundenkonto"
+    }
+  ],
+  "users": [
+    {
+      "Key": "admin",
+      "Email": "admin@traversal.demo",
+      "Name": "Demo",
+      "Surname": "Admin",
+      "gender": "Mann",
+      "PhoneNumber": "+49 711 000 001",
+      "Image": "/otika-bootstrap-admin-template/assets/img/users/user-8.png",
+      "Roles": [
+        "Admin",
+        "Member"
+      ]
+    },
+    {
+      "Key": "member",
+      "Email": "gast@traversal.demo",
+      "Name": "Lisa",
+      "Surname": "Gast",
+      "gender": "Frau",
+      "PhoneNumber": "+49 711 000 002",
+      "Image": "/otika-bootstrap-admin-template/assets/img/users/user-5.png",
+      "Roles": [
+        "Member"
+      ]
+    },
+    {
+      "Key": "max",
+      "Email": "max.mueller@traversal.demo",
+      "Name": "Max",
+      "Surname": "Müller",
+      "gender": "Mann",
+      "PhoneNumber": "+49 711 000 003",
+      "Image": "/otika-bootstrap-admin-template/assets/img/users/user-3.png",
+      "Roles": [
+        "Member"
+      ]
+    },
+    {
+      "Key": "sara",
+      "Email": "sara.klein@traversal.demo",
+      "Name": "Sara",
+      "Surname": "Klein",
+      "gender": "Frau",
+      "PhoneNumber": "+49 711 000 004",
+      "Image": "/otika-bootstrap-admin-template/assets/img/users/user-6.png",
+      "Roles": [
+        "Member"
+      ]
+    },
+    {
+      "Key": "tom",
+      "Email": "tom.schulz@traversal.demo",
+      "Name": "Tom",
+      "Surname": "Schulz",
+      "gender": "Mann",
+      "PhoneNumber": "+49 711 000 005",
+      "Image": "/otika-bootstrap-admin-template/assets/img/users/user-4.png",
+      "Roles": [
+        "Member"
+      ]
+    },
+    {
+      "Key": "nina",
+      "Email": "nina.wolf@traversal.demo",
+      "Name": "Nina",
+      "Surname": "Wolf",
+      "gender": "Frau",
+      "PhoneNumber": "+49 711 000 006",
+      "Image": "/otika-bootstrap-admin-template/assets/img/users/user-9.png",
+      "Roles": [
+        "Member"
+      ]
+    },
+    {
+      "Key": "moderator",
+      "Email": "moderator@traversal.demo",
+      "Name": "Paul",
+      "Surname": "Moderator",
+      "gender": "Mann",
+      "PhoneNumber": "+49 711 000 007",
+      "Image": "/otika-bootstrap-admin-template/assets/img/users/user-1.png",
+      "Roles": [
+        "Moderator",
+        "Member"
+      ]
+    }
+  ],
+  "comments": [
+    {
+      "User": "member",
+      "City": "Paris",
+      "DaysAgo": 3,
+      "Text": "Wir waren im Mai dort – die Bootsfahrt auf der Seine am Abend war das Highlight. Unbedingt Tickets für den Eiffelturm vorher buchen!",
+      "Active": true
+    },
+    {
+      "User": "max",
+      "City": "Paris",
+      "DaysAgo": 12,
+      "Text": "Sehr schöne Reise, gute Hotels. Der Louvre ist riesig, plant mindestens einen halben Tag ein.",
+      "Active": true
+    },
+    {
+      "User": "sara",
+      "City": "Istanbul",
+      "DaysAgo": 5,
+      "Text": "Die Mischung aus Orient und Europa ist einzigartig. Der Große Basar hat mich total begeistert.",
+      "Active": true
+    },
+    {
+      "User": "tom",
+      "City": "Istanbul",
+      "DaysAgo": 20,
+      "Text": "Toller Reiseführer, viel Geschichte, super Essen. Gerne wieder!",
+      "Active": true
+    },
+    {
+      "User": "nina",
+      "City": "Malediven",
+      "DaysAgo": 8,
+      "Text": "Traumhaft! Das Wasser ist wirklich so türkis wie auf den Fotos. Schnorchelausrüstung mitnehmen.",
+      "Active": true
+    },
+    {
+      "User": "member",
+      "City": "Malediven",
+      "DaysAgo": 30,
+      "Text": "Perfekt zum Abschalten. Die Wasservilla war jeden Euro wert.",
+      "Active": true
+    },
+    {
+      "User": "max",
+      "City": "Bangkok",
+      "DaysAgo": 15,
+      "Text": "Laut, bunt, lecker – Bangkok muss man erlebt haben. Die Longtail-Tour durch die Kanäle war klasse.",
+      "Active": true
+    },
+    {
+      "User": "sara",
+      "City": "Julische Alpen",
+      "DaysAgo": 2,
+      "Text": "Der Bleder See am frühen Morgen ist ein Traum. Die Wanderungen waren gut machbar.",
+      "Active": true
+    },
+    {
+      "User": "tom",
+      "City": "London",
+      "DaysAgo": 9,
+      "Text": "Viele Museen sind kostenlos – perfekt für eine Städtereise. Das Wetter war besser als gedacht.",
+      "Active": true
+    },
+    {
+      "User": "nina",
+      "City": "Griechenland",
+      "DaysAgo": 6,
+      "Text": "Santorini zum Sonnenuntergang – unvergesslich. Die Akropolis am besten früh morgens besuchen.",
+      "Active": true
+    },
+    {
+      "User": "member",
+      "City": "Singapur",
+      "DaysAgo": 1,
+      "Text": "Gardens by the Bay bei Nacht ist spektakulär. Das Essen in den Hawker Centern ist günstig und richtig gut.",
+      "Active": false
+    },
+    {
+      "User": "max",
+      "City": "Thailand – Inselparadies",
+      "DaysAgo": 4,
+      "Text": "Wunderschöne Inseln, aber in der Hauptsaison ziemlich voll. Trotzdem absolut empfehlenswert.",
+      "Active": false
+    }
+  ],
+  "reservations": [
+    {
+      "User": "member",
+      "City": "Paris",
+      "BookedDaysAgo": 10,
+      "StartInDays": 25,
+      "Length": 6,
+      "Persons": 2,
+      "Status": "Die Buchung ist bestätigt.",
+      "GuideIndex": 1
+    },
+    {
+      "User": "member",
+      "City": "Malediven",
+      "BookedDaysAgo": 4,
+      "StartInDays": 60,
+      "Length": 8,
+      "Persons": 2,
+      "Status": "Ihre Genehmigung ist ausstehend.",
+      "GuideIndex": 3
+    },
+    {
+      "User": "member",
+      "City": "Istanbul",
+      "BookedDaysAgo": 30,
+      "StartInDays": -20,
+      "Length": 6,
+      "Persons": 1,
+      "Status": "Die Buchung ist bestätigt.",
+      "GuideIndex": 1
+    },
+    {
+      "User": "member",
+      "City": "London",
+      "BookedDaysAgo": 6,
+      "StartInDays": 40,
+      "Length": 4,
+      "Persons": 3,
+      "Status": "Storniert",
+      "GuideIndex": null
+    },
+    {
+      "User": "member",
+      "City": "Julische Alpen",
+      "BookedDaysAgo": 1,
+      "StartInDays": 90,
+      "Length": 5,
+      "Persons": 2,
+      "Status": "Ihre Genehmigung ist ausstehend.",
+      "GuideIndex": 0
+    },
+    {
+      "User": "max",
+      "City": "Bangkok",
+      "BookedDaysAgo": 12,
+      "StartInDays": 35,
+      "Length": 7,
+      "Persons": 2,
+      "Status": "Die Buchung ist bestätigt.",
+      "GuideIndex": 2
+    },
+    {
+      "User": "max",
+      "City": "Singapur",
+      "BookedDaysAgo": 2,
+      "StartInDays": 50,
+      "Length": 5,
+      "Persons": 1,
+      "Status": "Ihre Genehmigung ist ausstehend.",
+      "GuideIndex": null
+    },
+    {
+      "User": "max",
+      "City": "Paris",
+      "BookedDaysAgo": 40,
+      "StartInDays": -30,
+      "Length": 6,
+      "Persons": 2,
+      "Status": "Die Buchung ist bestätigt.",
+      "GuideIndex": 1
+    },
+    {
+      "User": "sara",
+      "City": "Griechenland",
+      "BookedDaysAgo": 7,
+      "StartInDays": 28,
+      "Length": 7,
+      "Persons": 4,
+      "Status": "Ihre Genehmigung ist ausstehend.",
+      "GuideIndex": 3
+    },
+    {
+      "User": "sara",
+      "City": "Istanbul",
+      "BookedDaysAgo": 3,
+      "StartInDays": 70,
+      "Length": 6,
+      "Persons": 2,
+      "Status": "Ihre Genehmigung ist ausstehend.",
+      "GuideIndex": 1
+    },
+    {
+      "User": "sara",
+      "City": "Thailand – Inselparadies",
+      "BookedDaysAgo": 20,
+      "StartInDays": 15,
+      "Length": 10,
+      "Persons": 2,
+      "Status": "Die Buchung ist bestätigt.",
+      "GuideIndex": 2
+    },
+    {
+      "User": "tom",
+      "City": "London",
+      "BookedDaysAgo": 15,
+      "StartInDays": 12,
+      "Length": 4,
+      "Persons": 2,
+      "Status": "Die Buchung ist bestätigt.",
+      "GuideIndex": 1
+    },
+    {
+      "User": "tom",
+      "City": "Julische Alpen",
+      "BookedDaysAgo": 9,
+      "StartInDays": 45,
+      "Length": 5,
+      "Persons": 5,
+      "Status": "Storniert",
+      "GuideIndex": 0
+    },
+    {
+      "User": "tom",
+      "City": "Malediven",
+      "BookedDaysAgo": 5,
+      "StartInDays": 100,
+      "Length": 8,
+      "Persons": 2,
+      "Status": "Ihre Genehmigung ist ausstehend.",
+      "GuideIndex": 3
+    },
+    {
+      "User": "nina",
+      "City": "Singapur",
+      "BookedDaysAgo": 25,
+      "StartInDays": -5,
+      "Length": 5,
+      "Persons": 2,
+      "Status": "Die Buchung ist bestätigt.",
+      "GuideIndex": null
+    },
+    {
+      "User": "nina",
+      "City": "Paris",
+      "BookedDaysAgo": 2,
+      "StartInDays": 33,
+      "Length": 6,
+      "Persons": 2,
+      "Status": "Ihre Genehmigung ist ausstehend.",
+      "GuideIndex": 1
+    },
+    {
+      "User": "nina",
+      "City": "Bangkok",
+      "BookedDaysAgo": 11,
+      "StartInDays": 80,
+      "Length": 7,
+      "Persons": 3,
+      "Status": "Storniert",
+      "GuideIndex": 2
+    }
+  ],
+  "messages": [
+    {
+      "Name": "Katrin Lehmann",
+      "Mail": "katrin.lehmann@example.com",
+      "Subject": "Gruppenreise für 12 Personen",
+      "Message": "Hallo, wir planen eine Reise mit unserem Verein nach Istanbul im Herbst. Bieten Sie auch Gruppenrabatte an?",
+      "DaysAgo": 1,
+      "IsRead": false
+    },
+    {
+      "Name": "Stefan Braun",
+      "Mail": "stefan.braun@example.com",
+      "Subject": "Frage zur Stornierung",
+      "Message": "Bis wann kann ich meine Reservierung für London kostenlos stornieren?",
+      "DaysAgo": 3,
+      "IsRead": false
+    },
+    {
+      "Name": "Mia Schröder",
+      "Mail": "mia.schroeder@example.com",
+      "Subject": "Barrierefreiheit",
+      "Message": "Sind die Hotels auf der Griechenland-Reise barrierefrei? Meine Mutter ist auf einen Rollstuhl angewiesen.",
+      "DaysAgo": 6,
+      "IsRead": true
+    }
+  ],
+  "newsletter": [
+    "reiselust@example.com",
+    "fernweh@example.com",
+    "weltenbummler@example.com",
+    "sonne.meer@example.com"
+  ]
+}

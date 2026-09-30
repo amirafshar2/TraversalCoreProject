@@ -1,14 +1,10 @@
-﻿using EntityLayer.Concrate;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using EntityLayer.Concrate;
 
 namespace DataAccessLayer.Abstract
 {
-    public interface IDestinationDAL :IGenerikDAL<Destiniton>
+    public interface IDestinationDAL : IGenerikDAL<Destiniton>
     {
-        public List<Destiniton> GetallWhitTourlider();
+        List<Destiniton> GetallWhitTourlider();
+        Destiniton GetWithDetails(int id);
     }
 }

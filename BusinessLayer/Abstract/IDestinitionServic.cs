@@ -1,14 +1,12 @@
-﻿using EntityLayer.Concrate;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using EntityLayer.Concrate;
 
 namespace BusinessLayer.Abstract
 {
-    public interface IDestinitionServic:IGenerik_Service<Destiniton>
+    public interface IDestinitionServic : IGenerik_Service<Destiniton>
     {
-        public List<Destiniton> GetWhitTourlider();
+        List<Destiniton> GetWhitTourlider();
+        List<Destiniton> GetActive();
+        Destiniton GetWithDetails(int id);
+        void ToggleStatus(int id, bool status);
     }
 }

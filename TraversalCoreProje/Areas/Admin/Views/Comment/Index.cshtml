@@ -1,139 +1,51 @@
-﻿@model X.PagedList.IPagedList<TraversalCoreProje.Areas.Admin.Models.CommentWhitUserModel>
-@using X.PagedList.Mvc.Core
-@using X.PagedList
+@model IPagedList<CommentWithDestinationundUserModel>
 @{
-    ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/UserLayout.cshtml";
+    ViewData["Title"] = "Kommentare";
+    ViewData["Subtitle"] = "Bewertungen der Kunden prüfen, ausblenden oder löschen.";
+    string filter = ViewBag.Filter;
+    string Pill(string s) => (filter ?? "") == s ? "active" : "";
+    var returnUrl = Context.Request.Path + Context.Request.QueryString;
 }
 
+<ul class="nav nav-pills filter-pills mb-3">
+    <li class="nav-item"><a class="nav-link @Pill("")" asp-action="Index">Alle <span class="badge badge-light">@ViewBag.CountAll</span></a></li>
+    <li class="nav-item"><a class="nav-link @Pill("active")" asp-action="Index" asp-route-filter="active">Sichtbar</a></li>
+    <li class="nav-item"><a class="nav-link @Pill("inactive")" asp-action="Index" asp-route-filter="inactive">Ausgeblendet <span class="badge badge-warning">@ViewBag.CountInactive</span></a></li>
+</ul>
 
-@if (Model.Count > 0)
-{
-    <div class="row">
-        <div class="col-12 col-sm-12 col-lg-6">
-            <div class="card">
-                <div class="card-header">
-                    <h4>Comments</h4>
-                </div>
-                <div class="card-body">
-                    <ul class="list-unstyled list-unstyled-border list-unstyled-noborder">
-                        @foreach (var item in Model.Take(4))
-                        {
-                            <li class="media">
-                                <img alt="image" class="mr-3 rounded-circle" width="70" src="@item.UserImage">
-                                <div class="media-body">
-                                    <div class="media-right">
-                                        @if (item.status)
-                                        {
-                                            <div class="text-success">aktiv</div>
-                                        }
-                                        else
-                                        {
-                                            <div class="text-warning">deaktiv</div>
-                                        }
-                                    </div>
-                                    <div class="media-title mb-1">@item.UserName @item.UserSurname</div>
-                                    <div class="text-time">@item.CommentData.ToShortDateString()</div>
-                                    <div class="media-description text-muted">
-                                        @item.CommentContent
-                                    </div>
-                                    <div class="media-links">
-                                        <a href="@Url.Action("Destiniton", "Destiniton", new { area = "Default", id = item.Destinitonid })">View Reise Ziel</a>
-                                        <div class="bullet"></div>
-                                        <a href="@Url.Action("Delate", "Comment", new { area = "Admin", id = item.id })" class="text-danger">Delate</a>
-                                    </div>
-                                </div>
-                            </li>
-                        }
-                    </ul>
-                </div>
-            </div>
-        </div>
-        @if (Model.Count > 4)
+<div class="card">
+    <div class="card-body">
+        @if (Model.Count == 0)
         {
-            <div class="col-12 col-sm-12 col-lg-6">
-                <div class="card">
-                    <div class="card-header">
+            <div class="empty-state"><i class="fas fa-comment-slash"></i>Keine Kommentare vorhanden.</div>
+        }
+        @foreach (var c in Model)
+        {
+            <div class="comment-item @(c.status ? "" : "inactive")">
+                <img src="@c.UserImage" class="avatar-sm" alt="" />
+                <div class="comment-body">
+                    <div class="d-flex flex-wrap justify-content-between">
+                        <div>
+                            <a asp-controller="User" asp-action="Comments" asp-route-id="@c.UserID" class="font-weight-bold text-dark">@c.UserName @c.UserSurname</a>
+                            <span class="muted-small">zu</span>
+                            <a href="@Url.Action("Destiniton", "Destiniton", new { area = "", id = c.DestinationID })" target="_blank" class="font-weight-bold">@c.DesCity</a>
+                        </div>
+                        <div class="muted-small">@c.CommentData.ToString("dd.MM.yyyy HH:mm") · @ViewHelpers.ActiveBadge(c.status, "Sichtbar", "Ausgeblendet")</div>
                     </div>
-                    <div class="card-body">
-                        <ul class="list-unstyled list-unstyled-border list-unstyled-noborder">
-                            @foreach (var item in Model.Skip(4))
-                            {
-                                <li class="media">
-                                    <img alt="image" class="mr-3 rounded-circle" width="70" src="@item.UserImage">
-                                    <div class="media-body">
-                                        <div class="media-right">
-                                            @if (item.status)
-                                            {
-                                                <div class="text-success">aktiv</div>
-                                            }
-                                            else
-                                            {
-                                                <div class="text-warning">deaktiv</div>
-                                            }
-                                        </div>
-                                        <div class="media-title mb-1">@item.UserName @item.UserSurname</div>
-                                        <div class="text-time">@item.CommentData.ToShortDateString()</div>
-                                        <div class="media-description text-muted">
-                                            @item.CommentContent
-                                        </div>
-                                        <div class="media-links">
-                                            <a href="@Url.Action("Destinion", "Destinion", new { area = "Default", id = item.Destinitonid })">View Reise Ziel</a>
-                                            <div class="bullet"></div>
-                                            <a href="@Url.Action("Delate", "Comment", new { area = "Admin", id = item.id })" class="text-danger">Delate</a>
-                                        </div>
-                                    </div>
-                                </li>
-                            }
-                        </ul>
+                    <p class="mb-2 mt-1">@c.CommentContent</p>
+                    <div class="actions">
+                        <form asp-action="Toggle" asp-route-id="@c.id" asp-route-returnUrl="@returnUrl" method="post">
+                            <button class="btn btn-sm @(c.status ? "btn-light" : "btn-success")">
+                                <i class="fas @(c.status ? "fa-eye-slash" : "fa-eye") mr-1"></i>@(c.status ? "Ausblenden" : "Freischalten")
+                            </button>
+                        </form>
+                        <form asp-action="Delate" asp-route-id="@c.id" asp-route-returnUrl="@returnUrl" method="post" data-confirm="Kommentar endgültig löschen?">
+                            <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash mr-1"></i>Löschen</button>
+                        </form>
                     </div>
                 </div>
             </div>
         }
-
     </div>
-    <div class="row">
-        <div class="col-12 col-sm-12 col-lg-12">
-            <nav aria-label="Sayfa navigasyonu">
-                <ul class="pagination justify-content-center">
-                    @if (Model.HasPreviousPage)
-                    {
-                        <li class="page-item">
-                            <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber - 1 })"> - Vorherige</a>
-                        </li>
-                    }
-                    else
-                    {
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#"> - Vorherige</a>
-                        </li>
-                    }
-
-                    @for (var i = 1; i <= Model.PageCount; i++)
-                    {
-                        <li class="page-item @(i == Model.PageNumber ? "active" : "")">
-                            <a class="page-link" href="@Url.Action("Index", new { page = i })">@i</a>
-                        </li>
-                    }
-
-                    @if (Model.HasNextPage)
-                    {
-                        <li class="page-item">
-                            <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber + 1 })">Nächste + </a>
-                        </li>
-                    }
-                    else
-                    {
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#">Nächste + </a>
-                        </li>
-                    }
-                </ul>
-            </nav>
-        </div>
-    </div>
-}
-else
-{
-    <h2>Henuz Yorum yok</h2>
-}
+</div>
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page, filter }), ViewHelpers.Pager)

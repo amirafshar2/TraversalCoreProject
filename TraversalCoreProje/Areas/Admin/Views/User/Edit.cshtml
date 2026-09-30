@@ -1,211 +1,68 @@
-﻿
+@model UserModel
 @{
-    ViewData["Title"] = "Edit";
-    Layout = "~/Views/Shared/UserLayout.cshtml";
+    ViewData["Title"] = $"Benutzer bearbeiten: {Model.name} {Model.surename}";
 }
-
-@model TraversalCoreProje.Areas.Admin.Models.UserModel
-
-<section class="section">
-    <div class="section-body">
-        <div class="row mt-sm-4">
-            <div class="col-12 col-md-12 col-lg-4">
-                <div class="card author-box">
-                    <div class="card-body">
-                        <div class="author-box-center">
-                            @if (Model.image == null)
-                            {
-                                <img alt="image" src="~/Traversal-Liberty/assets/images/OIP.webp" class="rounded-circle author-box-picture">
-                            }
-                            else
-                            {
-                                <img alt="image" src="@Model.image" class="rounded-circle author-box-picture">
-                            }
-                            <div class="clearfix"></div>
-                            <div class="author-box-name">
-                                <a href="#">@Model.name @Model.surename</a>
-                            </div>
-                            <div class="author-box-job"></div>
-                        </div>
-                        <div class="text-center">
-                            <div class="author-box-description">
-                                <p>
-                                    Willkommen in Ihrem Profil ,hier können Sie Ihre Daten aktualisieren.
-                                    Ich wünsche Ihnen einen schönen Urlaub
-                                </p>
-                            </div>
-                            <div class="mb-2 mt-3">
-                                <div class="text-small font-weight-bold">Traversal</div>
-                            </div>
-                            <a href="#" class="btn btn-social-icon mr-1 btn-facebook">
-                                <i class="fab fa-facebook-f"></i>
-                            </a>
-                            <a href="#" class="btn btn-social-icon mr-1 btn-twitter">
-                                <i class="fab fa-twitter"></i>
-                            </a>
-                            <a href="#" class="btn btn-social-icon mr-1 btn-github">
-                                <i class="fab fa-github"></i>
-                            </a>
-                            <a href="#" class="btn btn-social-icon mr-1 btn-instagram">
-                                <i class="fab fa-instagram"></i>
-                            </a>
-                            <div class="w-100 d-sm-none"></div>
-                        </div>
+<form asp-action="Edit" method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="id" />
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <img id="pv-user" src="@Model.image" class="avatar-lg mb-3" alt="" />
+                    <h5 class="mb-1">@Model.name @Model.surename</h5>
+                    <div class="mb-3">
+                        @foreach (var r in Model.Roles) { <span class="badge badge-light mr-1">@r</span> }
                     </div>
+                    <div class="form-group text-left">
+                        <label>Neues Profilbild</label>
+                        <input type="file" name="ImageFile" accept="image/*" class="form-control" data-preview="#pv-user" />
+                        <span asp-validation-for="ImageFile" class="text-danger small"></span>
+                    </div>
+                    <a asp-action="AssignRole" asp-route-id="@Model.id" class="btn btn-info btn-block"><i class="fas fa-user-tag mr-1"></i> Rollen zuweisen</a>
                 </div>
-                <div class="card">
-                    <div class="card-header">
-                        <h4>Personal Details</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="py-4">
-
-                            <p class="clearfix">
-                                <span class="float-left">
-                                    Phone
-                                </span>
-                                <span class="float-right text-muted">
-                                    @Model.phone
-                                </span>
-                            </p>
-                            <p class="clearfix">
-                                <span class="float-left">
-                                    Mail
-                                </span>
-                                <span class="float-right text-muted">
-                                    @Model.email
-                                </span>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
             </div>
-            <div class="col-12 col-md-12 col-lg-8">
-                <div class="card">
-                    <div class="padding-20">
-                        <ul class="nav nav-tabs" id="myTab2" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link" id="profile-tab2" data-toggle="tab" href="#settings" role="tab"
-                                   aria-selected="false">Profile Update</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="home-tab2" data-toggle="tab" href="#about" role="tab"
-                                   aria-selected="false">Password Update</a>
-                            </li>
-                        </ul>
-                        <div class="tab-content tab-bordered" id="myTab3Content">
-
-                            <div class="tab-pane fade show active" id="settings" role="tabpanel" aria-labelledby="profile-tab2">
-                                <form method="post" asp-area="Admin" asp-controller="User" asp-action="Edit" class="needs-validation" enctype="multipart/form-data">
-                                    <div class="card-header">
-                                        <h4>Edit Profile</h4>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="form-group col-md-6 col-12">
-                                                <label>First Name</label>
-                                                <input type="text" class="form-control" asp-for="name" value="@Model.name">
-                                                <div class="invalid-feedback">
-                                                    Please fill in the first name
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-md-6 col-12">
-                                                <label>Last Name</label>
-                                                <input type="text" class="form-control" asp-for=surename value="@Model.surename">
-                                                <div class="invalid-feedback">
-                                                    Please fill in the last name
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="form-group col-md-7 col-12">
-                                                <label>Email</label>
-                                                <input type="email" class="form-control" asp-for=email value="@Model.email">
-                                                <div class="invalid-feedback">
-                                                    Please fill in the email
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-md-5 col-12">
-                                                <label>Phone</label>
-                                                <input type="tel" class="form-control" asp-for=phone value="@Model.phone">
-                                            </div>
-                                        </div>
-
-
-                                        <div class="row">
-                                            <div class="form-group col-md-7 col-12">
-                                                <div class="form-group">
-                                                    <label>Gender</label>
-                                                    <select class="form-control" asp-for=gender required>
-                                                        <option value="Women">Women</option>
-                                                        <option value="Man">Man</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-md-5 col-12">
-                                                <div class="form-group">
-                                                    <label>File</label>
-                                                    <input type="file" asp-for="ImageFile" class="form-control">
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <div class="card-footer text-right">
-                                        <button type="submit" class="btn btn-primary">Save Changes</button>
-                                    </div>
-                                </form>
-                            </div>
-
-
-
-                            <div class="tab-pane fade" id="about" role="tabpanel" style="pointer-events: none; opacity: 0.6;" aria-labelledby="profile-tab2">
-                                <form method="post" asp-area="Member" asp-controller="Profile" asp-action="UpdatePassword" class="needs-validation">
-                                    <div class="card-header">
-                                        <h4>Edit Passwort</h4>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="form-group col-md-6 col-12">
-                                                <label>Passwort</label>
-                                                <input type="password" class="form-control" asp-for=passwordcurrent placeholder="Current Password*******" required>
-                                                <span asp-validation-for="password"></span>
-                                                <div class="invalid-feedback">
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                        <div class="row">
-                                            <div class="form-group col-md-6 col-12">
-                                                <label>Passwort</label>
-                                                <input type="password" class="form-control" asp-for=password placeholder="New Password*******" required>
-                                                <span asp-validation-for="password"></span>
-                                                <div class="invalid-feedback">
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-md-6 col-12">
-                                                <label>PsswortConfig</label>
-                                                <input type="password" class="form-control" asp-for=passwordconfirm placeholder="New passwordconfirm************" required>
-                                                <span asp-validation-for="passwordconfirm"></span>
-                                                <div class="invalid-feedback">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div style="color:red" asp-validation-summary="ModelOnly">  </div>
-                                    </div>
-                                    <div class="card-footer text-right">
-                                        <button type="submit" class="btn btn-primary">Save Changes</button>
-                                    </div>
-                                </form>
-                            </div>
+        </div>
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header"><h4>Stammdaten</h4></div>
+                <div class="card-body">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="name">Vorname</label>
+                            <input asp-for="name" class="form-control" />
+                            <span asp-validation-for="name" class="text-danger small"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="surename">Nachname</label>
+                            <input asp-for="surename" class="form-control" />
+                            <span asp-validation-for="surename" class="text-danger small"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="email">E-Mail</label>
+                            <input asp-for="email" class="form-control" />
+                            <span asp-validation-for="email" class="text-danger small"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="phone">Telefon</label>
+                            <input asp-for="phone" class="form-control" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="gender">Geschlecht</label>
+                            <select asp-for="gender" class="form-control">
+                                <option value="Frau">Frau</option>
+                                <option value="Mann">Mann</option>
+                                <option value="Divers">Divers</option>
+                            </select>
                         </div>
                     </div>
+                </div>
+                <div class="card-footer text-right">
+                    <a asp-action="Index" class="btn btn-light">Abbrechen</a>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-save mr-1"></i> Speichern</button>
                 </div>
             </div>
         </div>
     </div>
-</section>
-
-
-
+</form>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

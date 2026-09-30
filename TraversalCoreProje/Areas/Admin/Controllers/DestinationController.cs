@@ -1,204 +1,164 @@
-﻿using BusinessLayer.Abstract;
-using BusinessLayer.Concrate;
-using DataAccessLayer.Concrate;
-using DataAccessLayer.EntityFrameWork;
+using BusinessLayer.Abstract;
 using EntityLayer.Concrate;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TraversalCoreProje.Areas.Admin.Models;
 using TraversalCoreProje.Areas.Admin.Mthods;
 using TraversalCoreProje.Models.PicMethods;
+using X.PagedList;
 using X.PagedList.Extensions;
-
 
 namespace TraversalCoreProje.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class DestinationController : Controller
     {
-        #region Dependencies and Constructor
         private readonly IDestinitionServic _Bll;
-        private readonly UserManager<EntityLayer.Concrate.User> _usermanager;
-        EntityTauchen _entity = new EntityTauchen();// entity dönüşümü için bir method 
-        PicSave _pic = new PicSave();// resim kaydetme methodu
-        public DestinationController(IDestinitionServic bll, UserManager<User> usermanager)
+        private readonly IReservationService _reservation;
+        private readonly UserManager<User> _usermanager;
+        private readonly EntityTauchen _entity = new();   // Umwandlung Model <-> Entity
+        private readonly PicSave _pic = new();            // Bilder speichern
+
+        public DestinationController(IDestinitionServic bll, IReservationService reservation, UserManager<User> usermanager)
         {
             _Bll = bll;
+            _reservation = reservation;
             _usermanager = usermanager;
         }
-        #endregion
-       
-        #region GeminiAI
 
+        #region Liste
+        [HttpGet]
+        public async Task<IActionResult> Index(string q, int page = 1)
+        {
+            const int pageSize = 8;
+            var reservations = _reservation.GetAll();
+            var list = _Bll.GetWhitTourlider().OrderByDescending(y => y.DestinationID).AsEnumerable();
+            if (!string.IsNullOrWhiteSpace(q))
+                list = list.Where(d => (d.City ?? "").Contains(q.Trim(), StringComparison.OrdinalIgnoreCase));
+
+            var models = new List<DestinationModel>();
+            foreach (var item in list)
+            {
+                var user = await _usermanager.FindByIdAsync(item.Turlider.ToString());
+                var m = _entity.DestinitonToDestinationModel(item);
+                m.username = user?.Name;
+                m.usersurname = user?.Surname;
+                m.userimage = user?.Image;
+                m.ReservationCount = reservations.Count(r => r.Destintionid == item.DestinationID && r.status != ReservationStatus.Canceled);
+                models.Add(m);
+            }
+            ViewBag.Search = q;
+            return View(models.ToPagedList(page, pageSize));
+        }
         #endregion
 
-        #region Create
+        #region Anlegen
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            return View(new DestinationModel());
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(DestinationModel p)
         {
-            try
-            {
-                var u = await _usermanager.GetUserAsync(HttpContext.User);
-                if (u != null)
-                { // CoverImage, Image2, Image3 zorunlu
-                    if (p.coverImage == null || p.image2 == null || p.image3 == null)
-                    {
-                        ViewBag.message = "Please upload CoverImage, Image2 and Image3 (required).";
-                        return View();
-                    }
-                    // Kaydetme işlemleri
-                    p.Image = p.image != null ? await _pic.SaveFileAsync(p.image) : null;         // opsiyonel
-                    p.CoverImage = await _pic.SaveFileAsync(p.coverImage); // zorunlu
-                    p.Image2 = await _pic.SaveFileAsync(p.image2);         // zorunlu
-                    p.Image3 = await _pic.SaveFileAsync(p.image3);         // zorunlu
+            ValidateImages(p);
+            if (p.coverImage == null)
+                ModelState.AddModelError(nameof(p.coverImage), "Bitte laden Sie mindestens ein Titelbild hoch.");
+            if (!ModelState.IsValid) return View(p);
 
-                    // Entity dönüşümü
-                    Destiniton d = _entity.DestinationModelToDestiniton(p);
-                    d.DestinationID = 0;
-                    d.Turlider = u.Id;
-                    _Bll.Insert(d);
+            var u = await _usermanager.GetUserAsync(User);
+            p.CoverImage = await _pic.SaveFileAsync(p.coverImage);
+            p.Image = await _pic.SaveFileAsync(p.image) ?? p.CoverImage;
+            p.Image2 = await _pic.SaveFileAsync(p.image2) ?? p.CoverImage;
+            p.Image3 = await _pic.SaveFileAsync(p.image3) ?? p.Image;
 
-                    TempData["message"] = "Destination added successfully!";
-                    ModelState.Clear();
-                    return RedirectToAction("Index");
-                }
-                return RedirectToAction("Login", "User", new { area = "Default" });
-            }
-            catch (Exception ex)
-            {
-                ViewBag.message = "An error occurred while saving files: " + ex.Message;
-                return View();
-            }
-        }
-
-
-
-
-        #endregion
-
-        #region read
-        [HttpGet]
-        public async Task<IActionResult> Index(int page = 1)
-        {
-            int pageSize = 10;
-            var q = _Bll.GetWhitTourlider().OrderBy(y => y.DestinationID).Reverse();
-
-            if (q != null)
-            {
-                List<DestinationModel> dess = new List<DestinationModel>();
-                foreach (var item in q)
-                {
-                    var user = await _usermanager.FindByIdAsync(item.Turlider.ToString());
-                    DestinationModel qe = _entity.DestinitonToDestinationModel(item);
-                    qe.username = user?.Name;
-                    qe.usersurname = user?.Surname;
-                    qe.userimage = user?.Image;
-                    qe.DestinationID = item.DestinationID;
-                    dess.Add(qe);
-                }
-                var viewpages = dess.ToPagedList(page, pageSize);
-                return View(viewpages);
-            }
-            return View();
+            var d = _entity.DestinationModelToDestiniton(p);
+            d.DestinationID = 0;
+            d.Turlider = u.Id;
+            _Bll.Insert(d);
+            TempData["success"] = $"Das Reiseziel „{d.City}“ wurde angelegt.";
+            return RedirectToAction(nameof(Index));
         }
         #endregion
 
-        #region update
+        #region Bearbeiten
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            var q = _Bll.GetById(id);
-            var model = _entity.DestinitonToDestinationModel(q);
-            ViewBag.id = id.ToString();
+            var d = _Bll.GetById(id);
+            if (d == null) return NotFound();
+            var model = _entity.DestinitonToDestinationModel(d);
             return View(model);
         }
+
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(DestinationModel p)
         {
-            try
+            ValidateImages(p);
+            var dest = _Bll.GetById(p.DestinationID);
+            if (dest == null) return NotFound();
+            if (!ModelState.IsValid)
             {
-                if (p.coverImage != null)
-                {
-                    p.CoverImage = await _pic.SaveFileAsync(p.coverImage);
-                }
-                if (p.image != null)
-                {
-                    p.Image = await _pic.SaveFileAsync(p.image);
-                }
-                if (p.image2 != null)
-                {
-                    p.Image2 = await _pic.SaveFileAsync(p.image2);
-                }
-                if (p.image3 != null)
-                {
-                    p.Image3 = await _pic.SaveFileAsync(p.image3);
-                }
-                var q = _entity.DestinationModelToDestiniton(p);
-                var dest = _Bll.GetById(p.DestinationID);
-                dest.City = q.City;
-                dest.DayNight = q.DayNight;
-                dest.Price = q.Price;
-                dest.Capacity = q.Capacity;
-                dest.Description = q.Description;
-                dest.Detail1 = q.Detail1;
-                dest.Detail2 = q.Detail2;
-                dest.Detail3 = q.Detail3;
-                dest.Detail4 = q.Detail4;
-                dest.Detail5 = q.Detail5;
-                dest.Title1 = q.Title1;
-                dest.Title3 = q.Title3;
-                dest.Title4 = q.Title4;
-                dest.Title5 = q.Title5;
-                dest.Image = q.Image ?? dest.Image;
-                dest.CoverImage = q.CoverImage ?? dest.CoverImage;
-                dest.Image2 = q.Image2 ?? dest.Image2;
-                dest.Image3 = q.Image3 ?? dest.Image3;
-                dest.Status = q.Status;
-                dest.Turlider = dest.Turlider;
-                _Bll.Update(dest);
-                return RedirectToAction("Index");
+                p.CoverImage = dest.CoverImage; p.Image = dest.Image; p.Image2 = dest.Image2; p.Image3 = dest.Image3;
+                return View(p);
             }
-            catch (Exception)
-            {
-                return RedirectToAction("Index");
-            }
+
+            dest.City = p.City;
+            dest.DayNight = p.DayNight;
+            dest.Price = p.Price;
+            dest.Capacity = p.Capacity;
+            dest.Description = p.Description;
+            dest.Status = p.Status;
+            dest.Title1 = p.Title1; dest.Detail1 = p.Detail1; dest.Detail2 = p.Detail2;
+            dest.Title3 = p.Title3; dest.Detail3 = p.Detail3;
+            dest.Title4 = p.Title4; dest.Detail4 = p.Detail4;
+            dest.Title5 = p.Title5; dest.Detail5 = p.Detail5;
+            dest.CoverImage = await _pic.SaveFileAsync(p.coverImage) ?? dest.CoverImage;
+            dest.Image = await _pic.SaveFileAsync(p.image) ?? dest.Image;
+            dest.Image2 = await _pic.SaveFileAsync(p.image2) ?? dest.Image2;
+            dest.Image3 = await _pic.SaveFileAsync(p.image3) ?? dest.Image3;
+            _Bll.Update(dest);
+
+            TempData["success"] = $"Das Reiseziel „{dest.City}“ wurde gespeichert.";
+            return RedirectToAction(nameof(Index));
         }
         #endregion
 
-        #region delete
+        #region Löschen / Status
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
-            _Bll.Delete(new Destiniton { DestinationID = id });
-            return RedirectToAction("Index");
+            var d = _Bll.GetById(id);
+            if (d != null)
+            {
+                _Bll.Delete(d);
+                TempData["success"] = $"Das Reiseziel „{d.City}“ wurde gelöscht.";
+            }
+            return RedirectToAction(nameof(Index));
         }
-        #endregion
 
-        #region update status
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult ChangeStatus(int id, bool status)
         {
-            var q = _Bll.GetById(id);
-            if (q != null)
-            {
-                q.Status = status;
-                _Bll.Update(q);
-                return Json(new { success = true, updated = status });
-            }
-            else
-            {
-                // Güncelleme reddedildi
-                return Json(new { success = false });
-            }
-
+            var d = _Bll.GetById(id);
+            if (d == null) return Json(new { success = false });
+            _Bll.ToggleStatus(id, status);
+            return Json(new { success = true, updated = status });
         }
         #endregion
 
-       
+        private void ValidateImages(DestinationModel p)
+        {
+            foreach (var (file, key) in new[] { (p.coverImage, nameof(p.coverImage)), (p.image, nameof(p.image)), (p.image2, nameof(p.image2)), (p.image3, nameof(p.image3)) })
+                if (!PicSave.IsValidImage(file, out var err))
+                    ModelState.AddModelError(key, err);
+        }
     }
-
 }

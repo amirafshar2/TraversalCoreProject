@@ -1,15 +1,11 @@
-﻿using EntityLayer.Concrate;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using EntityLayer.Concrate;
 
 namespace DataAccessLayer.Abstract
 {
     public interface ICommentDAL : IGenerikDAL<Comment>
     {
-        public List<Comment> GetCommentsByDestinationID(int id);
-        public List<Comment> GetCommentsByUserID(int id);
+        List<Comment> GetCommentsByDestinationID(int id);
+        List<Comment> GetCommentsByUserID(int id);
+        List<Comment> GetListWithDestination();
     }
 }

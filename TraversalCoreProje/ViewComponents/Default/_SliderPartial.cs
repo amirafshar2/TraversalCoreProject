@@ -1,15 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using BusinessLayer.Abstract;
+using Microsoft.AspNetCore.Mvc;
 
 namespace TraversalCoreProje.ViewComponents.Default
 {
+    /// <summary>Startbanner mit Schnellsuche nach Reisezielen.</summary>
     public class _SliderPartial : ViewComponent
     {
-        #region Invoke
-        public IViewComponentResult Invoke()
+        private readonly IDestinitionServic _destination;
+
+        public _SliderPartial(IDestinitionServic destination)
         {
-            return View();
+            _destination = destination;
         }
-        #endregion
+
+        public IViewComponentResult Invoke() => View(_destination.GetActive().OrderBy(d => d.City).ToList());
     }
 }
-

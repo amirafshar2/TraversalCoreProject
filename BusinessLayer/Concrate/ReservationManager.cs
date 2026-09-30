@@ -1,67 +1,53 @@
-﻿using BusinessLayer.Abstract;
+using BusinessLayer.Abstract;
 using DataAccessLayer.Abstract;
-using DataAccessLayer.Migrations;
 using EntityLayer.Concrate;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLayer.Concrate
 {
-    public class ReservationManager : IReservationService
+    public class ReservationManager : GenericManager<Reservition>, IReservationService
     {
-        IReservationDal _Dal;
+        private readonly IReservationDal _reservationDal;
 
-        public ReservationManager(IReservationDal dal)
+        public ReservationManager(IReservationDal dal) : base(dal)
         {
-            _Dal = dal;
+            _reservationDal = dal;
         }
 
-        public void Delete(Reservition entity)
+        public override void Insert(Reservition entity)
         {
-            throw new NotImplementedException();
+            if (entity.ReservEnd < entity.ReservStart)
+                throw new ArgumentException("Das Enddatum darf nicht vor dem Startdatum liegen.");
+            if (entity.HowmanyPapel < 1)
+                throw new ArgumentException("Mindestens eine Person ist erforderlich.");
+            entity.status ??= ReservationStatus.Pending;
+            base.Insert(entity);
         }
 
-        public List<Reservition> GetAll()
-        {
-            return _Dal.GetList();
-        }
+        public List<Reservition> GetlistByuserid(int userid) =>
+            _reservationDal.GetlistbyUserId(userid).Where(x => x.status == ReservationStatus.Pending).ToList();
 
-        public Reservition GetById(int id)
-        {
-            return _Dal.Get(id);
-        }
+        public List<Reservition> GetlistByuseridaccept(int userid) =>
+            _reservationDal.GetlistbyUserId(userid).Where(x => x.status == ReservationStatus.Approved).ToList();
 
-        public List<Reservition> GetlistByuserid(int userid)
-        {
-            return  _Dal.GetlistbyUserId(userid).Where(x=>x.status == "Ihre Genehmigung ist ausstehend.").ToList();
-        }
+        public List<Reservition> GetlistByuseridcanceld(int userid) =>
+            _reservationDal.GetlistbyUserId(userid).Where(x => x.status == ReservationStatus.Canceled).ToList();
 
-        public List<Reservition> GetlistByuseridaccept(int userid)
-        {
-            return _Dal.GetlistbyUserId(userid).Where(x=>x.status == "Die Buchung ist bestätigt.").ToList();
-        }
+        public List<Reservition> GetListWhitDestination() => _reservationDal.Getlistwhitdesetination();
 
-        public List<Reservition> GetlistByuseridcanceld(int userid)
-        {           
-            return _Dal.GetlistbyUserId(userid).Where(x=> x.status == "Storniert").ToList();
-        }
+        public List<Reservition> GetListByStatus(string status) => _reservationDal.GetListByStatus(status);
 
-        public List<Reservition> GetListWhitDestination()
-        {
-            return _Dal.Getlistwhitdesetination();
-        }
+        public Reservition GetWithDetails(int id) => _reservationDal.GetWithDetails(id);
 
-        public void Insert(Reservition entity)
-        {
-            _Dal.Insert(entity);
-        }
+        public int CountByStatus(string status) => _reservationDal.Count(r => r.status == status);
 
-        public void Update(Reservition entity)
+        public void ChangeStatus(int id, string status)
         {
-            _Dal.Updater(entity);
+            if (!ReservationStatus.All.Contains(status))
+                throw new ArgumentException("Unbekannter Status.");
+            var r = _reservationDal.Get(id);
+            if (r == null) return;
+            r.status = status;
+            _reservationDal.Updater(r);
         }
     }
 }

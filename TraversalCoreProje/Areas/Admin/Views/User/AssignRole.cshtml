@@ -1,0 +1,45 @@
+@model RoleAssignViewModel
+@{
+    ViewData["Title"] = "Rollen zuweisen";
+    ViewData["Subtitle"] = $"Legen Sie fest, welche Rechte {Model.FullName} erhält.";
+}
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-header">
+                <img src="@Model.Image" class="avatar-sm mr-2" alt="" /><h4 class="mb-0">@Model.FullName</h4>
+            </div>
+            <form asp-action="AssignRole" method="post">
+                <input type="hidden" asp-for="UserId" />
+                <div class="card-body">
+                    @for (int i = 0; i < Model.Roles.Count; i++)
+                    {
+                        <input type="hidden" asp-for="Roles[i].RoleId" />
+                        <input type="hidden" asp-for="Roles[i].Name" />
+                        <div class="custom-control custom-checkbox mb-3">
+                            <input asp-for="Roles[i].Exists" class="custom-control-input" />
+                            <label class="custom-control-label" for="Roles_@(i)__Exists">
+                                <strong>@Model.Roles[i].Name</strong>
+                                <span class="d-block muted-small">@Model.Roles[i].Description</span>
+                            </label>
+                        </div>
+                    }
+                </div>
+                <div class="card-footer text-right">
+                    <a asp-action="Index" class="btn btn-light">Abbrechen</a>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-save mr-1"></i> Speichern</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="alert alert-light">
+            <strong><i class="fas fa-info-circle mr-1"></i> So funktionieren die Rollen</strong>
+            <ul class="mb-0 mt-2 pl-3">
+                <li><strong>Admin</strong> – voller Zugriff auf das Admin-Panel.</li>
+                <li><strong>Moderator</strong> – darf Kommentare prüfen und das Dashboard sehen.</li>
+                <li><strong>Member</strong> – Kundenbereich mit Reservierungen und Profil.</li>
+            </ul>
+        </div>
+    </div>
+</div>

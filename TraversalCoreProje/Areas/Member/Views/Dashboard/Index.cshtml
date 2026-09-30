@@ -1,0 +1,115 @@
+@model MemberDashboardViewModel
+@{
+    ViewData["Title"] = $"Hallo, {Model.User.Name}!";
+    ViewData["Subtitle"] = "Hier sehen Sie Ihre Reisen, Anfragen und Kommentare auf einen Blick.";
+}
+@section HeaderActions {
+    <a asp-controller="Reservation" asp-action="NewReservation" class="btn btn-primary btn-icon icon-left"><i class="fas fa-plus"></i> Neue Reise buchen</a>
+}
+
+<div class="row">
+    <div class="col-xl-3 col-md-6">
+        <a asp-controller="Reservation" asp-action="GetReservations" class="text-decoration-none">
+            <div class="stat-card"><div class="stat-icon bg-grad-warning"><i class="fas fa-hourglass-half"></i></div>
+                <div><div class="stat-label">Ausstehend</div><div class="stat-value">@Model.PendingCount</div><div class="stat-hint">warten auf Bestätigung</div></div></div>
+        </a>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <a asp-controller="Reservation" asp-action="AcceptedReservations" class="text-decoration-none">
+            <div class="stat-card"><div class="stat-icon bg-grad-success"><i class="fas fa-plane-departure"></i></div>
+                <div><div class="stat-label">Bestätigt</div><div class="stat-value">@Model.ApprovedCount</div><div class="stat-hint">gebuchte Reisen</div></div></div>
+        </a>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <a asp-controller="Reservation" asp-action="CanceledReservations" class="text-decoration-none">
+            <div class="stat-card"><div class="stat-icon bg-grad-danger"><i class="fas fa-ban"></i></div>
+                <div><div class="stat-label">Storniert</div><div class="stat-value">@Model.CanceledCount</div><div class="stat-hint">stornierte Anfragen</div></div></div>
+        </a>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <a asp-controller="Comment" asp-action="Index" class="text-decoration-none">
+            <div class="stat-card"><div class="stat-icon bg-grad-purple"><i class="fas fa-comment-dots"></i></div>
+                <div><div class="stat-label">Kommentare</div><div class="stat-value">@Model.CommentCount</div><div class="stat-hint">Ihre Bewertungen</div></div></div>
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-7">
+        @if (Model.NextTrip != null)
+        {
+            var days = (Model.NextTrip.ReservStart.Date - DateTime.Today).Days;
+            <div class="trip-hero mb-4" style="background-image:url('@Model.NextTrip.Destiniton?.CoverImage')">
+                <div>
+                    <span class="badge badge-light">Ihre nächste Reise</span>
+                    <h3 class="mt-2 mb-1">@Model.NextTrip.Destiniton?.City</h3>
+                    <div class="mb-3">@ViewHelpers.LongDate(Model.NextTrip.ReservStart) · @Model.NextTrip.HowmanyPapel Personen</div>
+                    <div class="h2 mb-0 font-weight-bold">@(days == 0 ? "Heute geht's los!" : $"Noch {days} Tage")</div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="card"><div class="card-body empty-state">
+                <i class="fas fa-suitcase-rolling"></i>
+                Sie haben noch keine bestätigte Reise geplant.<br />
+                <a asp-controller="Reservation" asp-action="NewReservation" class="btn btn-primary mt-3">Jetzt Reiseziel auswählen</a>
+            </div></div>
+        }
+
+        <div class="card">
+            <div class="card-header"><h4>Letzte Reservierungen</h4></div>
+            <div class="card-body p-0">
+                @if (!Model.Latest.Any())
+                {
+                    <div class="empty-state"><i class="fas fa-calendar"></i>Noch keine Reservierungen.</div>
+                }
+                else
+                {
+                    <table class="table table-hover mb-0">
+                        <tbody>
+                            @foreach (var r in Model.Latest)
+                            {
+                                <tr>
+                                    <td style="width:80px"><img src="@r.Destiniton?.Image" class="table-thumb" alt="" /></td>
+                                    <td><strong>@r.Destiniton?.City</strong><div class="muted-small">@ViewHelpers.Date(r.ReservStart) – @ViewHelpers.Date(r.ReservEnd)</div></td>
+                                    <td>@r.HowmanyPapel Pers.</td>
+                                    <td class="text-right">@ViewHelpers.StatusBadge(r.status)</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <div class="card">
+            <div class="card-header"><h4>Das könnte Ihnen gefallen</h4></div>
+            <div class="card-body">
+                @foreach (var d in Model.Suggestions)
+                {
+                    <div class="d-flex align-items-center mb-3">
+                        <img src="@d.Image" class="table-thumb mr-3" style="width:80px;height:60px" alt="" />
+                        <div class="flex-grow-1">
+                            <div class="font-weight-bold">@d.City</div>
+                            <div class="muted-small">@d.DayNight · ab <span class="text-primary font-weight-bold">@ViewHelpers.Euro(d.Price)</span></div>
+                        </div>
+                        <a asp-controller="Reservation" asp-action="Index" asp-route-id="@d.DestinationID" class="btn btn-sm btn-outline-primary">Buchen</a>
+                    </div>
+                }
+                <a href="/Destiniton" class="btn btn-light btn-block mt-2">Alle Reiseziele ansehen</a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body d-flex align-items-center">
+                <img src="@Model.User.Image" class="avatar-lg mr-3" style="width:70px;height:70px" alt="" />
+                <div>
+                    <div class="font-weight-bold">@Model.User.Name @Model.User.Surname</div>
+                    <div class="muted-small">@Model.User.Email</div>
+                    <a asp-controller="Profile" asp-action="Index" class="btn btn-sm btn-light mt-2"><i class="fas fa-user-edit mr-1"></i> Profil bearbeiten</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

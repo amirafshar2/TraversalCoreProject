@@ -1,0 +1,104 @@
+@model DestinationModel
+@{
+    var isEdit = Model.DestinationID > 0;
+}
+<form asp-action="@(isEdit ? "Edit" : "Create")" method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="DestinationID" />
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header"><h4>Grunddaten</h4></div>
+                <div class="card-body">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="City">Stadt / Reiseziel</label>
+                            <input asp-for="City" class="form-control" placeholder="z. B. Lissabon" />
+                            <span asp-validation-for="City" class="text-danger small"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="DayNight">Dauer</label>
+                            <input asp-for="DayNight" class="form-control" placeholder="z. B. 5 Tage / 4 Nächte" />
+                            <span asp-validation-for="DayNight" class="text-danger small"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="Price">Preis pro Person (€)</label>
+                            <input asp-for="Price" type="number" step="1" min="1" class="form-control" />
+                            <span asp-validation-for="Price" class="text-danger small"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="Capacity">Kapazität (Personen)</label>
+                            <input asp-for="Capacity" type="number" min="1" class="form-control" />
+                            <span asp-validation-for="Capacity" class="text-danger small"></span>
+                        </div>
+                        <div class="form-group col-12">
+                            <label asp-for="Description">Kurzbeschreibung (Teaser)</label>
+                            <textarea asp-for="Description" class="form-control" style="height:70px" maxlength="250"></textarea>
+                            <span asp-validation-for="Description" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-section-title">Inhalt der Detailseite</div>
+                    <div class="form-group">
+                        <label asp-for="Title1">Überschrift</label>
+                        <input asp-for="Title1" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Detail1">Einleitung</label>
+                        <textarea asp-for="Detail1" class="form-control" style="height:110px"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Detail2">Highlight (Zitat-Block, erste Zeile = Titel)</label>
+                        <textarea asp-for="Detail2" class="form-control" style="height:110px"></textarea>
+                    </div>
+                    @for (int i = 3; i <= 5; i++)
+                    {
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label for="Title@(i)">Abschnitt @(i - 1) – Titel</label>
+                                <input id="Title@(i)" name="Title@(i)" value="@(typeof(DestinationModel).GetProperty("Title" + i)!.GetValue(Model))" class="form-control" />
+                            </div>
+                            <div class="form-group col-md-8">
+                                <label for="Detail@(i)">Abschnitt @(i - 1) – Text</label>
+                                <textarea id="Detail@(i)" name="Detail@(i)" class="form-control" style="height:90px">@(typeof(DestinationModel).GetProperty("Detail" + i)!.GetValue(Model))</textarea>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header"><h4>Sichtbarkeit</h4></div>
+                <div class="card-body">
+                    <label class="custom-switch m-0 p-0">
+                        <input asp-for="Status" type="checkbox" class="custom-switch-input">
+                        <span class="custom-switch-indicator"></span>
+                        <span class="custom-switch-description">Auf der Website anzeigen</span>
+                    </label>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><h4>Bilder</h4></div>
+                <div class="card-body">
+                    @foreach (var (field, label, current, id) in new[] {
+                        ("coverImage", "Titelbild (groß)" + (isEdit ? "" : " *"), Model.CoverImage, "pv-cover"),
+                        ("image", "Vorschaubild (Liste)", Model.Image, "pv-image"),
+                        ("image2", "Galerie-Bild 1", Model.Image2, "pv-image2"),
+                        ("image3", "Galerie-Bild 2", Model.Image3, "pv-image3") })
+                    {
+                        <div class="form-group">
+                            <label>@label</label>
+                            <input type="file" name="@field" accept="image/*" class="form-control" data-preview="#@id" />
+                            <span class="text-danger small" data-valmsg-for="@field">@Html.ValidationMessage(field)</span>
+                            <img id="@id" src="@current" class="img-preview @(string.IsNullOrEmpty(current) ? "d-none" : "")" alt="" />
+                        </div>
+                    }
+                    <p class="muted-small mb-0">Erlaubt: JPG, PNG, WEBP, GIF, AVIF – max. 5 MB pro Bild.</p>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="fas fa-save mr-2"></i>Speichern</button>
+            <a asp-action="Index" class="btn btn-light btn-block">Abbrechen</a>
+        </div>
+    </div>
+</form>

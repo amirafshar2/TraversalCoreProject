@@ -1,13 +1,10 @@
-﻿using EntityLayer.Concrate;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using EntityLayer.Concrate;
 
 namespace BusinessLayer.Abstract
 {
-    public interface INewsletterService: IGenerik_Service<Newsletter>
+    public interface INewsletterService : IGenerik_Service<Newsletter>
     {
+        /// <summary>Trägt eine E-Mail ein. Gibt false zurück, wenn sie schon existiert.</summary>
+        bool Subscribe(string mail);
     }
 }

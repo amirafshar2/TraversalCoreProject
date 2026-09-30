@@ -1,15 +1,14 @@
-﻿using DataAccessLayer.Abstract;
+using DataAccessLayer.Abstract;
+using DataAccessLayer.Concrate;
 using DataAccessLayer.Repository;
 using EntityLayer.Concrate;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessLayer.EntityFrameWork
 {
     public class EfFeature2DAL : GenericRepository<Feature2>, IFeature2DAL
     {
+        public EfFeature2DAL(Context context) : base(context) { }
+
     }
 }

@@ -1,99 +1,75 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Net.Http;
 using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 
-
-public class AIController : Controller
+namespace TraversalCoreProje.Controllers
 {
-    #region Api Ai
-    [HttpPost]
-    public async Task<IActionResult> GetCityInfo([FromBody] CityRequest request)
+    /// <summary>
+    /// KI-Reiseinfos über die Google-Gemini-API.
+    /// Der API-Schlüssel wird NICHT im Code gespeichert, sondern über die Konfiguration
+    /// (User-Secrets oder Umgebungsvariable "Gemini__ApiKey") gesetzt. Ohne Schlüssel ist die Funktion deaktiviert.
+    /// </summary>
+    public class AIController : Controller
     {
-        if (string.IsNullOrEmpty(request.CityName))
+        private readonly IConfiguration _config;
+        private readonly IHttpClientFactory _httpClientFactory;
+
+        public AIController(IConfiguration config, IHttpClientFactory httpClientFactory)
         {
-            return BadRequest("Şehir adı boş olamaz.");
+            _config = config;
+            _httpClientFactory = httpClientFactory;
         }
 
-        // Gemini API anahtarınızı doğrudan buraya girin
-        var apiKey = "AIzaSyB06gpQRI7XxVn6mewGTiHsbDx5tyrADME";
-
-        using var client = new HttpClient();
-
-        // Doğru kullanım
-        var url = $"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={apiKey}";
-
-        var promptText = $"{request.CityName} Almanca yazacaksin ve altinda Farsca tercumesini her paragraafin altina olacak sekilde ve kesinlikle turkce kullanmiyorsun hakkında 7 madde ve her madde için bir başlık ve kısa bir açıklama olacak şekilde bilgi ver. Cevabın sadece şu JSON formatında olsun: [{{'title': 'Başlık 1', 'description': 'Açıklama 1'}}, ..., {{'title': 'Başlık 7', 'description': 'Açıklama 7'}}]";
-
-        var requestBody = new
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> GetCityInfo([FromBody] CityRequest request)
         {
-            contents = new[]
+            if (string.IsNullOrWhiteSpace(request?.CityName) || request.CityName.Length > 60)
+                return BadRequest("Bitte geben Sie einen gültigen Städtenamen ein.");
+
+            var apiKey = _config["Gemini:ApiKey"];
+            if (string.IsNullOrWhiteSpace(apiKey))
+                return StatusCode(503, "Der KI-Assistent ist in dieser Demo deaktiviert (kein API-Schlüssel konfiguriert).");
+
+            var model = _config["Gemini:Model"] ?? "gemini-2.0-flash";
+            var url = $"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent";
+            var prompt = $"Gib auf Deutsch 7 kurze Reisetipps für die Stadt {request.CityName}. " +
+                         "Jeder Tipp hat einen Titel und eine kurze Beschreibung (max. 2 Sätze). " +
+                         "Antworte ausschließlich als JSON-Array im Format: " +
+                         "[{\"title\": \"...\", \"description\": \"...\"}]";
+
+            var body = new { contents = new[] { new { parts = new[] { new { text = prompt } } } } };
+            var client = _httpClientFactory.CreateClient();
+            using var msg = new HttpRequestMessage(HttpMethod.Post, url)
             {
-                new
-                {
-                    parts = new[]
-                    {
-                        new { text = promptText }
-                    }
-                }
+                Content = new StringContent(JsonSerializer.Serialize(body), Encoding.UTF8, "application/json")
+            };
+            msg.Headers.Add("x-goog-api-key", apiKey);
+
+            var response = await client.SendAsync(msg);
+            if (!response.IsSuccessStatusCode)
+                return StatusCode((int)response.StatusCode, "Die KI-Informationen konnten nicht geladen werden.");
+
+            try
+            {
+                var gemini = JsonSerializer.Deserialize<GeminiResponse>(await response.Content.ReadAsStringAsync());
+                var text = gemini?.candidates?[0].content?.parts?[0].text ?? "[]";
+                var clean = text.Replace("```json", "").Replace("```", "").Trim();
+                return Ok(JsonSerializer.Deserialize<List<CityInfo>>(clean));
             }
-        };
-
-        var json = JsonSerializer.Serialize(requestBody);
-        var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-        var response = await client.PostAsync(url, content);
-
-        if (!response.IsSuccessStatusCode)
-        {
-            return StatusCode((int)response.StatusCode, "Gemini API'den bilgi alınırken bir hata oluştu.");
+            catch (JsonException)
+            {
+                return StatusCode(502, "Die Antwort der KI konnte nicht gelesen werden.");
+            }
         }
-
-        var responseString = await response.Content.ReadAsStringAsync();
-
-        // Gelen JSON'u doğru şekilde işlemek için bir model oluşturun
-        var geminiResponse = JsonSerializer.Deserialize<GeminiResponse>(responseString);
-        var geminiContent = geminiResponse?.candidates[0].content.parts[0].text;
-
-        // JSON bloğunu temizle ve ayrıştır
-        var cleanJson = geminiContent.Replace("```json", "").Replace("```", "").Trim();
-        var cityInfos = JsonSerializer.Deserialize<List<CityInfo>>(cleanJson);
-
-        return Ok(cityInfos);
     }
+
+    #region Request- und Response-Modelle
+    public class CityRequest { public string CityName { get; set; } }
+    public class GeminiResponse { public List<Candidate> candidates { get; set; } }
+    public class Candidate { public Content content { get; set; } }
+    public class Content { public List<Part> parts { get; set; } }
+    public class Part { public string text { get; set; } }
+    public class CityInfo { public string title { get; set; } public string description { get; set; } }
     #endregion
 }
-
-#region request ve response models
-public class CityRequest
-{
-    public string CityName { get; set; }
-}
-
-public class GeminiResponse
-{
-    public List<Candidate> candidates { get; set; }
-}
-
-public class Candidate
-{
-    public Content content { get; set; }
-}
-
-public class Content
-{
-    public List<Part> parts { get; set; }
-}
-
-public class Part
-{
-    public string text { get; set; }
-}
-
-public class CityInfo
-{
-    public string title { get; set; }
-    public string description { get; set; }
-}
-#endregion

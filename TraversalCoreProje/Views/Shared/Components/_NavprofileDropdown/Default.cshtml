@@ -1,32 +1,30 @@
-﻿
-@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
 <li class="dropdown">
-    <a href="#" data-toggle="dropdown"
-       class="nav-link dropdown-toggle nav-link-lg nav-link-user">
-        <img alt="image" src="@ViewBag.image"
-             class="user-img-radious-style"> <span class="d-sm-none d-lg-inline-block"></span>
+    <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
+        <img alt="Profilbild" src="@(ViewBag.image ?? "/otika-bootstrap-admin-template/assets/img/users/user-2.png")" class="user-img-radious-style">
+        <span class="d-sm-none d-lg-inline-block"></span>
     </a>
     <div class="dropdown-menu dropdown-menu-right pullDown">
-        <div class="dropdown-title">Hello @ViewBag.name  @ViewBag.surename</div>
-        <a asp-area="" asp-controller="Home" asp-action="Index" class="dropdown-item has-icon">
-            <i class="fas fa-home"></i>
-            Home
+        <div class="dropdown-title">Hallo, @ViewBag.name @ViewBag.surename</div>
+        <a href="@Url.Action("Index", "Profile", new { area = "Member" })" class="dropdown-item has-icon">
+            <i class="far fa-user"></i> Mein Profil
         </a>
-       
-        <a asp-area="Member" asp-controller="Profile" asp-action="Index" class="dropdown-item has-icon">
-             <i class="far fa-user"></i> Profile
-            Settings
+        <a href="@Url.Action("Index", "Dashboard", new { area = "Member" })" class="dropdown-item has-icon">
+            <i class="fas fa-suitcase-rolling"></i> Mein Kundenbereich
+        </a>
+        @if (User.IsInRole("Admin") || User.IsInRole("Moderator"))
+        {
+            <a href="@Url.Action("Index", "Dashbord", new { area = "Admin" })" class="dropdown-item has-icon">
+                <i class="fas fa-user-shield"></i> Admin-Panel
+            </a>
+        }
+        <a href="/" class="dropdown-item has-icon">
+            <i class="fas fa-globe-europe"></i> Zur Website
         </a>
         <div class="dropdown-divider"></div>
-        <a style="cursor:pointer" onclick="document.getElementById('form').submit();" class="dropdown-item has-icon text-danger">
-            <i class="fas fa-sign-out-alt"></i>
-            Logout
-        </a>
+        <form method="post" asp-area="" asp-controller="User" asp-action="Logout" class="m-0">
+            <button type="submit" class="dropdown-item has-icon text-danger btn-link-reset">
+                <i class="fas fa-sign-out-alt"></i> Abmelden
+            </button>
+        </form>
     </div>
 </li>
-<div style="visibility:hidden">
-    <form method="post" id="form" asp-area="default" asp-controller="User" asp-action="Logout">
-    </form>
-</div>

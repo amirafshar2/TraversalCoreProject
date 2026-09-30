@@ -1,28 +1,50 @@
-﻿using DataAccessLayer.Abstract;
-using DataAccessLayer.Migrations;
+using DataAccessLayer.Abstract;
+using DataAccessLayer.Concrate;
 using DataAccessLayer.Repository;
 using EntityLayer.Concrate;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccessLayer.EntityFrameWork
 {
     public class EfReservationDAL : GenericRepository<Reservition>, IReservationDal
     {
-        DataAccessLayer.Concrate.Context db = new DataAccessLayer.Concrate.Context();
+        public EfReservationDAL(Context context) : base(context) { }
+
         public List<Reservition> GetlistbyUserId(int userId)
         {
-            
-            return db.reservitions.Where(x => x.Userid == userId).Include(y => y.Destiniton).ToList();
+            return _context.reservitions.AsNoTracking()
+                .Where(x => x.Userid == userId)
+                .Include(x => x.Destiniton)
+                .Include(x => x.Guide)
+                .ToList();
         }
 
         public List<Reservition> Getlistwhitdesetination()
         {
-            return db.reservitions.Include(x => x.Destiniton).ToList();
+            return _context.reservitions.AsNoTracking()
+                .Include(x => x.Destiniton)
+                .Include(x => x.User)
+                .Include(x => x.Guide)
+                .ToList();
+        }
+
+        public List<Reservition> GetListByStatus(string status)
+        {
+            return _context.reservitions.AsNoTracking()
+                .Where(x => x.status == status)
+                .Include(x => x.Destiniton)
+                .Include(x => x.User)
+                .Include(x => x.Guide)
+                .ToList();
+        }
+
+        public Reservition GetWithDetails(int id)
+        {
+            return _context.reservitions.AsNoTracking()
+                .Include(x => x.Destiniton)
+                .Include(x => x.User)
+                .Include(x => x.Guide)
+                .FirstOrDefault(x => x.id == id);
         }
     }
 }
