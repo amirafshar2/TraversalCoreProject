@@ -114,20 +114,35 @@ Im Container wird die Demo-Datenbank bei jedem Start und danach alle 6 Stunden z
 ---
 
 ## 🖼️ Screenshots
-<img width="1401" height="1031" alt="Screenshot 2026-07-15 152847" src="https://github.com/user-attachments/assets/3c97debd-830d-48f0-ace9-2a4675272b3b" />
-<img width="1396" height="1035" alt="Screenshot 2026-07-15 152854" src="https://github.com/user-attachments/assets/b0de6ef9-9484-4584-85ce-1b39be9d1cc9" />
-<img width="1407" height="911" alt="Screenshot 2026-07-15 152923" src="https://github.com/user-attachments/assets/337170cf-0d37-4537-ac98-da91674a2579" />
-<img width="1396" height="931" alt="Screenshot 2026-07-15 152932" src="https://github.com/user-attachments/assets/f24c6f24-a17d-4472-80f7-f58975faec22" />
-<img width="1390" height="933" alt="Screenshot 2026-07-15 152938" src="https://github.com/user-attachments/assets/974eceb2-f860-4479-a1b8-a56c3ecd9ea2" />
-<img width="1882" height="1025" alt="Screenshot 2026-07-15 153032" src="https://github.com/user-attachments/assets/e9a2c8da-2deb-4e40-858b-f2c627e745ea" />
-<img width="1888" height="1012" alt="Screenshot 2026-07-15 153130" src="https://github.com/user-attachments/assets/369553c0-58c1-401e-a9bc-6986ef2b69ed" />
-<img width="1887" height="1027" alt="Screenshot 2026-07-15 153138" src="https://github.com/user-attachments/assets/f3be522a-41b4-45e2-83de-7dc60f8f2fea" />
-<img width="1887" height="1025" alt="Screenshot 2026-07-15 153207" src="https://github.com/user-attachments/assets/c6f5b0ac-2e8a-4493-9235-2206f232d5da" />
-<img width="1876" height="1032" alt="Screenshot 2026-07-15 153218" src="https://github.com/user-attachments/assets/8b2b6315-f6b4-4e43-b669-d70f9de43b01" />
-<img width="1892" height="1025" alt="Screenshot 2026-07-15 153313" src="https://github.com/user-attachments/assets/659858f0-ee33-4e73-b40e-c9dfd6a533a4" />
-<img width="1882" height="1030" alt="Screenshot 2026-07-15 153321" src="https://github.com/user-attachments/assets/e0511d0d-d253-4ce9-8838-fa2e63b716e8" />
-<img width="1877" height="1026" alt="Screenshot 2026-07-15 153335" src="https://github.com/user-attachments/assets/aac6050f-7b4f-4642-a57c-246f85d3ba02" />
-<img width="1876" height="1027" alt="Screenshot 2026-07-15 153343" src="https://github.com/user-attachments/assets/04d1c651-6e82-4781-b25b-bc469e6438b7" />
+
+### 🌐 Website
+| Startseite | Reiseziele |
+|---|---|
+| ![Startseite](docs/screenshots/01-startseite.jpg) | ![Reiseziele](docs/screenshots/02-reiseziele.jpg) |
+
+| Reiseziel-Detailseite | Anmeldung mit Demo-Zugang |
+|---|---|
+| ![Detailseite](docs/screenshots/03-reiseziel-detail.jpg) | ![Anmeldung](docs/screenshots/04-anmeldung.jpg) |
+
+![Benutzermenü](docs/screenshots/11-benutzermenue.jpg)
+
+### 🛠️ Admin-Panel
+| Dashboard | Reservierungen |
+|---|---|
+| ![Dashboard](docs/screenshots/05-admin-dashboard.jpg) | ![Reservierungen](docs/screenshots/06-admin-reservierungen.jpg) |
+
+| Reiseziele | Reiseziel bearbeiten |
+|---|---|
+| ![Reiseziele verwalten](docs/screenshots/07-admin-reiseziele.jpg) | ![Reiseziel bearbeiten](docs/screenshots/08-admin-reiseziel-bearbeiten.jpg) |
+
+| Kommentare | Benutzer & Rollen |
+|---|---|
+| ![Kommentare](docs/screenshots/09-admin-kommentare.jpg) | ![Benutzer](docs/screenshots/10-admin-benutzer.jpg) |
+
+### 🧳 Kundenbereich
+| Übersicht | Neue Reservierung | Meine Reisen |
+|---|---|---|
+| ![Kundenübersicht](docs/screenshots/12-kunde-uebersicht.jpg) | ![Reservierung](docs/screenshots/13-kunde-reservierung.jpg) | ![Meine Reisen](docs/screenshots/14-kunde-reisen.jpg) |
 
 ---
 
