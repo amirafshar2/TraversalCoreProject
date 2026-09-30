@@ -5,20 +5,31 @@
 else
 {
     <div class="dropdown user-menu">
-        <button class="btn btn-style btn-secondary dropdown-toggle header-btn" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <img src="@ViewBag.Image" alt="" class="user-menu-img" /> @ViewBag.name
+        <button class="user-pill dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <img src="@ViewBag.Image" alt="" class="user-pill-img" />
+            <span class="user-pill-name">@ViewBag.name</span>
+            <span class="fa fa-angle-down user-pill-caret" aria-hidden="true"></span>
         </button>
-        <div class="dropdown-menu dropdown-menu-right">
-            @if (ViewBag.IsAdmin == true)
-            {
-                <a class="dropdown-item" href="/Admin/Dashbord"><span class="fa fa-dashboard mr-2"></span>Admin-Panel</a>
-            }
-            <a class="dropdown-item" href="/Member/Dashboard"><span class="fa fa-suitcase mr-2"></span>Mein Kundenbereich</a>
-            <a class="dropdown-item" href="/Member/Reservation/GetReservations"><span class="fa fa-calendar mr-2"></span>Meine Reservierungen</a>
-            <a class="dropdown-item" href="/Member/Profile"><span class="fa fa-user mr-2"></span>Profil</a>
-            <div class="dropdown-divider"></div>
-            <form method="post" asp-area="" asp-controller="User" asp-action="Logout" class="m-0">
-                <button type="submit" class="dropdown-item text-danger"><span class="fa fa-sign-out mr-2"></span>Abmelden</button>
+        <div class="dropdown-menu dropdown-menu-right user-menu-panel">
+            <div class="user-menu-head">
+                <img src="@ViewBag.Image" alt="" />
+                <div class="user-menu-info">
+                    <strong>@ViewBag.name @ViewBag.Surname</strong>
+                    <small>@ViewBag.Email</small>
+                    <span class="user-menu-role @(ViewBag.IsAdmin == true ? "admin" : "")">@ViewBag.RoleName</span>
+                </div>
+            </div>
+            <div class="user-menu-body">
+                @if (ViewBag.IsAdmin == true)
+                {
+                    <a class="user-menu-item" href="/Admin/Dashbord"><span class="ico ico-purple"><span class="fa fa-tachometer"></span></span>Admin-Panel</a>
+                }
+                <a class="user-menu-item" href="/Member/Dashboard"><span class="ico ico-blue"><span class="fa fa-suitcase"></span></span>Mein Kundenbereich</a>
+                <a class="user-menu-item" href="/Member/Reservation/GetReservations"><span class="ico ico-orange"><span class="fa fa-calendar-check-o"></span></span>Meine Reservierungen</a>
+                <a class="user-menu-item" href="/Member/Profile"><span class="ico ico-green"><span class="fa fa-user"></span></span>Profil</a>
+            </div>
+            <form method="post" asp-area="" asp-controller="User" asp-action="Logout" class="user-menu-foot">
+                <button type="submit" class="user-menu-item logout"><span class="ico ico-red"><span class="fa fa-sign-out"></span></span>Abmelden</button>
             </form>
         </div>
     </div>

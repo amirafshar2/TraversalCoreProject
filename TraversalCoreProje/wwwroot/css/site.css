@@ -97,3 +97,37 @@
 .best-rooms .maghny-grid figure figcaption p { margin-top: 4px; font-weight: 700; color: #ffd166; }
 .lead-text { font-size: 19px; line-height: 32px; }
 .comments-title { font-size: 28px; font-weight: 700; }
+
+/* ===== Benutzer-Menü im Header ===== */
+.user-pill { display: inline-flex; align-items: center; gap: 10px; padding: 5px 14px 5px 5px; border-radius: 40px;
+  background: var(--bg-color, #fff); border: 1px solid rgba(0,0,0,.1); color: var(--heading-color, #1c1c1c);
+  font-weight: 700; font-size: 15px; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,.06); transition: box-shadow .2s, border-color .2s; }
+.user-pill:hover, .user-menu.show .user-pill { border-color: var(--tv-accent); box-shadow: 0 4px 16px rgba(255,22,84,.18); }
+.user-pill:focus { outline: none; }
+.user-pill::after { display: none !important; }
+.user-pill-img { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 2px solid var(--tv-accent); }
+.user-pill-name { max-width: 110px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.user-pill-caret { font-size: 16px; opacity: .6; transition: transform .2s; }
+.user-menu.show .user-pill-caret { transform: rotate(180deg); }
+
+.user-menu-panel { width: 290px; padding: 0 !important; border: 0 !important; border-radius: 16px !important; overflow: hidden;
+  box-shadow: 0 18px 50px rgba(13,27,42,.18) !important; margin-top: 12px !important; }
+.user-menu-head { display: flex; align-items: center; gap: 14px; padding: 18px; background: linear-gradient(135deg, #0d1b2a, #274060); color: #fff; }
+.user-menu-head img { width: 54px; height: 54px; border-radius: 50%; object-fit: cover; border: 3px solid rgba(255,255,255,.85); }
+.user-menu-info { display: flex; flex-direction: column; min-width: 0; }
+.user-menu-info strong { font-size: 16px; color: #fff; }
+.user-menu-info small { font-size: 13px; opacity: .75; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.user-menu-role { align-self: flex-start; margin-top: 6px; font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
+  padding: 3px 10px; border-radius: 20px; background: rgba(255,255,255,.18); }
+.user-menu-role.admin { background: var(--tv-accent); }
+.user-menu-body { padding: 8px; }
+.user-menu-item { display: flex; align-items: center; gap: 12px; width: 100%; padding: 9px 10px; border-radius: 10px; border: 0; background: none;
+  color: #333 !important; font-size: 15px; font-weight: 600; text-align: left; text-decoration: none !important; cursor: pointer; transition: background .15s, transform .15s; }
+.user-menu-item:hover { background: #f4f5f9; transform: translateX(2px); }
+.user-menu-item .ico { width: 34px; height: 34px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+.ico-purple { background: #efeafe; color: #7c4dff; } .ico-blue { background: #e7f1ff; color: #2f80ed; }
+.ico-orange { background: #fff3e2; color: #f2994a; } .ico-green { background: #e5f8ee; color: #27ae60; }
+.ico-red { background: #fdecee; color: #e0344b; }
+.user-menu-foot { margin: 0; padding: 8px; border-top: 1px solid #f0f0f4; }
+.user-menu-item.logout { color: #e0344b !important; }
+.user-menu-item.logout:hover { background: #fdecee; }

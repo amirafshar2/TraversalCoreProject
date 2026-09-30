@@ -24,7 +24,11 @@ namespace TraversalCoreProje.ViewComponents.User
                     ViewBag.name = user.Name;
                     ViewBag.Surname = user.Surname;
                     ViewBag.Image = user.Image;
-                    ViewBag.IsAdmin = await _usermanager.IsInRoleAsync(user, "Admin") || await _usermanager.IsInRoleAsync(user, "Moderator");
+                    ViewBag.Email = user.Email;
+                    var isAdmin = await _usermanager.IsInRoleAsync(user, "Admin");
+                    var isModerator = await _usermanager.IsInRoleAsync(user, "Moderator");
+                    ViewBag.IsAdmin = isAdmin || isModerator;
+                    ViewBag.RoleName = isAdmin ? "Administrator" : isModerator ? "Moderator" : "Kunde";
                 }
             }
             return View();
