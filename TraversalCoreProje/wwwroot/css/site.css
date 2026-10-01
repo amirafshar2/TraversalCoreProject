@@ -140,3 +140,5 @@
   background: var(--tv-accent); color: #fff; font-size: 14px; transition: background .2s, color .2s; }
 .login-pill:hover { background: var(--tv-accent); color: #fff !important; box-shadow: 0 6px 18px rgba(255,22,84,.3); transform: translateY(-1px); }
 .login-pill:hover .login-pill-icon { background: #fff; color: var(--tv-accent); }
+.nav-portfolio { color: var(--tv-accent) !important; font-weight: 700; }
+.nav-portfolio .fa { font-size: 12px; margin-left: 3px; }

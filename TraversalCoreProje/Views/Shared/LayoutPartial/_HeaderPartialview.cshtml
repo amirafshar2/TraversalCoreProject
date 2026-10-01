@@ -1,4 +1,6 @@
+@inject Microsoft.Extensions.Options.IOptions<DemoOptions> DemoConfig
 @{
+    var portfolioUrl = DemoConfig.Value.PortfolioUrl;
     var controller = ViewContext.RouteData.Values["controller"]?.ToString();
     string Active(params string[] c) => c.Contains(controller, StringComparer.OrdinalIgnoreCase) ? "active" : "";
 }
@@ -24,6 +26,11 @@
                     <li class="nav-item @Active("Guide")"><a class="nav-link" href="/Guide">Reiseführer</a></li>
                     <li class="nav-item @Active("About")"><a class="nav-link" href="/About">Über uns</a></li>
                     <li class="nav-item @Active("Contact")"><a class="nav-link" href="/Contact">Kontakt</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-portfolio" href="@portfolioUrl" target="_blank" rel="noopener" title="Portfolio von Amir Reza Afshar">
+                            Portfolio <span class="fa fa-external-link" aria-hidden="true"></span>
+                        </a>
+                    </li>
                 </ul>
                 <div class="d-lg-none mt-3 mb-2">
                     @await Component.InvokeAsync("_ModalLoginPartial")

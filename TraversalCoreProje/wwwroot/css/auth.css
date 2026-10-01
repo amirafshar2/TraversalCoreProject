@@ -47,3 +47,5 @@ body { margin: 0; font-family: 'Lato', 'Segoe UI', sans-serif; background: #f5f6
   .auth-card { padding: 28px 22px; }
   .auth-row { flex-direction: column; gap: 0; }
 }
+.auth-portfolio { display: inline-block; margin-top: 14px; color: #fff; font-weight: 700; font-size: 15px; border-bottom: 2px solid #FF1654; text-decoration: none; }
+.auth-portfolio:hover { color: #ffd166; text-decoration: none; }
