@@ -131,3 +131,12 @@
 .user-menu-foot { margin: 0; padding: 8px; border-top: 1px solid #f0f0f4; }
 .user-menu-item.logout { color: #e0344b !important; }
 .user-menu-item.logout:hover { background: #fdecee; }
+
+/* ===== Anmelde-Button (nicht angemeldet) ===== */
+.login-pill { display: inline-flex; align-items: center; gap: 10px; padding: 5px 18px 5px 5px; border-radius: 40px;
+  border: 1.5px solid var(--tv-accent); color: var(--tv-accent) !important; background: transparent; font-weight: 700; font-size: 15px;
+  text-decoration: none !important; transition: background .2s, color .2s, box-shadow .2s, transform .15s; white-space: nowrap; }
+.login-pill-icon { width: 32px; height: 32px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
+  background: var(--tv-accent); color: #fff; font-size: 14px; transition: background .2s, color .2s; }
+.login-pill:hover { background: var(--tv-accent); color: #fff !important; box-shadow: 0 6px 18px rgba(255,22,84,.3); transform: translateY(-1px); }
+.login-pill:hover .login-pill-icon { background: #fff; color: var(--tv-accent); }

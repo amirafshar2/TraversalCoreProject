@@ -1,6 +1,9 @@
 @if (ViewBag.name == null)
 {
-    <a class="btn btn-style btn-secondary header-btn" href="/User/Login"><span class="fa fa-sign-in mr-1"></span> Anmelden</a>
+    <a class="login-pill" href="/User/Login">
+        <span class="login-pill-icon"><span class="fa fa-user" aria-hidden="true"></span></span>
+        <span>Anmelden</span>
+    </a>
 }
 else
 {
