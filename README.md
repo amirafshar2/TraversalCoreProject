@@ -7,16 +7,16 @@
 Mehrschichtige Webanwendung mit öffentlicher Website, Admin-Panel und Kundenbereich –
 entwickelt von **Amir Reza Afshar** im Rahmen der Umschulung zum Fachinformatiker für Anwendungsentwicklung.
 
-[![Live-Demo](https://img.shields.io/badge/Live--Demo-online-FF1654?style=for-the-badge&logo=render&logoColor=white)](https://traversalcoreproject.onrender.com)
-[![Admin-Demo](https://img.shields.io/badge/Demo-Admin--Panel-6777EF?style=for-the-badge)](https://traversalcoreproject.onrender.com/Demo/Admin)
-[![Kunden-Demo](https://img.shields.io/badge/Demo-Kundenbereich-47C363?style=for-the-badge)](https://traversalcoreproject.onrender.com/Demo/Member)
+[![Live-Demo](https://img.shields.io/badge/Live--Demo-online-FF1654?style=for-the-badge&logo=googlechrome&logoColor=white)](https://traversal.amirrezaafshar.de)
+[![Admin-Demo](https://img.shields.io/badge/Demo-Admin--Panel-6777EF?style=for-the-badge)](https://traversal.amirrezaafshar.de/Demo/Admin)
+[![Kunden-Demo](https://img.shields.io/badge/Demo-Kundenbereich-47C363?style=for-the-badge)](https://traversal.amirrezaafshar.de/Demo/Member)
 
 ![.NET](https://img.shields.io/badge/.NET-8.0-512BD4?logo=dotnet&logoColor=white)
 ![ASP.NET Core](https://img.shields.io/badge/ASP.NET_Core-MVC-512BD4?logo=dotnet&logoColor=white)
 ![EF Core](https://img.shields.io/badge/EF_Core-Code_First-6DB33F)
 ![SQLite](https://img.shields.io/badge/SQLite-Datenbank-003B57?logo=sqlite&logoColor=white)
 ![Bootstrap](https://img.shields.io/badge/Bootstrap-4-7952B3?logo=bootstrap&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-Render-2496ED?logo=docker&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-Oracle%20Cloud-2496ED?logo=docker&logoColor=white)
 
 <img src="docs/screenshots/01-startseite.jpg" alt="Traversal Startseite" width="900" />
 
@@ -45,12 +45,11 @@ Die Anwendung läuft online – **ohne Registrierung** mit einem Klick testbar:
 
 | | Link | Beschreibung |
 |---|---|---|
-| 🌐 **Website** | [traversalcoreproject.onrender.com](https://traversalcoreproject.onrender.com) | Öffentliche Reise-Website |
-| 🛠️ **Admin-Panel** | [/Demo/Admin](https://traversalcoreproject.onrender.com/Demo/Admin) | Direkt als Administrator angemeldet |
-| 🧳 **Kundenbereich** | [/Demo/Member](https://traversalcoreproject.onrender.com/Demo/Member) | Direkt als Kunde angemeldet |
+| 🌐 **Website** | [traversal.amirrezaafshar.de](https://traversal.amirrezaafshar.de) | Öffentliche Reise-Website |
+| 🛠️ **Admin-Panel** | [/Demo/Admin](https://traversal.amirrezaafshar.de/Demo/Admin) | Direkt als Administrator angemeldet |
+| 🧳 **Kundenbereich** | [/Demo/Member](https://traversal.amirrezaafshar.de/Demo/Member) | Direkt als Kunde angemeldet |
 
 > ℹ️ Alle Änderungen sind erlaubt – die Demo-Datenbank wird automatisch zurückgesetzt.
-> Gehostet im kostenlosen Render-Plan: Nach längerer Inaktivität kann der erste Aufruf ca. 30–60 Sekunden dauern.
 
 ---
 
@@ -159,7 +158,7 @@ TraversalCoreProject/
 | Datenbank | SQLite (Code First, Migrationen, Seed-Daten) |
 | Frontend | Razor Views, HTML5, CSS3, JavaScript, jQuery, Bootstrap 4, ApexCharts |
 | Bibliotheken | FluentValidation, X.PagedList |
-| DevOps | Docker, Render (Region Frankfurt), Git & GitHub |
+| DevOps | Docker, Oracle Cloud (Frankfurt), Caddy, Git & GitHub |
 
 ---
 
@@ -236,11 +235,17 @@ dotnet user-secrets set "Gemini:ApiKey" "<Ihr-Schlüssel>" --project TraversalCo
 
 ## ☁️ Deployment
 
-Die Live-Version läuft als **Docker-Container auf Render** (Region Frankfurt, EU).
+Die Live-Version läuft als **Docker-Container auf einem eigenen Server bei Oracle Cloud** (Region Frankfurt, EU), davor Caddy für HTTPS.
+Der Server prüft regelmäßig, ob es auf GitHub einen neuen Commit gibt, und baut die Anwendung dann selbstständig neu – ein Push genügt.
 
-1. Repository bei [Render](https://render.com) als *Web Service* (Docker) oder *Blueprint* (`render.yaml`) verbinden
-2. Branch `master`, Root Directory leer, Instance Type *Free*
-3. Optional: Umgebungsvariable `Gemini__ApiKey` setzen
+Lokal mit Docker:
+
+```bash
+docker build -t traversal .
+docker run -p 8080:8080 traversal
+```
+
+Optional die Umgebungsvariable `Gemini__ApiKey` setzen. Eine `render.yaml` liegt für Render ebenfalls bei.
 
 Bei jedem Start und danach regelmäßig wird die Demo-Datenbank auf den Ausgangszustand zurückgesetzt.
 
@@ -253,6 +258,14 @@ Bei jedem Start und danach regelmäßig wird die Demo-Datenbank auf den Ausgangs
 - ✅ Upload-Prüfung: nur Bilddateien bis 5 MB
 - ✅ Keine Geheimnisse im Quellcode (API-Schlüssel über User-Secrets / Umgebungsvariablen)
 - ✅ DSGVO-freundlich: Schriften und Skripte werden lokal ausgeliefert, kein Tracking
+
+---
+
+## 📝 Kleine Notiz zur Entstehung
+
+Traversal habe ich zusammen mit **Claude** gebaut. Die Idee, die Struktur und die Entscheidungen kamen von mir – beim eigentlichen Schreiben des Codes hat mir die KI sehr viel Arbeit abgenommen.
+
+Am meisten beeindruckt hat mich, wie schnell aus einem statischen HTML-Template eine Buchungsplattform mit Admin-Panel und Kundenbereich wurde, die tatsächlich läuft. Vibe Coding war für mich bei diesem Projekt so etwas wie ein Aha-Moment.
 
 ---
 
