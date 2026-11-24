@@ -7,20 +7,24 @@
     var demo = (DemoOptions)ViewBag.Demo;
 }
 <h1 class="auth-title">Anmelden</h1>
-<p class="auth-sub">Noch kein Konto? <a href="/User/registor">Jetzt registrieren</a></p>
+@if (demo?.Enabled != true)
+{
+    <p class="auth-sub">Noch kein Konto? <a href="/User/registor">Jetzt registrieren</a></p>
+}
 
 @if (demo?.Enabled == true)
 {
     <div class="demo-box">
         <div class="demo-box-title"><span class="fa fa-flask"></span> Demo ohne Registrierung</div>
+        <p style="margin:0 0 12px;font-size:14px;opacity:.85">Es werden keine persönlichen Daten abgefragt. Wählen Sie eine Rolle und Sie sind sofort angemeldet.</p>
         <div class="demo-box-buttons">
             <a href="/Demo/Admin" class="btn-demo admin"><span class="fa fa-user-secret"></span> Als Admin</a>
             <a href="/Demo/Member" class="btn-demo member"><span class="fa fa-user"></span> Als Kunde</a>
         </div>
     </div>
-    <div class="auth-divider"><span>oder mit E-Mail</span></div>
 }
-
+else
+{
 <form asp-action="Login" method="post" novalidate>
     <input type="hidden" asp-for="ReturnUrl" />
     <div asp-validation-summary="ModelOnly" class="auth-error"></div>
@@ -37,4 +41,5 @@
     <label class="auth-check"><input asp-for="RememberMe" /> Angemeldet bleiben</label>
     <button type="submit" class="auth-submit">Anmelden</button>
 </form>
+}
 <p class="auth-foot"><a href="/"><span class="fa fa-arrow-left"></span> Zurück zur Website</a></p>

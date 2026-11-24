@@ -37,6 +37,8 @@ namespace TraversalCoreProje.Controllers
         public async Task<IActionResult> Login(LoginModel p)
         {
             ViewBag.Demo = _demo;
+            // Demo: keine Eingabe persönlicher Daten – nur die Ein-Klick-Buttons
+            if (_demo.Enabled) return RedirectToAction(nameof(Login));
             if (!ModelState.IsValid) return View(p);
 
             var result = await _signInManager.PasswordSignInAsync(p.Username, p.Password, p.RememberMe, lockoutOnFailure: true);
@@ -62,6 +64,7 @@ namespace TraversalCoreProje.Controllers
         [HttpGet]
         public IActionResult registor()
         {
+            if (_demo.Enabled) return RedirectToAction(nameof(Login));
             return View(new Usermodel());
         }
 
@@ -69,6 +72,7 @@ namespace TraversalCoreProje.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> registor(Usermodel p)
         {
+            if (_demo.Enabled) return RedirectToAction(nameof(Login));
             if (!PicSave.IsValidImage(p.imagefile, out var imageError))
                 ModelState.AddModelError(nameof(p.imagefile), imageError);
             if (!ModelState.IsValid) return View(p);
